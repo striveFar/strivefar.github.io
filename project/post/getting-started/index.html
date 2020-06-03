@@ -654,21 +654,21 @@ Linux下的静态库是以.a结尾的二进制文件，它作为一个程序的�
 下面用几张图来说明一下：
 <img src="https://img-blog.csdnimg.cn/20200503132421885.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">
 <img src="https://img-blog.csdnimg.cn/20200503195153959.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>==**还可以加上-static选项，让链接静态库后的math.out彻底的独立起来，“完全静态”**==，因此，得到的二进制文件会非常大。
-<img src="https://img-blog.csdnimg.cn/20200503133250379.png" alt="在这里插入图片描述">
-<img src="https://img-blog.csdnimg.cn/20200503133154266.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">
-<img src="https://img-blog.csdnimg.cn/20200503132624143.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="使用静态动态链接库的优缺点">使用静态/动态链接库的优缺点：</h1>
-<h3 id="静态库">静态库：</h3>
-<p>编译后的执行程序不需要外部的函数库支持，因为所有==使用的函数都经被编译进去了==。当然这也会成为他的缺点，因为如果==静态函数库改变==了，那么你的程序必须==重新编译==。
-静态库的代码在编译时链接到应用程序中，因此==编译时库文件必须存在并且需要通过“-L”参数传递给编译器==，应用程序在开始==执行时==，==库函数代码将随程序一 起调入进程内存段直到进程结束==，其执行过程不需要原静态库存在。</p>
+<tr><td bgcolor=orange>还可以加上-static选项，让链接静态库后的math.out彻底的独立起来，“完全静态”</td></tr>，因此，得到的二进制文件会非常大。
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200503133250379.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200503133154266.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200503132624143.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70)
+# 使用静态/动态链接库的优缺点：
+### 静态库：
+编译后的执行程序不需要外部的函数库支持，**因为所有使用的函数都经被编译进去了**。当然这也会成为他的缺点，因为如果**静态函数库改变**了，那么你的程序必须**重新编译**。
+<p>静态库的代码在编译时链接到应用程序中，因此<strong>编译时库文件必须存在并且需要通过“-L”参数传递给编译器</strong>，应用程序在开始执行时，库函数代码将随程序一 起调入进程内存段直到进程结束，其执行过程不需要原静态库存在。</p>
 <h3 id="动态库">动态库：</h3>
-<p>动态函数库在编译的时候==并没有==被编译进目标代码中，你的程序==执行到相关函数时才调用该函数库里的相应函数==，因此动态函数库所产生的可执行文件比较==小==。由于函数库没有被整合进你的程序，而是程序运行时动态的申请并调用，所以程序的==运行环境中必须提供相应的库==。动态函数库的改变并不影响你的程序，所以动态函数库的==升级比较方便==。
-不同的INIX系统链接动态库方法，实现细节不一样，编译PIC型.o中间文件的方法一般是采用C语言编译器的-KPIC或者 -fPIC选项
+<p>动态函数库在编译的时候<strong>并没有</strong>被编译进目标代码中，你的程序<strong>执行到相关函数时才调用该函数库里的相应函数</strong>，因此动态函数库所产生的可执行文件比较<strong>小</strong>。由于函数库没有被整合进你的程序，而是程序运行时动态的申请并调用，所以程序的<strong>运行环境中必须提供相应的库</strong>。动态函数库的改变并不影响你的程序，所以动态函数库的<strong>升级比较方便</strong>。</p>
+<p>不同的INIX系统链接动态库方法，实现细节不一样，编译PIC型.o中间文件的方法一般是采用C语言编译器的-KPIC或者 -fPIC选项
 <strong>最主要的是GCC命令行的一个选项:</strong>
-<strong>-shared</strong>:该选项指定==生成动态连接库==(让连接器生成T类型的导出符号表，有时候也生成弱连接W类
+<strong>-shared</strong>:该选项指定<strong>生成动态连接库</strong>(让连接器生成T类型的导出符号表，有时候也生成弱连接W类
 型的导出符号) ,不用该标志外部程序无法连接。相当于一个可执行文件
-<strong>-fPIC</strong>:表示编译为==位置独立==的代码，不用此选项的话编译后的代码是位置相关的,所以动态载入时是通过代码拷贝的方式来满足不同进程的需要，而不能达到真正代码段共享的目的。</p>
+<strong>-fPIC</strong>:表示编译为<strong>位置独立</strong>的代码，不用此选项的话编译后的代码是位置相关的,所以动态载入时是通过代码拷贝的方式来满足不同进程的需要，而不能达到真正代码段共享的目的。</p>
 <h1 id="制作链接库的目的商业角度">制作链接库的目的（商业角度）：</h1>
 <p>这就和<strong>商业</strong>项目挂钩了:
 假如我们是一个项目的外包方，我们是有专利的，<strong>希望别人使用我们已经实现的功能，但又不希望别人看到我们的源代码</strong>，所以这对商业机构是非常友好的。</p>
