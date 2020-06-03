@@ -28,16 +28,6 @@
   </url>
   
   <url>
-    <loc>https://strivefar.github.io/authors/admin/</loc>
-    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://strivefar.github.io/tags/academic/</loc>
-    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://strivefar.github.io/authors/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
@@ -48,7 +38,7 @@
   </url>
   
   <url>
-    <loc>https://strivefar.github.io/categories/demo/</loc>
+    <loc>https://strivefar.github.io/tags/linux/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
   
@@ -63,7 +53,22 @@
   </url>
   
   <url>
+    <loc>https://strivefar.github.io/authors/youngfar/</loc>
+    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://strivefar.github.io/post/getting-started/</loc>
+    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
+    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8Flinux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
   
@@ -75,6 +80,11 @@
   <url>
     <loc>https://strivefar.github.io/courses/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/authors/admin/</loc>
+    <lastmod>2019-09-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
