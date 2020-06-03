@@ -11,7 +11,7 @@
 执行
 
 
-    	hugo new content/post/新文章文件夹/XXX.md
+    	hugo new post/新文章文件夹/XXX.md
 
 
 2. 复制
