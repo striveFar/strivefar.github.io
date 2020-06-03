@@ -65,5 +65,58 @@ Linux下的静态库是以.a结尾的二进制文件，它作为一个程序的�
 </description>
     </item>
     
+    <item>
+      <title>动态编译和静态编译——制作动态库和静态库</title>
+      <link>https://strivefar.github.io/project/post/getting-started/</link>
+      <pubDate>Wed, 13 May 2020 00:00:00 +0000</pubDate>
+      <guid>https://strivefar.github.io/project/post/getting-started/</guid>
+      <description>&lt;h1 id=&#34;参考链接&#34;&gt;参考链接&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;http://c.biancheng.net/view/2385.html&#34;&gt;GCC生成动态链接库（.so文件）：-shared和-fPIC选项&lt;/a&gt;
+&lt;a href=&#34;http://c.biancheng.net/view/7168.html&#34;&gt;GCC创建和使用静态链接库（.a文件）&lt;/a&gt;
+&lt;a href=&#34;https://www.bilibili.com/video/BV1ZT4y137Ba?from=search&amp;amp;seid=5456022104877118795&#34;&gt;gcc的使用方法；动态编译和静态编译；Linux制作动态库和静态库&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;命名规则&#34;&gt;命名规则&lt;/h1&gt;
+&lt;p&gt;静态库命名规则如下：
+&lt;strong&gt;libxxx.o&lt;/strong&gt;
+&lt;strong&gt;lib&lt;/strong&gt;:前缀
+&lt;strong&gt;.o&lt;/strong&gt;:静态库
+动态链接库（shared object file，共享对象文件）命名规则如下：
+&lt;strong&gt;libxxx.so&lt;/strong&gt;
+&lt;strong&gt;lib&lt;/strong&gt;:前缀
+&lt;strong&gt;.so&lt;/strong&gt;:动态库&lt;/p&gt;
+&lt;h1 id=&#34;静态库参数&#34;&gt;静态库参数&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/20200503195703920.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;gcc-常用编译选项&#34;&gt;gcc 常用编译选项&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/20200503200518148.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;动态库和静态库的对比&#34;&gt;动态库和静态库的对比&lt;/h1&gt;
+&lt;p&gt;我们先来说一下静态库；
+Linux下的静态库是以.a结尾的二进制文件，它作为一个程序的模块，它在链接期间就被组合到了程序中，比如说我有一个主程序mian.c，那么我把它和静态库链接的时候，它就直接把这个静态库组合到了我的main.c里面生成的一个二进制文件.a。
+而与静态链接库相对的是动态链接库，同样的是把主函数mian.c和动态库进行链接，与静态库不同的是,这个动态库在程序运行的阶段才会被加载进内存,参与主函数运行
+下面用几张图来说明一下：
+&lt;img src=&#34;https://img-blog.csdnimg.cn/20200503132421885.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;
+&lt;img src=&#34;https://img-blog.csdnimg.cn/20200503195153959.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;==**还可以加上-static选项，让链接静态库后的math.out彻底的独立起来，“完全静态”**==，因此，得到的二进制文件会非常大。
+&lt;img src=&#34;https://img-blog.csdnimg.cn/20200503133250379.png&#34; alt=&#34;在这里插入图片描述&#34;&gt;
+&lt;img src=&#34;https://img-blog.csdnimg.cn/20200503133154266.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;
+&lt;img src=&#34;https://img-blog.csdnimg.cn/20200503132624143.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;使用静态动态链接库的优缺点&#34;&gt;使用静态/动态链接库的优缺点：&lt;/h1&gt;
+&lt;h3 id=&#34;静态库&#34;&gt;静态库：&lt;/h3&gt;
+&lt;p&gt;编译后的执行程序不需要外部的函数库支持，因为所有==使用的函数都经被编译进去了==。当然这也会成为他的缺点，因为如果==静态函数库改变==了，那么你的程序必须==重新编译==。
+静态库的代码在编译时链接到应用程序中，因此==编译时库文件必须存在并且需要通过“-L”参数传递给编译器==，应用程序在开始==执行时==，==库函数代码将随程序一 起调入进程内存段直到进程结束==，其执行过程不需要原静态库存在。&lt;/p&gt;
+&lt;h3 id=&#34;动态库&#34;&gt;动态库：&lt;/h3&gt;
+&lt;p&gt;动态函数库在编译的时候==并没有==被编译进目标代码中，你的程序==执行到相关函数时才调用该函数库里的相应函数==，因此动态函数库所产生的可执行文件比较==小==。由于函数库没有被整合进你的程序，而是程序运行时动态的申请并调用，所以程序的==运行环境中必须提供相应的库==。动态函数库的改变并不影响你的程序，所以动态函数库的==升级比较方便==。
+不同的INIX系统链接动态库方法，实现细节不一样，编译PIC型.o中间文件的方法一般是采用C语言编译器的-KPIC或者 -fPIC选项
+&lt;strong&gt;最主要的是GCC命令行的一个选项:&lt;/strong&gt;
+&lt;strong&gt;-shared&lt;/strong&gt;:该选项指定==生成动态连接库==(让连接器生成T类型的导出符号表，有时候也生成弱连接W类
+型的导出符号) ,不用该标志外部程序无法连接。相当于一个可执行文件
+&lt;strong&gt;-fPIC&lt;/strong&gt;:表示编译为==位置独立==的代码，不用此选项的话编译后的代码是位置相关的,所以动态载入时是通过代码拷贝的方式来满足不同进程的需要，而不能达到真正代码段共享的目的。&lt;/p&gt;
+&lt;h1 id=&#34;制作链接库的目的商业角度&#34;&gt;制作链接库的目的（商业角度）：&lt;/h1&gt;
+&lt;p&gt;这就和&lt;strong&gt;商业&lt;/strong&gt;项目挂钩了:
+假如我们是一个项目的外包方，我们是有专利的，&lt;strong&gt;希望别人使用我们已经实现的功能，但又不希望别人看到我们的源代码&lt;/strong&gt;，所以这对商业机构是非常友好的。&lt;/p&gt;
+&lt;h1 id=&#34;makefile中的使用实例&#34;&gt;Makefile中的使用实例：&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/20200503143928633.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;
+&lt;img src=&#34;https://img-blog.csdnimg.cn/20200503144212953.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4ODE2ODcz,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
   </channel>
 </rss>
