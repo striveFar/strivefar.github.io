@@ -57,7 +57,7 @@
 	    - 待添加
 	    categories:
 		#可选的种类
-		- gcc编译调试问题
+	    - gcc编译调试问题
 	    - 嵌入式linux学习笔记
 	    - Git & Github
 	    - C语言学习
