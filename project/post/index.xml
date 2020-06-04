@@ -5,20 +5,12 @@
     <link>https://strivefar.github.io/project/post/</link>
       <atom:link href="https://strivefar.github.io/project/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Thu, 04 Jun 2020 13:55:02 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Wed, 13 May 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>https://strivefar.github.io/project/post/</link>
     </image>
-    
-    <item>
-      <title>XXX</title>
-      <link>https://strivefar.github.io/project/post/%E6%96%B0%E6%96%87%E7%AB%A0%E6%96%87%E4%BB%B6%E5%A4%B9/xxx/</link>
-      <pubDate>Thu, 04 Jun 2020 13:55:02 +0800</pubDate>
-      <guid>https://strivefar.github.io/project/post/%E6%96%B0%E6%96%87%E7%AB%A0%E6%96%87%E4%BB%B6%E5%A4%B9/xxx/</guid>
-      <description></description>
-    </item>
     
     <item>
       <title>动态编译和静态编译——制作动态库和静态库</title>

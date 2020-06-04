@@ -28,21 +28,6 @@
   </url>
   
   <url>
-    <loc>https://strivefar.github.io/project/post/</loc>
-    <lastmod>2020-06-04T13:55:02+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://strivefar.github.io/project/</loc>
-    <lastmod>2020-06-04T13:55:02+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://strivefar.github.io/project/post/%E6%96%B0%E6%96%87%E7%AB%A0%E6%96%87%E4%BB%B6%E5%A4%B9/xxx/</loc>
-    <lastmod>2020-06-04T13:55:02+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://strivefar.github.io/authors/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
@@ -54,6 +39,16 @@
   
   <url>
     <loc>https://strivefar.github.io/tags/linux/</loc>
+    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/project/post/</loc>
+    <lastmod>2020-05-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/project/</loc>
     <lastmod>2020-05-13T00:00:00+00:00</lastmod>
   </url>
   
