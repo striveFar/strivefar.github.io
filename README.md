@@ -103,6 +103,6 @@
 
     git add --all
     
-    git commit . -m"add new."
+    git commit . -m"add new XXX."
     
     git push origin master
