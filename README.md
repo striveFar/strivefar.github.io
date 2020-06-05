@@ -5,11 +5,11 @@
 
 
 # 博文发送流程
-### 1. 在根目录下执行`hugo new project/post/新文章文件夹/XXX.md` 后自动创建如下
+### 1. 在根目录下执行`hugo new project/post/新文章文件夹/index.md` 后自动创建如下
 
 
 	    # Documentation: https://sourcethemes.com/academic/docs/managing-content/
-	    title: "XXX"
+	    title: "index"
 	    subtitle: ""
 	    summary: ""
 	    authors: []
@@ -69,7 +69,7 @@
 #### <2>文章配图可以使用
 	https://unsplash.com
 
-**这个网站的需要下载到本地，和文章XXX放在同一目录**
+**这个网站的需要下载到本地，和文章index.md放在同一目录,要想使用图片，md文件名必须是index**
 
 	project/post/新文章文件夹/
 
