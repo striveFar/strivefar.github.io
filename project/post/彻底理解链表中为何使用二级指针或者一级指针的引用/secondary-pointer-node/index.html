@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="YoungFar">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="前言 参数的调用方式 传值调用 传址调用 传引用调用 示例说明 使用二级指针/一级指针创建链表时的对比 主函数中作此调用 使用二级指针创建链表 使用一级指针创">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/">
+
+  
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="YoungFar的个人博客——Love&amp;Share">
+  <meta property="og:url" content="https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/">
+  <meta property="og:title" content="链表中为何使用二级指针或者一级指针的引用 | YoungFar的个人博客——Love&amp;Share">
+  <meta property="og:description" content="前言 参数的调用方式 传值调用 传址调用 传引用调用 示例说明 使用二级指针/一级指针创建链表时的对比 主函数中作此调用 使用二级指针创建链表 使用一级指针创"><meta property="og:image" content="https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2020-06-05T18:26:48&#43;08:00">
+    
+    <meta property="article:modified_time" content="2020-06-05T18:26:48&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/"
+  },
+  "headline": "链表中为何使用二级指针或者一级指针的引用",
+  
+  "datePublished": "2020-06-05T18:26:48+08:00",
+  "dateModified": "2020-06-05T18:26:48+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "youngfar"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "YoungFar的个人博客——Love\u0026Share",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/https://strivefar.github.io/"
+    }
+  },
+  "description": "前言 参数的调用方式 传值调用 传址调用 传引用调用 示例说明 使用二级指针/一级指针创建链表时的对比 主函数中作此调用 使用二级指针创建链表 使用一级指针创"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>链表中为何使用二级指针或者一级指针的引用 | YoungFar的个人博客——Love&amp;Share</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">YoungFar的个人博客——Love&amp;Share</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">YoungFar的个人博客——Love&amp;Share</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>分类/专栏</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>联系我</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#hero"><span>关于我</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article article-project">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>链表中为何使用二级指针或者一级指针的引用</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  
+  <span><a href="/authors/youngfar/">youngfar</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    2020-06-05
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="">C语言学习</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <ul>
+<li>
+<p><a href="#">前言</a></p>
+</li>
+<li>
+<p><a href="#">参数的调用方式</a></p>
+<ul>
+<li><a href="#">传值调用</a></li>
+<li><a href="#">传址调用</a></li>
+<li><a href="#">传引用调用</a></li>
+<li><a href="#">示例说明</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#">使用二级指针/一级指针创建链表时的对比</a></p>
+<ul>
+<li><a href="#">主函数中作此调用</a></li>
+<li><a href="#">使用二级指针创建链表</a></li>
+<li><a href="#">使用一级指针创建链表会成功吗</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#">销毁链表时二级指针和一级指针的对比</a></p>
+<ul>
+<li><a href="#">使用二级指针销毁链表</a></li>
+<li><a href="#">使用一级指针销毁链表会成功吗</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#">总结</a></p>
+</li>
+<li>
+<p><a href="#">完整代码</a></p>
+</li>
+<li>
+<p><a href="#">参考来源</a></p>
+</li>
+<li></li>
+</ul>
+<h1 id="前言">前言</h1>
+<p>在学习数据结构时，在链表初始化或者销毁链表的时候，经常使用二级指针或者一级指针的引用，这是为什么呢？同样是指向内存单元的地址，为什么就不能使用一级指针呢？使用一级指针去初始化或者是销毁链表的时候，究竟会发生什么呢？到底什么时候该用二级指针，什么时候该用一级指针？</p>
+<p>如果你对这些问题有疑问，可以参考本篇文章，以下是我个人对这些问题的理解，如有问题，欢迎随时联系我。</p>
+<h1 id="参数的调用方式">参数的调用方式</h1>
+<p>我们通常使用的函数调用方式无非两种，一种是<strong>传值调用</strong>，一种是<strong>传址调用</strong>。
+谈起<strong>指针</strong>我们可能瞬间就会把它和传址调用联系在一起，但实际上，<strong>对于指针来讲，它也存在着这两种调用方式，传值调用和传值调用</strong>。</p>
+<h2 id="传值调用">传值调用</h2>
+<p>传值调用是指在调用参数时,不是对原参数进行操作,而是创建参数的拷贝并对其进行操作,这种调用有利于保护数据。</p>
+<h2 id="传址调用">传址调用</h2>
+<p>传址调用的过程中把函数外部创建的变量的内存地址传递给函数参数，这种调用可以让函数和函数外边的变量建立起联系，函数内部可以直接操作函数外部；</p>
+<h2 id="传引用调用">传引用调用</h2>
+<p>适用于C++，不适用于C语言</p>
+<h2 id="示例说明">示例说明</h2>
+<p><strong>注意：</strong>
+传递一级指针变量本身等价于在传递指针变量的值，虽然有指针参与其中，但在函数内部，也只是创建了指针的copy，无非就是把传过来的实参的值给指针的copy用一用，并没有对实参（原指针变量）进行操作</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;    
+#include &lt;string.h&gt;    
+using namespace std;    
+    
+void fun1(char* str)    
+{    
+    str = new char[5];    
+    strcpy (str, &quot;test string&quot;);    
+}    
+    
+void fun2(char** str)    
+{    
+    *str = new char[5];    
+    strcpy (*str, &quot;test string&quot;);    
+}    
+    
+int main()    
+{    
+    char* s = NULL;        
+    cout &lt;&lt; &quot;call function fun1&quot; &lt;&lt; endl;    
+    fun1 (s);    
+    if (!s)    
+        cout &lt;&lt; &quot;s is null!&quot; &lt;&lt; endl;    
+    else    
+        cout &lt;&lt; s &lt;&lt; endl;    
+    
+    cout &lt;&lt; &quot;call function fun2&quot; &lt;&lt; endl;    
+    fun2 (&amp;s);    
+    if (!s)    
+        cout &lt;&lt; &quot;s is null!&quot; &lt;&lt; endl;    
+    else    
+        cout &lt;&lt; s &lt;&lt; endl;    
+    return 0;    
+}    
+————————————————
+版权声明：本文为CSDN博主「踏莎行hyx」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/u012234115/article/details/39717215
+</code></pre>
+<p>输出结果：
+<img src="/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt="wechat"></p>
+<h1 id="使用二级指针一级指针创建链表时的对比">使用二级指针/一级指针创建链表时的对比</h1>
+<h2 id="主函数中作此调用">主函数中作此调用</h2>
+<pre><code class="language-c">int main()
+{
+    LinkList L;
+    ElemType e;
+    Status i;
+    int j, k;
+    //InitList1(L);   //一级指针方式创建表头，失败
+    InitList2(&amp;L);  //二级指针方式创建表头，成功
+ }
+</code></pre>
+<h2 id="使用二级指针创建链表">使用二级指针创建链表</h2>
+<pre><code class="language-c">//初始化表头，用二级指针
+Status InitList2(LinkList *L) //等价于Node **L
+{
+    *L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!(*L))                           /* 存储分配失败 */
+        return ERROR;
+    (*L)-&gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+</code></pre>
+<p>用图片说明更为直观：
+<strong>函数内部可以直接操作函数外部</strong></p>
+<p><img src="/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9D%E5%A7%8B%E5%8C%96.png" alt="wechat"></p>
+<p><strong>简明描述为：</strong>
+<img src="/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9B%E5%BB%BA%E9%93%BE%E8%A1%A8%E6%9C%89%E5%A4%B4%E7%BB%93%E7%82%B9%E7%9A%84%E6%A1%86%E5%9B%BE.png" alt="wechat"></p>
+<p><strong>如果没有头结点：</strong>
+![在这里插入图片描述]<img src="/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9B%E5%BB%BA%E9%93%BE%E8%A1%A8%E6%A1%86%E5%9B%BE.png" alt="wechat"></p>
+<h2 id="使用一级指针创建链表会成功吗">使用一级指针创建链表会成功吗</h2>
+<pre><code class="language-c">//初始化表头，用一级指针（此方式无效）
+Status InitList1(LinkList L) //等价于Node *L
+{
+    L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!L)                             /* 存储分配失败 */
+        return ERROR;
+    L-&gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+</code></pre>
+<p>用图片说明更为直观：
+![在这里插入图片描述]<img src="/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9D%E5%A7%8B%E5%8C%96.png" alt="wechat"></p>
+<p><strong>很明显，把传过来的实参的值给指针的copy用一用，并没有对实参（原指针变量）进行操作</strong>，这样创建的链表是毫无意义的，main.c后面再使用L时，用的依旧是个垃圾值，是有隐患的。</p>
+<h1 id="销毁链表时二级指针和一级指针的对比">销毁链表时二级指针和一级指针的对比</h1>
+<p><strong>main.c中</strong>：</p>
+<pre><code class="language-c">printf(&quot;销毁链表\n&quot;);
+//DestroyList1(L);   //一级指针方式销毁链表，失败,且出现满屏乱码
+DestroyList2(&amp;L);  //二级指针方式销毁链表，成功
+</code></pre>
+<h2 id="使用二级指针销毁链表">使用二级指针销毁链表</h2>
+<pre><code class="language-c">//销毁链表，使用二级指针
+Status DestroyList2(LinkList *L)
+{
+    LinkList p, q;
+    p = (*L)-&gt;next; /*  p指向第一个结点 */
+    while (p)       /*  没到表尾 */
+    {
+        q = p-&gt;next;
+        free(p);
+        p = q;
+    }
+    free(*L); //头结点彻底没有掉才是销毁
+    *L = NULL;
+    return OK;
+}
+</code></pre>
+<p>用图片说明更为直观：</p>
+<p>![在这里插入图片描述]<img src="/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E9%94%80%E6%AF%81%E9%93%BE%E8%A1%A8.png" alt="wechat"></p>
+<p>简单来说：
+<strong>销毁链表就是让头指针为空，然后这个链表就彻底湮没在内存中了</strong></p>
+<p>![在这里插入图片描述]<img src="/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E9%94%80%E6%AF%81%E5%A4%B4%E7%BB%93%E7%82%B9%E6%A1%86%E5%9B%BE.png" alt="wechat"></p>
+<h2 id="使用一级指针销毁链表会成功吗">使用一级指针销毁链表会成功吗</h2>
+<pre><code class="language-c">//销毁链表，使用一级指针(此方式无效)
+Status DestroyList1(LinkList L)
+{
+    LinkList p, q;
+    p = L-&gt;next; /*  p指向第一个结点 */
+    while (p)    /*  没到表尾 */
+    {
+        q = p-&gt;next;
+        free(p);
+        p = q;
+    }
+    free(L);
+    L = NULL;
+    return OK;
+}
+</code></pre>
+<p>用图片说明更为直观：</p>
+<p>![在这里插入图片描述]<img src="/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BD%BF%E7%94%A8%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E9%94%80%E6%AF%81%E9%93%BE%E8%A1%A8.png" alt="wechat">
+可见这种方式的确很危险，实际测试中也的确出现了乱码</p>
+<h1 id="总结">总结</h1>
+<p><strong>1.初始化链表头部指针需要用二级指针或者一级指针的引用。</strong></p>
+<p><strong>2.销毁链表需要用到二级指针或者一级指针的引用。</strong></p>
+<p><strong>3.插入、删除、遍历、清空结点用一级指针即可。</strong></p>
+<h1 id="完整代码">完整代码</h1>
+<pre><code class="language-c">#include &quot;stdio.h&quot;
+#include &quot;stdlib.h&quot;
+#include &quot;time.h&quot;
+#define OK 1
+#define ERROR 0
+#define TRUE 1
+#define FALSE 0
+#define MAXSIZE 20    /* 存储空间初始分配量 */
+typedef int Status;   /* Status是函数的类型,其值是函数结果状态代码，如OK等 */
+typedef int ElemType; /* ElemType类型根据实际情况而定，这里假设为int */
+Status visit(ElemType c)
+{
+    printf(&quot;%d &quot;, c);
+    return OK;
+}
+typedef struct Node
+{
+    ElemType data;
+    struct Node *next;
+} Node;
+typedef struct Node *LinkList; /* 定义LinkList */
+
+//初始化表头，用一级指针（此方式无效）
+Status InitList1(LinkList L) //等价于Node *L
+{
+    L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!L)                             /* 存储分配失败 */
+        return ERROR;
+    L-&gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+
+//初始化表头，用二级指针
+Status InitList2(LinkList *L) //等价于Node **L
+{
+    *L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!(*L))                           /* 存储分配失败 */
+        return ERROR;
+    (*L)-&gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+
+//初始化表头，用一级指针引用
+Status InitList3(LinkList &amp;L) //等价于Node *&amp;L
+{
+    L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!L)                             /* 存储分配失败 */
+        return ERROR;
+    L-&gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+
+//清空链表，使用二级指针
+Status ClearList1(LinkList *L)
+{
+    LinkList p, q;
+    p = (*L)-&gt;next; /*  p指向第一个结点 */
+    while (p)       /*  没到表尾 */
+    {
+        q = p-&gt;next;
+        free(p);
+        p = q;
+    }
+    (*L)-&gt;next = NULL; /* 头结点指针域为空 */
+    return OK;
+}
+
+//清空链表，使用一级指针
+Status ClearList2(LinkList L)
+{
+    LinkList p, q;
+    p = L-&gt;next; /*  p指向(这里的第一个结点只头结点) */
+    while (p)    /*  没到表尾 */
+    {
+        q = p-&gt;next;
+        free(p);
+        p = q;
+    }
+    L-&gt;next = NULL; /* 头结点指针域为空 */
+    return OK;
+}
+
+//销毁链表，使用一级指针(此方式无效)
+Status DestroyList1(LinkList L)
+{
+    LinkList p, q;
+    p = L-&gt;next; /*  p指向第一个结点 */
+    while (p)    /*  没到表尾 */
+    {
+        q = p-&gt;next;
+        free(p);
+        p = q;
+    }
+    free(L);
+    L = NULL;
+    return OK;
+}
+
+//销毁链表，使用二级指针
+Status DestroyList2(LinkList *L)
+{
+    LinkList p, q;
+    p = (*L)-&gt;next; /* p指向头结点(第一个结点) */
+    while (p)       /*  没到表尾 */
+    {
+        q = p-&gt;next;
+        free(p);
+        p = q;
+    }
+    free(*L); //头结点彻底没有掉才是销毁
+    *L = NULL;
+    return OK;
+}
+
+//销毁链表，使用一级指针引用
+Status DestroyList3(LinkList &amp;L)
+{
+    LinkList p, q;
+    p = L-&gt;next; /*  p指向第一个结点 */
+    while (p)    /*  没到表尾 */
+    {
+        q = p-&gt;next;
+        free(p);
+        p = q;
+    }
+    free(L);
+    L = NULL;
+    return OK;
+}
+/* 初始条件：顺序线性表L已存在，1≤i≤ListLength(L) */
+/* 操作结果：用e返回L中第i个数据元素的值 */
+Status GetElem(LinkList L, int i, ElemType *e)
+{
+    int j;
+    LinkList p;        /* 声明一结点p */
+    p = L-&gt;next;       /* 让p指向链表L的第一个结点 */
+    j = 1;             /*  j为计数器 */
+    while (p &amp;&amp; j &lt; i) /* p不为空或者计数器j还没有等于i时，循环继续 */
+    {
+        p = p-&gt;next; /* 让p指向下一个结点 */
+        ++j;
+    }
+    if (!p || j &gt; i)
+        return ERROR; /*  第i个元素不存在 */
+    *e = p-&gt;data;     /*  取第i个元素的数据 */
+    return OK;
+}
+
+//在中间插入元素，用二级指针
+Status ListInsert1(LinkList *L, int i, ElemType e)
+{
+    int j;
+    LinkList p, s;
+    p = *L;
+    j = 1;
+    while (p &amp;&amp; j &lt; i) /* 寻找第i个结点 */
+    {
+        p = p-&gt;next;
+        ++j;
+    }
+    if (!p || j &gt; i)
+        return ERROR;                   /* 第i个元素不存在 */
+    s = (LinkList)malloc(sizeof(Node)); /*  生成新结点(C语言标准函数) */
+    s-&gt;data = e;
+    s-&gt;next = p-&gt;next; /* 将p的后继结点赋值给s的后继  */
+    p-&gt;next = s;       /* 将s赋值给p的后继 */
+    return OK;
+}
+//在中间插入元素，用一级指针
+Status ListInsert2(LinkList L, int i, ElemType e)
+{
+    int j;
+    LinkList p, s;
+    p = L;
+    j = 1;
+    while (p &amp;&amp; j &lt; i) /* 寻找第i个结点 */
+    {
+        p = p-&gt;next;
+        ++j;
+    }
+    if (!p || j &gt; i)
+        return ERROR;                   /* 第i个元素不存在 */
+    s = (LinkList)malloc(sizeof(Node)); /*  生成新结点(C语言标准函数) */
+    s-&gt;data = e;
+    s-&gt;next = p-&gt;next; /* 将p的后继结点赋值给s的后继  */
+    p-&gt;next = s;       /* 将s赋值给p的后继 */
+    return OK;
+}
+//删除一个元素，用二级指针
+Status ListDelete1(LinkList *L, int i, ElemType *e)
+{
+    int j;
+    LinkList p, q;
+    p = *L;
+    j = 1;
+    while (p-&gt;next &amp;&amp; j &lt; i) /* 遍历寻找第i个元素 */
+    {
+        p = p-&gt;next;
+        ++j;
+    }
+    if (!(p-&gt;next) || j &gt; i)
+        return ERROR; /* 第i个元素不存在 */
+    q = p-&gt;next;
+    p-&gt;next = q-&gt;next; /* 将q的后继赋值给p的后继 */
+    *e = q-&gt;data;      /* 将q结点中的数据给e */
+    free(q);           /* 让系统回收此结点，释放内存 */
+    return OK;
+}
+//删除一个元素，用一级指针
+Status ListDelete2(LinkList L, int i, ElemType *e)
+{
+    int j;
+    LinkList p, q;
+    p = L;
+    j = 1;
+    while (p-&gt;next &amp;&amp; j &lt; i) /* 遍历寻找第i个元素 */
+    {
+        p = p-&gt;next;
+        ++j;
+    }
+    if (!(p-&gt;next) || j &gt; i)
+        return ERROR; /* 第i个元素不存在 */
+    q = p-&gt;next;
+    p-&gt;next = q-&gt;next; /* 将q的后继赋值给p的后继 */
+    *e = q-&gt;data;      /* 将q结点中的数据给e */
+    free(q);           /* 让系统回收此结点，释放内存 */
+    return OK;
+}
+/* 初始条件：顺序线性表L已存在 */
+/* 操作结果：依次对L的每个数据元素输出 */
+Status ListTraverse(LinkList L)
+{
+    LinkList p = L-&gt;next;
+    while (p)
+    {
+        visit(p-&gt;data);
+        p = p-&gt;next;
+    }
+    printf(&quot;\n&quot;);
+    return OK;
+}
+
+int main()
+{
+    LinkList L;
+    ElemType e;
+    Status i;
+    int j, k;
+    //InitList1(L);   //一级指针方式创建表头，失败
+    //InitList2(&amp;L);  //二级指针方式创建表头，成功
+    InitList3(L); //一级指针引用方式创建表头，成功
+    for (j = 1; j &lt;= 7; j++)
+        ListInsert2(L, 1, j);
+    printf(&quot;一级指针方式在L的表头依次插入1～7后：&quot;);
+    ListTraverse(L);
+
+    ListInsert1(&amp;L, 3, 12);
+    printf(&quot;二级指针方式在L的中间插入12后：&quot;);
+    ListTraverse(L);
+
+    ListInsert2(L, 5, 27);
+    printf(&quot;一级指针在L的中间插入27后：&quot;);
+    ListTraverse(L);
+
+    GetElem(L, 5, &amp;e);
+    printf(&quot;第5个元素的值为：%d\n&quot;, e);
+
+    ListDelete1(&amp;L, 5, &amp;e); /* 删除第5个数据 */
+    printf(&quot;二级指针方式删除第%d个的元素值为：%d\n&quot;, 5, e);
+    printf(&quot;依次输出L的元素：&quot;);
+    ListTraverse(L);
+
+    ListDelete2(L, 3, &amp;e); /* 删除第3个数据 */
+    printf(&quot;一级指针方式删除第%d个的元素值为：%d\n&quot;, 3, e);
+    printf(&quot;依次输出L的元素：&quot;);
+    ListTraverse(L);
+
+    printf(&quot;二级指针方式清空链表\n&quot;);
+    ClearList1(&amp;L);
+    printf(&quot;依次输出L的元素：&quot;);
+    ListTraverse(L);
+
+    for (j = 1; j &lt;= 7; j++)
+        ListInsert2(L, j, j);
+    printf(&quot;在L的表尾依次插入1～7后：&quot;);
+    ListTraverse(L);
+
+    printf(&quot;一级指针方式清空链表\n&quot;);
+    ClearList2(L);
+    printf(&quot;依次输出L的元素：&quot;);
+    ListTraverse(L);
+
+    printf(&quot;销毁链表\n&quot;);
+    //DestroyList1(L);   //一级指针方式销毁链表，失败,且出现满屏乱码
+    DestroyList2(&amp;L); //二级指针方式销毁链表，成功
+    DestroyList3(L);  //一级指针引用方式销毁链表，成功
+
+    return 0;
+}
+</code></pre>
+<h1 id="参考来源">参考来源</h1>
+<p>本文参考了以下博文，结合自己的理解，总结记录了相关知识，特此感谢
+<a href="https://blog.csdn.net/u012234115/article/details/39717215">https://blog.csdn.net/u012234115/article/details/39717215</a>
+<a href="https://blog.csdn.net/DX_Jone/article/details/102817995">https://blog.csdn.net/DX_Jone/article/details/102817995</a></p>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="">数据结构与算法</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/&amp;text=%e9%93%be%e8%a1%a8%e4%b8%ad%e4%b8%ba%e4%bd%95%e4%bd%bf%e7%94%a8%e4%ba%8c%e7%ba%a7%e6%8c%87%e9%92%88%e6%88%96%e8%80%85%e4%b8%80%e7%ba%a7%e6%8c%87%e9%92%88%e7%9a%84%e5%bc%95%e7%94%a8" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/&amp;t=%e9%93%be%e8%a1%a8%e4%b8%ad%e4%b8%ba%e4%bd%95%e4%bd%bf%e7%94%a8%e4%ba%8c%e7%ba%a7%e6%8c%87%e9%92%88%e6%88%96%e8%80%85%e4%b8%80%e7%ba%a7%e6%8c%87%e9%92%88%e7%9a%84%e5%bc%95%e7%94%a8" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e9%93%be%e8%a1%a8%e4%b8%ad%e4%b8%ba%e4%bd%95%e4%bd%bf%e7%94%a8%e4%ba%8c%e7%ba%a7%e6%8c%87%e9%92%88%e6%88%96%e8%80%85%e4%b8%80%e7%ba%a7%e6%8c%87%e9%92%88%e7%9a%84%e5%bc%95%e7%94%a8&amp;body=https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/&amp;title=%e9%93%be%e8%a1%a8%e4%b8%ad%e4%b8%ba%e4%bd%95%e4%bd%bf%e7%94%a8%e4%ba%8c%e7%ba%a7%e6%8c%87%e9%92%88%e6%88%96%e8%80%85%e4%b8%80%e7%ba%a7%e6%8c%87%e9%92%88%e7%9a%84%e5%bc%95%e7%94%a8" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=%e9%93%be%e8%a1%a8%e4%b8%ad%e4%b8%ba%e4%bd%95%e4%bd%bf%e7%94%a8%e4%ba%8c%e7%ba%a7%e6%8c%87%e9%92%88%e6%88%96%e8%80%85%e4%b8%80%e7%ba%a7%e6%8c%87%e9%92%88%e7%9a%84%e5%bc%95%e7%94%a8%20https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/secondary-pointer-node/&amp;title=%e9%93%be%e8%a1%a8%e4%b8%ad%e4%b8%ba%e4%bd%95%e4%bd%bf%e7%94%a8%e4%ba%8c%e7%ba%a7%e6%8c%87%e9%92%88%e6%88%96%e8%80%85%e4%b8%80%e7%ba%a7%e6%8c%87%e9%92%88%e7%9a%84%e5%bc%95%e7%94%a8" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/authors/youngfar/"></a></h5>
+      
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+    <div class="project-related-pages content-widget-hr">
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+    </div>
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.a0d331bcd05dbe8b31e244f796710f08.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    © 2005-2020&lt;YoungFar的个人博客&gt;版权所有<a href="http://www.beian.miit.gov.cn">沪ICP备01234567号</a> &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
