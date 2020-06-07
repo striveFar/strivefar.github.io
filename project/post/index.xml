@@ -454,7 +454,6 @@ Status ListTraverse(LinkList L)
     printf(&amp;quot;\n&amp;quot;);
     return OK;
 }
-
 int main()
 {
     LinkList L;
