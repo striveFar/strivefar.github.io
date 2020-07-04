@@ -5,12 +5,22 @@
     <link>https://strivefar.github.io/project/post/</link>
       <atom:link href="https://strivefar.github.io/project/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Fri, 05 Jun 2020 18:26:48 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Sun, 05 Jul 2020 00:04:17 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>https://strivefar.github.io/project/post/</link>
     </image>
+    
+    <item>
+      <title>总线设备驱动模型</title>
+      <link>https://strivefar.github.io/project/post/%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9E%8B/</link>
+      <pubDate>Sun, 05 Jul 2020 00:04:17 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9E%8B/</guid>
+      <description>&lt;h2 id=&#34;总线设备驱动模型&#34;&gt;总线设备驱动模型&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9E%8B/LED%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E9%80%9A%E7%94%A8%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6300%25.jpg&#34; alt=&#34;xmind&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>链表中为何使用二级指针或者一级指针的引用</title>
