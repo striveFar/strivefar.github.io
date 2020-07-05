@@ -2,6 +2,12 @@
 ### strivefar.github.io
 
 
+# 同步查看
+### 使用hugo的命令,在根目录blog下，执行
+	hugo server
+### 会生成临时网页，网址为 //localhost:1313/
+
+
 # VScode Markdown All in one 使用方法
 ### 1.crtl+shift+V 文章预览
 ### 2.crtl+shift+p 搜索，搜索内容为 section，可见如下搜索结果：
