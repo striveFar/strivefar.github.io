@@ -1,9 +1,14 @@
 # 博客地址：
 ### strivefar.github.io
 
-    
 
-
+# VScode Markdown All in one 使用方法
+### 1.crtl+shift+V 文章预览
+### 2.crtl+shift+p 搜索，搜索内容为 section，可见如下搜索结果：
+#### 2.创建目录
+#### 3.Add/Update section numbers
+#### 4.Remove section numbers
+ 
 # 博文发送流程
 ### 1. 在根目录下执行`hugo new project/post/新文章文件夹/index.md` 后自动创建如下
 
