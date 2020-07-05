@@ -6,6 +6,7 @@
 ### 使用hugo的命令,在根目录blog下，执行
 	hugo server
 ### 会生成临时网页，网址为 //localhost:1313/
+### 完成写作后，crtl+c 结束临时同步预览，按照以下步骤开始推送博客。
 
 
 # VScode Markdown All in one 使用方法
