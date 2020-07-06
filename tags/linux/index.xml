@@ -5,12 +5,126 @@
     <link>https://strivefar.github.io/tags/linux/</link>
       <atom:link href="https://strivefar.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <description>linux</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Sun, 05 Jul 2020 00:04:17 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Mon, 06 Jul 2020 12:01:03 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>linux</title>
       <link>https://strivefar.github.io/tags/linux/</link>
     </image>
+    
+    <item>
+      <title>设备树语法</title>
+      <link>https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/</link>
+      <pubDate>Mon, 06 Jul 2020 12:01:03 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-%E6%9D%BF%E5%AD%90%E5%90%AF%E5%8A%A8%E5%90%8E%E6%9F%A5%E7%9C%8B%E8%AE%BE%E5%A4%87%E6%A0%91&#34;&gt;1. 板子启动后查看设备树&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#11-%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E&#34;&gt;1.1. 文件说明&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-%E7%BC%96%E8%AF%91%E5%8F%8D%E7%BC%96%E8%AF%91-%E8%AE%BE%E5%A4%87%E6%A0%91%E6%96%87%E4%BB%B6&#34;&gt;2. 编译/反编译 设备树文件&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#21-%E6%89%8B%E5%8A%A8%E7%BC%96%E8%AF%91&#34;&gt;2.1. 手动编译&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#22-%E5%9C%A8%E5%86%85%E6%A0%B8%E6%A0%B9%E7%9B%AE%E5%BD%95%E4%B8%8B%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91&#34;&gt;2.2. 在内核根目录下自动编译&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#221-%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90&#34;&gt;2.2.1. 过程解析&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-%E7%BB%99%E5%BC%80%E5%8F%91%E6%9D%BF%E6%9B%B4%E6%8D%A2%E8%AE%BE%E5%A4%87%E6%A0%91%E6%96%87%E4%BB%B6&#34;&gt;3. 给开发板更换设备树文件&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#31-%E6%9B%B4%E6%8D%A2%E6%96%B9%E6%B3%95&#34;&gt;3.1. 更换方法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#32-%E5%89%8D%E5%90%8E%E5%AF%B9%E6%AF%94&#34;&gt;3.2. 前后对比&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#4-%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90&#34;&gt;4. 参考来源&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-板子启动后查看设备树&#34;&gt;1. 板子启动后查看设备树&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;注意：开发板中仅存放dtb 二进制文件，所以想直接查看开发板中的dts文件是查看不到的，需要先通过网络文件系统将开发板中dtb 二进制文件的copy到虚拟机，在虚拟机中反编译得到dts文件&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;板子启动后执行下面的命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;ls /sys/firmware/
+devicetree fdt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;11-文件说明&#34;&gt;1.1. 文件说明&lt;/h2&gt;
+&lt;p&gt;/sys/firmware/devicetree 目录下是以目录结构程现的 dtb 文件, 根节点对应 base 目录, 每一个节点对应一个目录, 每一个属性对应一个文件。&lt;/p&gt;
+&lt;p&gt;这些属性的值如果是字符串，可以使用 cat 命令把它打印出来；对于数值可以用 hexdump 把它打印出来。&lt;/p&gt;
+&lt;p&gt;还可以看到/sys/firmware/fdt 文件，它就是 dtb 格式的设备树文件，可以把它复制出来放到 ubuntu上，执行下面的命令反编译出来(-I dtb：输入格式是 dtb，-O dts：输出格式是 dts)：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd 板子所用的内核源码目录
+
+./scripts/dtc/dtc -I dtb -O dts /从板子上/复制出来的/fdt -o tmp.dts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;2-编译反编译-设备树文件&#34;&gt;2. 编译/反编译 设备树文件&lt;/h1&gt;
+&lt;h2 id=&#34;21-手动编译&#34;&gt;2.1. 手动编译&lt;/h2&gt;
+&lt;p&gt;内核目录下 scripts/dtc/dtc 是设备树的编译工具，直接使用它的话，包含其他文件时不能使用
+“#include”，而必须使用“/incldue”。&lt;/p&gt;
+&lt;p&gt;编译、反编译的示例命令如下，“-I”指定输入格式，“-O”指定输出格式，“-o”指定输出文件：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./scripts/dtc/dtc -I dts -O dtb -o tmp.dtb arch/arm/boot/dts/xxx.dts // 编译 dts 为 dtb
+./scripts/dtc/dtc -I dtb -O dts -o tmp.dts arch/arm/boot/dts/xxx.dtb // 反编译 dtb 为 dts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;22-在内核根目录下自动编译&#34;&gt;2.2. 在内核根目录下自动编译&lt;/h2&gt;
+&lt;p&gt;V=1 察看编译过程,不关心过程省略即可&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;make dtbs V=1
+
+mkdir -p arch/arm/boot/dts/ ; 
+arm-linux-gnueabihf-gcc -E 
+ -Wp,-MD,arch/arm/boot/dts/.imx6ull-14x14-ebf-mini.dtb.d.pre.tmp 
+ -nostdinc 
+ -I./arch/arm/boot/dts 
+ -I./arch/arm/boot/dts/include 
+ -I./drivers/of/testcase-data 
+ -undef -D__DTS__ -x assembler-with-cpp 
+ -o arch/arm/boot/dts/.imx6ull-14x14-ebf-mini.dtb.dts.tmp 
+ arch/arm/boot/dts/imx6ull-14x14-ebf-mini.dts ; 
+ 
+./scripts/dtc/dtc -O dtb 
+ -o arch/arm/boot/dts/imx6ull-14x14-ebf-mini.dtb
+ -b 0 -i arch/arm/boot/dts/ -Wno-unit_address_vs_reg 
+ -d arch/arm/boot/dts/.imx6ull-14x14-ebf-mini.dtb.d.dtc.tmp 
+ arch/arm/boot/dts/.imx6ull-14x14-ebf-mini.dtb.dts.tmp ;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;221-过程解析&#34;&gt;2.2.1. 过程解析&lt;/h3&gt;
+&lt;p&gt;它首先用 arm-linux-gnueabihf-gcc 预处理 dts 文件，把其中的.h 头文件包含进来，把宏展开。&lt;/p&gt;
+&lt;p&gt;然后使用 scripts/dtc/dtc 生成 dtb 文件。&lt;/p&gt;
+&lt;p&gt;可见，dts 文件之所以支持“#include”语法，是因为 arm-linux-gnueabihf-gcc 帮忙。&lt;/p&gt;
+&lt;p&gt;如果只用 dtc 工具，它是不支持”#include”语法的，只支持“/include”语法。&lt;/p&gt;
+&lt;h1 id=&#34;3-给开发板更换设备树文件&#34;&gt;3. 给开发板更换设备树文件&lt;/h1&gt;
+&lt;h2 id=&#34;31-更换方法&#34;&gt;3.1. 更换方法&lt;/h2&gt;
+&lt;p&gt;对于 100ask-am335x 单板
+设备树文件是：内核源码目录中 arch/arm/boot/dts/100ask-am335x.dtb
+要更换板子上的设备树文件，启动板子后，更换这个文件：/boot/mx6ull-14x14-ebf.dtb&lt;/p&gt;
+&lt;p&gt;对于 firefly-rk3288
+设备树文件是：内核源码目录中 arch/arm/boot/dts/rk3288-firefly.dtb
+对于这款板子，本教程中我们使用 SD 卡上的系统。
+要更换板上的设备树文件，你可以使用 SD 卡启动开发板后，更换这个文件：/boot/rk3288-firefly.dtb&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在虚拟机中：先搜索dts文件
+&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E6%90%9C%E7%B4%A2%E5%AD%90%E7%9B%AE%E5%BD%95.png&#34; alt=&#34;搜索子目录&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;然后更改：
+&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB1.png&#34; alt=&#34;转换关系1&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在内核源码目录中编译dts得到dtb文件，然后通过网络传输一下：
+&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E6%9B%B4%E6%96%B0%E8%AE%BE%E5%A4%87%E6%A0%911.png&#34; alt=&#34;更新设备树1&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在开发板中（串口操作）
+&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E6%9B%B4%E6%96%B0%E8%AE%BE%E5%A4%87%E6%A0%91.png&#34; alt=&#34;更新设备树&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;32-前后对比&#34;&gt;3.2. 前后对比&lt;/h2&gt;
+&lt;p&gt;我们来看一下，内核是如何解析设备树文件的（有待补充）
+&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB1.png&#34; alt=&#34;转换关系1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB2.png&#34; alt=&#34;转换关系2&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;4-参考来源&#34;&gt;4. 参考来源&lt;/h1&gt;
+&lt;p&gt;本文参考了并学习了韦东山老师的视频和配套的文档，特此感谢&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>总线设备驱动模型</title>
