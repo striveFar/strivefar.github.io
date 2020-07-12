@@ -5,12 +5,160 @@
     <link>https://strivefar.github.io/categories/c%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/</link>
       <atom:link href="https://strivefar.github.io/categories/c%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     <description>C语言学习</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Fri, 05 Jun 2020 18:26:48 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Sun, 12 Jul 2020 13:05:52 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>C语言学习</title>
       <link>https://strivefar.github.io/categories/c%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/</link>
     </image>
+    
+    <item>
+      <title>Static的作用</title>
+      <link>https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/</link>
+      <pubDate>Sun, 12 Jul 2020 13:05:52 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-%E5%89%8D%E8%A8%80&#34;&gt;1. 前言&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-%E5%85%B3%E9%94%AE%E8%AF%8D%E8%A7%A3%E9%87%8A&#34;&gt;2. 关键词解释：&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#21-%E5%8F%98%E9%87%8F%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F&#34;&gt;2.1. 变量的存储方式&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#211-%E9%9D%99%E6%80%81%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F&#34;&gt;2.1.1. 静态存储变量&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#212-%E5%8A%A8%E6%80%81%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F&#34;&gt;2.1.2. 动态存储变量&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#22-%E7%94%9F%E5%AD%98%E6%9C%9F%E7%9A%84%E5%8C%BA%E5%88%AB&#34;&gt;2.2. 生存期的区别&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-static-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E4%B8%8E%E6%99%AE%E9%80%9A%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB-&#34;&gt;3. static 全局变量与普通全局变量的区别 ？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#4-static%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E5%92%8C%E6%99%AE%E9%80%9A%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB-&#34;&gt;4. static局部变量和普通局部变量有什么区别 ？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#5-static%E5%87%BD%E6%95%B0%E4%B8%8E%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB&#34;&gt;5. static函数与普通函数有什么区别？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#6-%E5%B7%A7%E7%94%A8static%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%BA0&#34;&gt;6. 巧用static,默认初始化为0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#7-%E6%80%BB%E7%BB%93static%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BD%9C%E7%94%A8&#34;&gt;7. 总结：static关键字的作用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#8-%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90&#34;&gt;8. 参考来源：&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-前言&#34;&gt;1. 前言&lt;/h1&gt;
+&lt;p&gt;Linux内核源码中使用的大量的static关键字来修饰变量和函数，有效的防止了不同文件间的相同变量或函数名引起的冲突，关于static的作用，现解释如下，如有问题，欢迎批评指正。&lt;/p&gt;
+&lt;h1 id=&#34;2-关键词解释&#34;&gt;2. 关键词解释：&lt;/h1&gt;
+&lt;h2 id=&#34;21-变量的存储方式&#34;&gt;2.1. 变量的存储方式&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;可分为：“静态存储”和“动态存储”两种。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;211-静态存储变量&#34;&gt;2.1.1. 静态存储变量&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;通常是在变量定义时就分定存储单元并一直保持不变，直至整个程序结束，即在程序运行期间分配固定的存储空间。
+全局变量即属于此类存储方式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;212-动态存储变量&#34;&gt;2.1.2. 动态存储变量&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;在程序执行过程中，使用它时才分配存储单元，使用完毕立即释放。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;典型的例子是函数的形式参数，在函数定义时并不给行参分配存储单元，只是在函数被调用时，才予以分配，调用函数完毕立即释放。
+如果一个函数被多次调用时，则反复地分配、释放形参变量的存储单元。&lt;/p&gt;
+&lt;h2 id=&#34;22-生存期的区别&#34;&gt;2.2. 生存期的区别&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;静态存储变量是&lt;strong&gt;一直存在&lt;/strong&gt;的，而动态存储变量则&lt;strong&gt;时而存在时而消失&lt;/strong&gt;。通常把由于变量存储方式不同而产生的特性称为变量的&lt;strong&gt;生存期&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;3-static-全局变量与普通全局变量的区别-&#34;&gt;3. static 全局变量与普通全局变量的区别 ？&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;普通全局变量加上static修饰后就变成了static全局变量&lt;/li&gt;
+&lt;li&gt;二者都是存储在静态变量区，即以静态存储方式进行存储，&lt;/li&gt;
+&lt;li&gt;区别：全局变量加上static之后就被限制了可见范围&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;未加static之前，全局变量在所有的源程序都可见，只要加上extern即可使用其他文件中定义的全局变量；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;加上static之后，变为了静态全局变量，静态全局变量的作用域局限于一个源文件内，只能为该源文件内的函数公用，&lt;strong&gt;因此可以避免在其它源文件中引起错误&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;4-static局部变量和普通局部变量有什么区别-&#34;&gt;4. static局部变量和普通局部变量有什么区别 ？&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;保持变量内容的持久，存储在静态数据区的变量会在程序编译时分配固定的存储空间，程序刚开始运行时就完成初始化，也是唯一的一次初始化。
+举例如下：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+
+int fun(void)
+{
+  /*static局部变量只被初始化一次，下一次使用时在上一次结果值的基础上进行改变*/
+    static int count = 10;    
+    return count--;
+}
+
+int count = 1;
+
+int main(void)
+{    
+    printf(&amp;quot;global\t\tlocal static\n&amp;quot;);
+    for(; count &amp;lt;= 10; ++count)
+        printf(&amp;quot;%d\t\t%d\n&amp;quot;, count, fun());    
+    
+    return 0;
+}
+
+
+程序的运行结果是：
+
+global          local static
+
+1               10
+
+2               9
+
+3               8
+
+4               7
+
+5               6
+
+6               5
+
+7               4
+
+8               3
+
+9               2
+
+10              1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;5-static函数与普通函数有什么区别&#34;&gt;5. static函数与普通函数有什么区别？&lt;/h1&gt;
+&lt;p&gt;这有些类似于static 全局变量与普通全局变量的区别，同样的，static函数仅对定义该函数的当前文件可见，无法像普通函数一样加上extern声明就能在其他文件中使用。&lt;/p&gt;
+&lt;p&gt;也就是说static修饰后成为了内部函数，应该在当前源文件中说明和定义。对于可在当前源文件以外使用的函数，应该在一个头文件中说明，要使用这些函数的源文件要包含这个头文件.&lt;/p&gt;
+&lt;h1 id=&#34;6-巧用static默认初始化为0&#34;&gt;6. 巧用static,默认初始化为0&lt;/h1&gt;
+&lt;p&gt;static的第三个作用是默认初始化为0。其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。比如初始化一个稀疏矩阵，我们可以一个一个地把所有元素都置0，然后把不是0的几个元素赋值。如果定义成静态的，就省去了一开始置0的操作。再比如要把一个字符数组当字符串来用，但又觉得每次在字符数组末尾加&amp;rsquo;\ 0&#39;太麻烦。如果把字符串定义成静态的，就省去了这个麻烦，因为那里本来就是&amp;rsquo;\0&amp;rsquo;。不妨做个小实验验证一下。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+int a;
+
+int main(void)
+{
+    int i;
+    static char str[10];
+
+    printf(&amp;quot;integer: %d;  string: (begin)%s(end)&amp;quot;, a, str);
+
+    return 0;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;运行结果如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;integer: 0; string: (begin)(end)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;7-总结static关键字的作用&#34;&gt;7. 总结：static关键字的作用&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;1.隐藏（限制作用域）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;2.保持变量内容的持久&lt;/strong&gt;（静态局部变量）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;3.默认初始化为0&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;8-参考来源&#34;&gt;8. 参考来源：&lt;/h1&gt;
+&lt;p&gt;特此感谢：
+&lt;a href=&#34;https://blog.csdn.net/tr_ainiyangyang/article/details/80965574&#34;&gt;https://blog.csdn.net/tr_ainiyangyang/article/details/80965574&lt;/a&gt;
+&lt;a href=&#34;https://blog.csdn.net/qq_37858386/article/details/79064900&#34;&gt;https://blog.csdn.net/qq_37858386/article/details/79064900&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>链表中为何使用二级指针或者一级指针的引用</title>

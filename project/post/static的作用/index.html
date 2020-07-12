@@ -28,10 +28,10 @@
   
     
   
-  <meta name="description" content="1. 板子启动后查看设备树 1.1. 文件说明 2. 编译/反编译 设备树文件 2.1. 手动编译 2.2. 在内核根目录下自动编译 2.2.1. 过程解析 3. 给开发板更换设备树文件 3.1. 更换方法 3.2. 前后">
+  <meta name="description" content="1. 前言 2. 关键词解释： 2.1. 变量的存储方式 2.1.1. 静态存储变量 2.1.2. 动态存储变量 2.2. 生存期的区别 3. static 全局变量与普通全局变量的区别 ？ 4. static局部变量和普通">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/">
+  <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/">
 
   
 
@@ -215,7 +215,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/">
+  <link rel="canonical" href="https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/">
 
   
   
@@ -228,15 +228,15 @@
   <meta property="twitter:card" content="summary_large_image">
   
   <meta property="og:site_name" content="YoungFar的个人博客——Love&amp;Share">
-  <meta property="og:url" content="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/">
-  <meta property="og:title" content="设备树语法 | YoungFar的个人博客——Love&amp;Share">
-  <meta property="og:description" content="1. 板子启动后查看设备树 1.1. 文件说明 2. 编译/反编译 设备树文件 2.1. 手动编译 2.2. 在内核根目录下自动编译 2.2.1. 过程解析 3. 给开发板更换设备树文件 3.1. 更换方法 3.2. 前后"><meta property="og:image" content="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/featured.jpg">
-  <meta property="twitter:image" content="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/featured.jpg"><meta property="og:locale" content="en-us">
+  <meta property="og:url" content="https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/">
+  <meta property="og:title" content="Static的作用 | YoungFar的个人博客——Love&amp;Share">
+  <meta property="og:description" content="1. 前言 2. 关键词解释： 2.1. 变量的存储方式 2.1.1. 静态存储变量 2.1.2. 动态存储变量 2.2. 生存期的区别 3. static 全局变量与普通全局变量的区别 ？ 4. static局部变量和普通"><meta property="og:image" content="https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/featured.jpg">
+  <meta property="twitter:image" content="https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/featured.jpg"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2020-07-06T12:01:03&#43;08:00">
+      <meta property="article:published_time" content="2020-07-12T13:05:52&#43;08:00">
     
-    <meta property="article:modified_time" content="2020-07-06T12:01:03&#43;08:00">
+    <meta property="article:modified_time" content="2020-07-12T13:05:52&#43;08:00">
   
 
   
@@ -260,16 +260,16 @@
   "@type": "Article",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/"
+    "@id": "https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/"
   },
-  "headline": "设备树语法",
+  "headline": "Static的作用",
   
   "image": [
-    "https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/featured.jpg"
+    "https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/featured.jpg"
   ],
   
-  "datePublished": "2020-07-06T12:01:03+08:00",
-  "dateModified": "2020-07-06T12:01:03+08:00",
+  "datePublished": "2020-07-12T13:05:52+08:00",
+  "dateModified": "2020-07-12T13:05:52+08:00",
   
   "author": {
     "@type": "Person",
@@ -284,7 +284,7 @@
       "url": "img/https://strivefar.github.io/"
     }
   },
-  "description": "1. 板子启动后查看设备树 1.1. 文件说明 2. 编译/反编译 设备树文件 2.1. 手动编译 2.2. 在内核根目录下自动编译 2.2.1. 过程解析 3. 给开发板更换设备树文件 3.1. 更换方法 3.2. 前后"
+  "description": "1. 前言 2. 关键词解释： 2.1. 变量的存储方式 2.1.1. 静态存储变量 2.1.2. 动态存储变量 2.2. 生存期的区别 3. static 全局变量与普通全局变量的区别 ？ 4. static局部变量和普通"
 }
 </script>
 
@@ -302,7 +302,7 @@
 
 
 
-  <title>设备树语法 | YoungFar的个人博客——Love&amp;Share</title>
+  <title>Static的作用 | YoungFar的个人博客——Love&amp;Share</title>
 
 </head>
 
@@ -517,10 +517,8 @@
 
 
 <div class="article-container pt-3">
-  <h1>设备树语法</h1>
+  <h1>Static的作用</h1>
 
-  
-  <p class="page-subtitle">如有问题，欢迎各位批评指正。 🚀&rsquo;</p>
   
 
   
@@ -550,7 +548,7 @@
     
       
     
-    2020-07-06
+    2020-07-12
   </span>
   
 
@@ -566,7 +564,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="">嵌入式linux学习笔记</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="">C语言学习</a></span>
   
 
 </div>
@@ -591,7 +589,7 @@
 
 <div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 1080px;">
   <div style="position: relative">
-    <img src="/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/featured_hua630d19e44840bfbcd1726811354597e_885683_720x0_resize_q90_lanczos.jpg" alt="" class="featured-image">
+    <img src="/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/featured_hu95266a67282d4f63f8cfce0aa24f52a4_2190918_720x0_resize_q90_lanczos.jpg" alt="" class="featured-image">
     
   </div>
 </div>
@@ -602,111 +600,145 @@
 
     <div class="article-style">
       <ul>
-<li><a href="#1-%E6%9D%BF%E5%AD%90%E5%90%AF%E5%8A%A8%E5%90%8E%E6%9F%A5%E7%9C%8B%E8%AE%BE%E5%A4%87%E6%A0%91">1. 板子启动后查看设备树</a>
+<li><a href="#1-%E5%89%8D%E8%A8%80">1. 前言</a></li>
+<li><a href="#2-%E5%85%B3%E9%94%AE%E8%AF%8D%E8%A7%A3%E9%87%8A">2. 关键词解释：</a>
 <ul>
-<li><a href="#11-%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E">1.1. 文件说明</a></li>
+<li><a href="#21-%E5%8F%98%E9%87%8F%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F">2.1. 变量的存储方式</a>
+<ul>
+<li><a href="#211-%E9%9D%99%E6%80%81%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F">2.1.1. 静态存储变量</a></li>
+<li><a href="#212-%E5%8A%A8%E6%80%81%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F">2.1.2. 动态存储变量</a></li>
 </ul>
 </li>
-<li><a href="#2-%E7%BC%96%E8%AF%91%E5%8F%8D%E7%BC%96%E8%AF%91-%E8%AE%BE%E5%A4%87%E6%A0%91%E6%96%87%E4%BB%B6">2. 编译/反编译 设备树文件</a>
+<li><a href="#22-%E7%94%9F%E5%AD%98%E6%9C%9F%E7%9A%84%E5%8C%BA%E5%88%AB">2.2. 生存期的区别</a></li>
+</ul>
+</li>
+<li><a href="#3-static-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E4%B8%8E%E6%99%AE%E9%80%9A%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB-">3. static 全局变量与普通全局变量的区别 ？</a></li>
+<li><a href="#4-static%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E5%92%8C%E6%99%AE%E9%80%9A%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB-">4. static局部变量和普通局部变量有什么区别 ？</a></li>
+<li><a href="#5-static%E5%87%BD%E6%95%B0%E4%B8%8E%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB">5. static函数与普通函数有什么区别？</a></li>
+<li><a href="#6-%E5%B7%A7%E7%94%A8static%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%BA0">6. 巧用static,默认初始化为0</a></li>
+<li><a href="#7-%E6%80%BB%E7%BB%93static%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BD%9C%E7%94%A8">7. 总结：static关键字的作用</a></li>
+<li><a href="#8-%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90">8. 参考来源：</a></li>
+</ul>
+<h1 id="1-前言">1. 前言</h1>
+<p>Linux内核源码中使用的大量的static关键字来修饰变量和函数，有效的防止了不同文件间的相同变量或函数名引起的冲突，关于static的作用，现解释如下，如有问题，欢迎批评指正。</p>
+<h1 id="2-关键词解释">2. 关键词解释：</h1>
+<h2 id="21-变量的存储方式">2.1. 变量的存储方式</h2>
 <ul>
-<li><a href="#21-%E6%89%8B%E5%8A%A8%E7%BC%96%E8%AF%91">2.1. 手动编译</a></li>
-<li><a href="#22-%E5%9C%A8%E5%86%85%E6%A0%B8%E6%A0%B9%E7%9B%AE%E5%BD%95%E4%B8%8B%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91">2.2. 在内核根目录下自动编译</a>
+<li>可分为：“静态存储”和“动态存储”两种。</li>
+</ul>
+<h3 id="211-静态存储变量">2.1.1. 静态存储变量</h3>
 <ul>
-<li><a href="#221-%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90">2.2.1. 过程解析</a></li>
+<li>通常是在变量定义时就分定存储单元并一直保持不变，直至整个程序结束，即在程序运行期间分配固定的存储空间。
+全局变量即属于此类存储方式。</li>
+</ul>
+<h3 id="212-动态存储变量">2.1.2. 动态存储变量</h3>
+<ul>
+<li>在程序执行过程中，使用它时才分配存储单元，使用完毕立即释放。</li>
+</ul>
+<p>典型的例子是函数的形式参数，在函数定义时并不给行参分配存储单元，只是在函数被调用时，才予以分配，调用函数完毕立即释放。
+如果一个函数被多次调用时，则反复地分配、释放形参变量的存储单元。</p>
+<h2 id="22-生存期的区别">2.2. 生存期的区别</h2>
+<ul>
+<li>静态存储变量是<strong>一直存在</strong>的，而动态存储变量则<strong>时而存在时而消失</strong>。通常把由于变量存储方式不同而产生的特性称为变量的<strong>生存期</strong>。</li>
+</ul>
+<h1 id="3-static-全局变量与普通全局变量的区别-">3. static 全局变量与普通全局变量的区别 ？</h1>
+<ul>
+<li>普通全局变量加上static修饰后就变成了static全局变量</li>
+<li>二者都是存储在静态变量区，即以静态存储方式进行存储，</li>
+<li>区别：全局变量加上static之后就被限制了可见范围</li>
+<li>
+<ul>
+<li>未加static之前，全局变量在所有的源程序都可见，只要加上extern即可使用其他文件中定义的全局变量；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>加上static之后，变为了静态全局变量，静态全局变量的作用域局限于一个源文件内，只能为该源文件内的函数公用，<strong>因此可以避免在其它源文件中引起错误</strong>。</li>
 </ul>
 </li>
 </ul>
-</li>
-<li><a href="#3-%E7%BB%99%E5%BC%80%E5%8F%91%E6%9D%BF%E6%9B%B4%E6%8D%A2%E8%AE%BE%E5%A4%87%E6%A0%91%E6%96%87%E4%BB%B6">3. 给开发板更换设备树文件</a>
+<h1 id="4-static局部变量和普通局部变量有什么区别-">4. static局部变量和普通局部变量有什么区别 ？</h1>
 <ul>
-<li><a href="#31-%E6%9B%B4%E6%8D%A2%E6%96%B9%E6%B3%95">3.1. 更换方法</a></li>
-<li><a href="#32-%E5%89%8D%E5%90%8E%E5%AF%B9%E6%AF%94">3.2. 前后对比</a></li>
+<li>保持变量内容的持久，存储在静态数据区的变量会在程序编译时分配固定的存储空间，程序刚开始运行时就完成初始化，也是唯一的一次初始化。
+举例如下：</li>
 </ul>
-</li>
-<li><a href="#4-%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90">4. 参考来源</a></li>
-</ul>
-<h1 id="1-板子启动后查看设备树">1. 板子启动后查看设备树</h1>
-<p><strong>注意：开发板中仅存放dtb 二进制文件，所以想直接查看开发板中的dts文件是查看不到的，需要先通过网络文件系统将开发板中dtb 二进制文件的copy到虚拟机，在虚拟机中反编译得到dts文件</strong></p>
-<p>板子启动后执行下面的命令：</p>
-<pre><code class="language-bash">ls /sys/firmware/
-devicetree fdt
-</code></pre>
-<h2 id="11-文件说明">1.1. 文件说明</h2>
-<p>/sys/firmware/devicetree 目录下是以目录结构程现的 dtb 文件, 根节点对应 base 目录, 每一个节点对应一个目录, 每一个属性对应一个文件。</p>
-<p>这些属性的值如果是字符串，可以使用 cat 命令把它打印出来；对于数值可以用 hexdump 把它打印出来。</p>
-<p>还可以看到/sys/firmware/fdt 文件，它就是 dtb 格式的设备树文件，可以把它复制出来放到 ubuntu上，执行下面的命令反编译出来(-I dtb：输入格式是 dtb，-O dts：输出格式是 dts)：</p>
-<pre><code class="language-bash">cd 板子所用的内核源码目录
+<pre><code class="language-c">#include &lt;stdio.h&gt;
 
-./scripts/dtc/dtc -I dtb -O dts /从板子上/复制出来的/fdt -o tmp.dts
-</code></pre>
-<h1 id="2-编译反编译-设备树文件">2. 编译/反编译 设备树文件</h1>
-<h2 id="21-手动编译">2.1. 手动编译</h2>
-<p>内核目录下 scripts/dtc/dtc 是设备树的编译工具，直接使用它的话，包含其他文件时不能使用
-“#include”，而必须使用“/incldue”。</p>
-<p>编译、反编译的示例命令如下，“-I”指定输入格式，“-O”指定输出格式，“-o”指定输出文件：</p>
-<pre><code class="language-bash">./scripts/dtc/dtc -I dts -O dtb -o tmp.dtb arch/arm/boot/dts/xxx.dts // 编译 dts 为 dtb
-./scripts/dtc/dtc -I dtb -O dts -o tmp.dts arch/arm/boot/dts/xxx.dtb // 反编译 dtb 为 dts
-</code></pre>
-<h2 id="22-在内核根目录下自动编译">2.2. 在内核根目录下自动编译</h2>
-<p>V=1 察看编译过程,不关心过程省略即可</p>
-<pre><code class="language-bash">make dtbs V=1
+int fun(void)
+{
+  /*static局部变量只被初始化一次，下一次使用时在上一次结果值的基础上进行改变*/
+    static int count = 10;    
+    return count--;
+}
 
-mkdir -p arch/arm/boot/dts/ ; 
-arm-linux-gnueabihf-gcc -E 
- -Wp,-MD,arch/arm/boot/dts/.imx6ull-14x14-ebf-mini.dtb.d.pre.tmp 
- -nostdinc 
- -I./arch/arm/boot/dts 
- -I./arch/arm/boot/dts/include 
- -I./drivers/of/testcase-data 
- -undef -D__DTS__ -x assembler-with-cpp 
- -o arch/arm/boot/dts/.imx6ull-14x14-ebf-mini.dtb.dts.tmp 
- arch/arm/boot/dts/imx6ull-14x14-ebf-mini.dts ; 
- 
-./scripts/dtc/dtc -O dtb 
- -o arch/arm/boot/dts/imx6ull-14x14-ebf-mini.dtb
- -b 0 -i arch/arm/boot/dts/ -Wno-unit_address_vs_reg 
- -d arch/arm/boot/dts/.imx6ull-14x14-ebf-mini.dtb.d.dtc.tmp 
- arch/arm/boot/dts/.imx6ull-14x14-ebf-mini.dtb.dts.tmp ;
+int count = 1;
+
+int main(void)
+{    
+    printf(&quot;global\t\tlocal static\n&quot;);
+    for(; count &lt;= 10; ++count)
+        printf(&quot;%d\t\t%d\n&quot;, count, fun());    
+    
+    return 0;
+}
+
+
+程序的运行结果是：
+
+global          local static
+
+1               10
+
+2               9
+
+3               8
+
+4               7
+
+5               6
+
+6               5
+
+7               4
+
+8               3
+
+9               2
+
+10              1
+</code></pre>
+<h1 id="5-static函数与普通函数有什么区别">5. static函数与普通函数有什么区别？</h1>
+<p>这有些类似于static 全局变量与普通全局变量的区别，同样的，static函数仅对定义该函数的当前文件可见，无法像普通函数一样加上extern声明就能在其他文件中使用。</p>
+<p>也就是说static修饰后成为了内部函数，应该在当前源文件中说明和定义。对于可在当前源文件以外使用的函数，应该在一个头文件中说明，要使用这些函数的源文件要包含这个头文件.</p>
+<h1 id="6-巧用static默认初始化为0">6. 巧用static,默认初始化为0</h1>
+<p>static的第三个作用是默认初始化为0。其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。比如初始化一个稀疏矩阵，我们可以一个一个地把所有元素都置0，然后把不是0的几个元素赋值。如果定义成静态的，就省去了一开始置0的操作。再比如要把一个字符数组当字符串来用，但又觉得每次在字符数组末尾加&rsquo;\ 0'太麻烦。如果把字符串定义成静态的，就省去了这个麻烦，因为那里本来就是&rsquo;\0&rsquo;。不妨做个小实验验证一下。</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+int a;
+
+int main(void)
+{
+    int i;
+    static char str[10];
+
+    printf(&quot;integer: %d;  string: (begin)%s(end)&quot;, a, str);
+
+    return 0;
+}
 
 </code></pre>
-<h3 id="221-过程解析">2.2.1. 过程解析</h3>
-<p>它首先用 arm-linux-gnueabihf-gcc 预处理 dts 文件，把其中的.h 头文件包含进来，把宏展开。</p>
-<p>然后使用 scripts/dtc/dtc 生成 dtb 文件。</p>
-<p>可见，dts 文件之所以支持“#include”语法，是因为 arm-linux-gnueabihf-gcc 帮忙。</p>
-<p>如果只用 dtc 工具，它是不支持”#include”语法的，只支持“/include”语法。</p>
-<h1 id="3-给开发板更换设备树文件">3. 给开发板更换设备树文件</h1>
-<h2 id="31-更换方法">3.1. 更换方法</h2>
-<p>对于 100ask-am335x 单板
-设备树文件是：内核源码目录中 arch/arm/boot/dts/100ask-am335x.dtb
-要更换板子上的设备树文件，启动板子后，更换这个文件：/boot/mx6ull-14x14-ebf.dtb</p>
-<p>对于 firefly-rk3288
-设备树文件是：内核源码目录中 arch/arm/boot/dts/rk3288-firefly.dtb
-对于这款板子，本教程中我们使用 SD 卡上的系统。
-要更换板上的设备树文件，你可以使用 SD 卡启动开发板后，更换这个文件：/boot/rk3288-firefly.dtb</p>
+<p>运行结果如下：</p>
+<pre><code class="language-bash">integer: 0; string: (begin)(end)
+</code></pre>
+<h1 id="7-总结static关键字的作用">7. 总结：static关键字的作用</h1>
 <ul>
-<li>
-<p>在虚拟机中：先搜索dts文件
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E6%90%9C%E7%B4%A2%E5%AD%90%E7%9B%AE%E5%BD%95.png" alt="搜索子目录"></p>
-</li>
-<li>
-<p>然后更改：
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB1.png" alt="转换关系1"></p>
-</li>
-<li>
-<p>在内核源码目录中编译dts得到dtb文件，然后通过网络传输一下：
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E6%9B%B4%E6%96%B0%E8%AE%BE%E5%A4%87%E6%A0%911.png" alt="更新设备树1"></p>
-</li>
-<li>
-<p>在开发板中（串口操作）
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E6%9B%B4%E6%96%B0%E8%AE%BE%E5%A4%87%E6%A0%91.png" alt="更新设备树"></p>
-</li>
+<li><strong>1.隐藏（限制作用域）</strong></li>
+<li><strong>2.保持变量内容的持久</strong>（静态局部变量）</li>
+<li><strong>3.默认初始化为0</strong></li>
 </ul>
-<h2 id="32-前后对比">3.2. 前后对比</h2>
-<p>我们来看一下，内核是如何解析设备树文件的（有待补充）
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB1.png" alt="转换关系1"></p>
-<p><img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB2.png" alt="转换关系2"></p>
-<h1 id="4-参考来源">4. 参考来源</h1>
-<p>本文参考了并学习了韦东山老师的视频和配套的文档，特此感谢</p>
+<h1 id="8-参考来源">8. 参考来源：</h1>
+<p>特此感谢：
+<a href="https://blog.csdn.net/tr_ainiyangyang/article/details/80965574">https://blog.csdn.net/tr_ainiyangyang/article/details/80965574</a>
+<a href="https://blog.csdn.net/qq_37858386/article/details/79064900">https://blog.csdn.net/qq_37858386/article/details/79064900</a></p>
 
     </div>
 
@@ -718,9 +750,7 @@ arm-linux-gnueabihf-gcc -E
 
 <div class="article-tags">
   
-  <a class="badge badge-light" href="/tags/linux/">linux</a>
-  
-  <a class="badge badge-light" href="">嵌入式</a>
+  <a class="badge badge-light" href="/tags/c/">C</a>
   
 </div>
 
@@ -737,7 +767,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;text=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/&amp;text=Static%e7%9a%84%e4%bd%9c%e7%94%a8" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -750,7 +780,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;t=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/&amp;t=Static%e7%9a%84%e4%bd%9c%e7%94%a8" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -763,7 +793,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="mailto:?subject=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95&amp;body=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=Static%e7%9a%84%e4%bd%9c%e7%94%a8&amp;body=https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -776,7 +806,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;title=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/&amp;title=Static%e7%9a%84%e4%bd%9c%e7%94%a8" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -789,7 +819,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95%20https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=Static%e7%9a%84%e4%bd%9c%e7%94%a8%20https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -802,7 +832,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;title=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/&amp;title=Static%e7%9a%84%e4%bd%9c%e7%94%a8" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
@@ -859,17 +889,6 @@ arm-linux-gnueabihf-gcc -E
 
 
   
-  
-  <div class="article-widget content-widget-hr">
-    <h3>相关</h3>
-    <ul>
-      
-      <li><a href="/project/post/getting-started/">动态编译和静态编译——制作动态库和静态库</a></li>
-      
-      <li><a href="/project/post/%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9E%8B/">总线设备驱动模型</a></li>
-      
-    </ul>
-  </div>
   
 
 
