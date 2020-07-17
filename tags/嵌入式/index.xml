@@ -5,12 +5,466 @@
     <link>https://strivefar.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</link>
       <atom:link href="https://strivefar.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
     <description>嵌入式</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Mon, 06 Jul 2020 12:01:03 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Thu, 16 Jul 2020 18:00:59 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>嵌入式</title>
       <link>https://strivefar.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</link>
     </image>
+    
+    <item>
+      <title>设备树详解</title>
+      <link>https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%A6%E8%A7%A3-imx6ull/</link>
+      <pubDate>Thu, 16 Jul 2020 18:00:59 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%A6%E8%A7%A3-imx6ull/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-device-tree%E7%AE%80%E4%BB%8B&#34;&gt;1. Device Tree简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-device-tree%E7%BC%96%E8%AF%91&#34;&gt;2. Device Tree编译&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-device-tree%E5%A4%B4%E4%BF%A1%E6%81%AF&#34;&gt;3. Device Tree头信息&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#4-dtb%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&#34;&gt;4. DTB文件结构&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#5-kernel%E8%A7%A3%E6%9E%90device-tree&#34;&gt;5. kernel解析Device Tree&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#6-platform_device%E5%92%8Cdevice_node%E7%BB%91%E5%AE%9A&#34;&gt;6. platform_device和device_node绑定&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#7-i2c_client%E5%92%8Cdevice_node%E7%BB%91%E5%AE%9A&#34;&gt;7. i2c_client和device_node绑定&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#8-device_tree%E4%B8%8Esysfs&#34;&gt;8. Device_Tree与sysfs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#9-%E7%89%B9%E6%AD%A4%E6%84%9F%E8%B0%A2&#34;&gt;9. 特此感谢&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;#内核对设备树的处理
+dts在PC 上被编译为.dtb文件；
+uboot把dtb文件传给内核；
+内核解析dtb 文件，把每一个节点都转换为 device_node 结构体；
+对于某些device_node结构体，会被转换为platform_device结构体。&lt;/p&gt;
+&lt;h1 id=&#34;1-device-tree简介&#34;&gt;1. Device Tree简介&lt;/h1&gt;
+&lt;p&gt;Linus Torvalds在2011年3月17日的ARM Linux邮件列表宣称“this whole ARM thing is a fucking pain in the ass”，引发ARM Linux社区的地震，随后ARM社区进行了一系列的重大修正。在过去的ARM Linux中，arch/arm/plat-xxx和arch/arm/mach-xxx中充斥着大量的垃圾代码，相当多数的代码只是在描述板级细节，而这些板级细节对于内核来讲，不过是垃圾，如板上的platform设备、resource、i2c_board_info、spi_board_info以及各种硬件的platform_data。 社区必须改变这种局面，于是PowerPC等其他体系架构下已经使用的Flattened Device Tree（FDT）进入ARM社区的视野。Device Tree是一种描述硬件的数据结构，它起源于OpenFirmware(OF)。在Linux2.6中，ARM架构的板极硬件细节过多地被硬编码在arch/arm/plat-xxx和arch/arm/mach-xxx，采用Device Tree后，许多硬件的细节可以直接透过它传递给Linux，而不再需要在kernel中进行大量的冗余编码。&lt;/p&gt;
+&lt;p&gt;Device Tree由一系列被命名的结点（node）和属性（property）组成，而结点本身可包含子结点。所谓属性，其实就是成对出现的name和value。在Device Tree中，可描述的信息包括（原先这些信息大多被hard code到kernel中）:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU的数量和类别&lt;/li&gt;
+&lt;li&gt;内存基地址和大小&lt;/li&gt;
+&lt;li&gt;总线和桥&lt;/li&gt;
+&lt;li&gt;外设连接&lt;/li&gt;
+&lt;li&gt;中断控制器和中断使用情况&lt;/li&gt;
+&lt;li&gt;GPIO控制器和GPIO使用情况&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它基本上就是画一棵电路板上CPU、总线、设备组成的树，Bootloader会将这棵树传递给内核，然后内核可以识别这棵树，并根据它展开出Linux内核中的platform_device、i2c_client、spi_device等设备。这些设备用到的内存、IRQ等资源，也被传递给了kernel，kernel会将这些资源绑定给展开的相应的设备。&lt;/p&gt;
+&lt;h1 id=&#34;2-device-tree编译&#34;&gt;2. Device Tree编译&lt;/h1&gt;
+&lt;p&gt;Device Tree文件的格式为dts，包含的头文件格式为dtsi，dts文件是一种人可以看懂的编码格式。但是uboot和linux不能直接识别，他们只能识别二进制文件，所以需要把dts文件编译成dtb文件。dtb文件是一种可以被kernel和uboot识别的二进制文件。把dts编译成dtb文件的工具是dtc。Linux源码目录下scripts/dtc目录包含dtc工具的源码。在Linux的scripts/dtc目录下除了提供dtc工具外，也可以自己安装dtc工具，linux下执行：sudo apt-get install device-tree-compiler安装dtc工具。其中还提供了一个fdtdump的工具，可以反编译dtb文件。dts和dtb文件的转换如图1所示。&lt;/p&gt;
+&lt;p&gt;dtc工具的使用方法是：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;dtc –I dts –O dtb –o xxx.dtb xxx.dts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;即可生成dts文件对应的dtb文件了。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E7%BC%96%E8%AF%91.jpg&#34; alt=&#34;编译&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;3-device-tree头信息&#34;&gt;3. Device Tree头信息&lt;/h1&gt;
+&lt;p&gt;fdtdump工具使用，Linux终端执行ftddump –h，输出以下信息：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;fdtdump -h
+Usage: fdtdump [options]
+Options: -[dshV]
+-d, –debug Dump debug information while decoding the file
+-s, –scan Scan for an embedded fdt in file
+-h, –help Print this help and exit
+-V, –version Print version and exit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;本文采用s5pv21_smc.dtb文件为例说明fdtdump工具的使用。Linux终端执行fdtdump –sd s5pv21_smc.dtb &amp;gt; s5pv21_smc.txt，打开s5pv21_smc.txt文件，部分输出信息如下所示：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;// magic: 0xd00dfeed
+// totalsize: 0xce4 (3300)
+// off_dt_struct: 0x38
+// off_dt_strings: 0xc34
+// off_mem_rsvmap: 0x28
+// version: 17
+// last_comp_version: 16
+// boot_cpuid_phys: 0x0
+// size_dt_strings: 0xb0
+// size_dt_struct: 0xbfc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上信息便是Device Tree文件头信息，存储在dtb文件的开头部分。&lt;/p&gt;
+&lt;p&gt;在Linux内核中使用struct fdt_header结构体描述。struct fdt_header结构体定义在scripts\dtc\libfdt\fdt.h文件中。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;struct fdt_header {
+    fdt32_t magic;               /* magic word FDT_MAGIC */
+    fdt32_t totalsize;           /* total size of DT block */
+    fdt32_t off_dt_struct;       /* offset to structure */
+    fdt32_t off_dt_strings;      /* offset to strings */
+    fdt32_t off_mem_rsvmap;      /* offset to memory reserve map */
+    fdt32_t version;                 /* format version */
+    fdt32_t last_comp_version;   /* last compatible version */
+
+    /* version 2 fields below */
+    fdt32_t boot_cpuid_phys;     /* Which physical CPU id we&#39;re booting on */
+    /* version 3 fields below */
+    fdt32_t size_dt_strings;     /* size of the strings block */
+
+    /* version 17 fields below */
+    fdt32_t size_dt_struct;      /* size of the structure block */
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;fdtdump工具的输出信息即是以上结构中每一个成员的值，struct fdt_header结构体包含了Device Tree的私有信息。例如: fdt_header.magic是fdt的魔数,固定值为0xd00dfeed，fdt_header.totalsize是fdt文件的大小。使用二进制工具打开s5pv21_smc.dtb验证。s5pv21_smc.dtb二进制文件头信息如图2所示。从图2中可以得到Device Tree的文件是以大端模式储存。并且，头部信息和fdtdump的输出信息一致。&lt;/p&gt;
+&lt;p&gt;Device Tree中的节点信息举例如下所示。
+&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/node.png&#34; alt=&#34;编译&#34;&gt;&lt;/p&gt;
+&lt;p&gt;上述.dts文件并没有什么真实的用途，但它基本表征了一个Device Tree源文件的结构。1个root结点”/”；root结点下面含一系列子结点，本例中为”node@0”和”node@1”；结点”node@0”下又含有一系列子结点，本例中为”child-node@0”；各结点都有一系列属性。这些属性可能为空，如” an-empty-property”；可能为字符串，如”a-string-property”；可能为字符串数组，如”a-string-list-property”；可能为Cells（由u32整数组成），如”second-child-property”，可能为二进制数，如”a-byte-data-property”。Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。header为头信息，fill_area为填充区域，填充数字0，dt_struct存储节点数值及名称相关信息，dt_string存储属性名。例如：a-string-property就存储在dt_string区，”A string”及node1就存储在dt_struct区域。
+我们可以给一个设备节点添加lable，之后可以通过&amp;amp;lable的形式访问这个lable，这种引用是通过phandle（pointer handle）进行的。例如，图3中的node1就是一个lable，node@0的子节点child-node@0通过&amp;amp;node1引用node@1节点。像是这种phandle的节点，在经过DTC工具编译之后，&amp;amp;node1会变成一个特殊的整型数字n，假设n值为1，那么在node@1节点下自动生成两个属性，属性如下：
+linux,phandle = &amp;lt;0x00000001&amp;gt;;
+phandle = &amp;lt;0x00000001&amp;gt;;
+node@0的子节点child-node@0中的a-reference-to-something = &amp;lt;&amp;amp;node1&amp;gt;会变成a-reference-to-something = &amp;lt; 0x00000001&amp;gt;。此处0x00000001就是一个phandle得值，每一个phandle都有一个独一无二的整型值，在后续kernel中通过这个特殊的数字间接找到引用的节点。通过查看fdtdump输出信息以及dtb二进制文件信息，得到struct fdt_header和文件结构之间的关系信息如所示。&lt;/p&gt;
+&lt;h1 id=&#34;4-dtb文件结构&#34;&gt;4. DTB文件结构&lt;/h1&gt;
+&lt;p&gt;通过以上分析，可以得到Device Tree文件结构如图5所示。dtb的头部首先存放的是fdt_header的结构体信息，接着是填充区域，填充大小为off_dt_struct – sizeof(struct fdt_header)，填充的值为0。接着就是struct fdt_property结构体的相关信息。最后是dt_string部分。
+&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/DTB.png&#34; alt=&#34;编译&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。fill_area区域填充数值0。节点（node）信息使用struct fdt_node_header结构体描述。属性信息使用struct fdt_property结构体描述。各个结构体信息如下:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;struct fdt_node_header {
+    fdt32_t tag;
+    char name[0];
+};
+
+struct fdt_property {
+    fdt32_t tag;
+    fdt32_t len;
+    fdt32_t nameoff;
+    char data[0];
+};
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;struct fdt_node_header描述节点信息，tag是标识node的起始结束等信息的标志位，name指向node名称的首地址。tag的取值如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#define FDT_BEGIN_NODE  0x1     /* Start node: full name */
+#define FDT_END_NODE    0x2     /* End node */
+#define FDT_PROP        0x3     /* Property: name off, size, content */
+#define FDT_NOP         0x4     /* nop */
+#define FDT_END         0x9
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;FDT_BEGIN_NODE和FDT_END_NODE标识node节点的起始和结束，FDT_PROP标识node节点下面的属性起始符，FDT_END标识Device Tree的结束标识符。因此，对于每个node节点的tag标识符一般为FDT_BEGIN_NODE，对于每个node节点下面的属性的tag标识符一般是FDT_PROP。&lt;/p&gt;
+&lt;p&gt;描述属性采用struct fdt_property描述，tag标识是属性，取值为FDT_PROP；len为属性值的长度（包括‘\0’，单位：字节）；nameoff为属性名称存储位置相对于off_dt_strings的偏移地址。&lt;/p&gt;
+&lt;p&gt;例如：compatible = “samsung,goni”, “samsung,s5pv210”;compatible是属性名称，”samsung,goni”, “samsung,s5pv210”是属性值。compatible属性名称字符串存放的区域是dt_string。”samsung,goni”, “samsung,s5pv210”存放的位置是fdt_property.data后面。因此fdt_property.data指向该属性值。fdt_property.tag的值为属性标识，len为属性值的长度（包括‘\0’，单位：字节）,此处len = 29。nameoff为compatible字符串的位置相对于off_dt_strings的偏移地址，即&amp;amp;compatible = nameoff + off_dt_strings。&lt;/p&gt;
+&lt;p&gt;dt_struct在Device Tree中的结构如图6所示。节点的嵌套也带来tag标识符的嵌套。
+&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/dt_struct.png&#34; alt=&#34;编译&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;5-kernel解析device-tree&#34;&gt;5. kernel解析Device Tree&lt;/h1&gt;
+&lt;p&gt;Device Tree文件结构描述就以上struct fdt_header、struct fdt_node_header及struct fdt_property三个结构体描述。kernel会根据Device Tree的结构解析出kernel能够使用的struct property结构体。kernel根据Device Tree中所有的属性解析出数据填充struct property结构体。struct property结构体描述如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;struct property {
+    char *name;                          /* property full name */
+    int length;                          /* property value length */
+    void *value;                         /* property value */
+    struct property *next;             /* next property under the same node */
+    unsigned long _flags;
+    unsigned int unique_id;
+    struct bin_attribute attr;        /* 属性文件，与sysfs文件系统挂接 */
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;总的来说，kernel根据Device Tree的文件结构信息转换成struct property结构体，并将同一个node节点下面的所有属性通过property.next指针进行链接，形成一个单链表。
+kernel中究竟是如何解析Device Tree的呢？下面分析函数解析过程。函数调用过程如图7所示。kernel的C语言阶段的入口函数是init/main.c/stsrt_kernel()函数，在early_init_dt_scan_nodes()中会做以下三件事：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;扫描/chosen或者/chose@0节点下面的bootargs属性值到boot_command_line，此外，还处理initrd相关的property，并保存在initrd_start和initrd_end这两个全局变量中；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;扫描根节点下面，获取{size,address}-cells信息，并保存在dt_root_size_cells和dt_root_addr_cells全局变量中；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;扫描具有device_type =“memory”属性的/memory或者/memory@0节点下面的reg属性值，并把相关信息保存在meminfo中，全局变量meminfo保存了系统内存相关的信息。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%B0%83%E7%94%A8%E5%85%B3%E7%B3%BB1.png&#34; alt=&#34;编译&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Device Tree中的每一个node节点经过kernel处理都会生成一个struct device_node的结构体，struct device_node最终一般会被挂接到具体的struct device结构体。struct device_node结构体描述如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;struct device_node {
+    const char *name;              /* node的名称，取最后一次“/”和“@”之间子串 */
+    const char *type;              /* device_type的属性名称，没有为&amp;lt;NULL&amp;gt; */
+    phandle phandle;               /* phandle属性值 */
+    const char *full_name;         /* 指向该结构体结束的位置，存放node的路径全名，例如：/chosen */
+    struct fwnode_handle fwnode;
+
+    struct  property *properties;  /* 指向该节点下的第一个属性，其他属性与该属性链表相接 */
+    struct  property *deadprops;   /* removed properties */
+    struct  device_node *parent;   /* 父节点 */
+    struct  device_node *child;    /* 子节点 */
+    struct  device_node *sibling;  /* 姊妹节点，与自己同等级的node */
+    struct  kobject kobj;          /* sysfs文件系统目录体现 */
+    unsigned long _flags;          /* 当前node状态标志位，见/include/linux/of.h line124-127 */
+    void    *data;
+};
+
+/* flag descriptions (need to be visible even when !CONFIG_OF) */
+#define OF_DYNAMIC        1 /* node and properties were allocated via kmalloc */
+#define OF_DETACHED       2 /* node has been detached from the device tree*/
+#define OF_POPULATED      3 /* device already created for the node */
+#define OF_POPULATED_BUS  4 /* of_platform_populate recursed to children of this node */
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;struct device_node结构体中的每个成员作用已经备注了注释信息，下面分析以上信息是如何得来的。&lt;/p&gt;
+&lt;p&gt;Device Tree的解析首先从unflatten_device_tree()开始，代码列出如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;/**
+ * unflatten_device_tree - create tree of device_nodes from flat blob
+ *
+ * unflattens the device-tree passed by the firmware, creating the
+ * tree of struct device_node. It also fills the &amp;quot;name&amp;quot; and &amp;quot;type&amp;quot;
+ * pointers of the nodes so the normal device-tree walking functions
+ * can be used.
+ */
+void __init unflatten_device_tree(void)
+{
+	__unflatten_device_tree(initial_boot_params, NULL, &amp;amp;of_root,
+				early_init_dt_alloc_memory_arch, false);
+
+	/* Get pointer to &amp;quot;/chosen&amp;quot; and &amp;quot;/aliases&amp;quot; nodes for use everywhere */
+	of_alias_scan(early_init_dt_alloc_memory_arch);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;分析以上代码，在unflatten_device_tree()中，调用函数__unflatten_device_tree()，参数initial_boot_params指向Device Tree在内存中的首地址，of_root在经过该函数处理之后，会指向根节点，early_init_dt_alloc_memory_arch是一个函数指针，为struct device_node和struct property结构体分配内存的回调函数（callback）。&lt;/p&gt;
+&lt;p&gt;在__unflatten_device_tree()函数中，两次调用unflatten_dt_node()函数，第一次是为了得到Device Tree转换成struct device_node和struct property结构体需要分配的内存大小，第二次调用才是具体填充每一个struct device_node和struct property结构体。__unflatten_device_tree()代码列出如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;
+/**
+ * __unflatten_device_tree - create tree of device_nodes from flat blob
+ *
+ * unflattens a device-tree, creating the
+ * tree of struct device_node. It also fills the &amp;quot;name&amp;quot; and &amp;quot;type&amp;quot;
+ * pointers of the nodes so the normal device-tree walking functions
+ * can be used.
+ * @blob: The blob to expand
+ * @dad: Parent device node
+ * @mynodes: The device_node tree created by the call
+ * @dt_alloc: An allocator that provides a virtual address to memory
+ * for the resulting tree
+ *
+ * Returns NULL on failure or the memory chunk containing the unflattened
+ * device tree on success.
+ */
+static void *__unflatten_device_tree(const void *blob,
+				     struct device_node *dad,
+				     struct device_node **mynodes,
+				     void *(*dt_alloc)(u64 size, u64 align),
+				     bool detached)
+{
+	int size;
+	void *mem;
+
+	pr_debug(&amp;quot; -&amp;gt; unflatten_device_tree()\n&amp;quot;);
+
+	if (!blob) {
+		pr_debug(&amp;quot;No device tree pointer\n&amp;quot;);
+		return NULL;
+	}
+
+	pr_debug(&amp;quot;Unflattening device tree:\n&amp;quot;);
+	pr_debug(&amp;quot;magic: %08x\n&amp;quot;, fdt_magic(blob));
+	pr_debug(&amp;quot;size: %08x\n&amp;quot;, fdt_totalsize(blob));
+	pr_debug(&amp;quot;version: %08x\n&amp;quot;, fdt_version(blob));
+
+	if (fdt_check_header(blob)) {
+		pr_err(&amp;quot;Invalid device tree blob header\n&amp;quot;);
+		return NULL;
+	}
+
+	/* First pass, scan for size */
+	size = unflatten_dt_nodes(blob, NULL, dad, NULL);
+	if (size &amp;lt; 0)
+		return NULL;
+
+	size = ALIGN(size, 4);
+	pr_debug(&amp;quot;  size is %d, allocating...\n&amp;quot;, size);
+
+	/* Allocate memory for the expanded device tree */
+	mem = dt_alloc(size + 4, __alignof__(struct device_node));
+	if (!mem)
+		return NULL;
+
+	memset(mem, 0, size);
+
+	*(__be32 *)(mem + size) = cpu_to_be32(0xdeadbeef);
+
+	pr_debug(&amp;quot;  unflattening %p...\n&amp;quot;, mem);
+
+	/* Second pass, do actual unflattening */
+	unflatten_dt_nodes(blob, mem, dad, mynodes);
+	if (be32_to_cpup(mem + size) != 0xdeadbeef)
+		pr_warning(&amp;quot;End of tree marker overwritten: %08x\n&amp;quot;,
+			   be32_to_cpup(mem + size));
+
+	if (detached &amp;amp;&amp;amp; mynodes) {
+		of_node_set_flag(*mynodes, OF_DETACHED);
+		pr_debug(&amp;quot;unflattened tree is detached\n&amp;quot;);
+	}
+
+	pr_debug(&amp;quot; &amp;lt;- unflatten_device_tree()\n&amp;quot;);
+	return mem;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;__unflatten_device_tree()代码列出如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;
+/**
+ * unflatten_dt_nodes - Alloc and populate a device_node from the flat tree
+ * @blob: The parent device tree blob
+ * @mem: Memory chunk to use for allocating device nodes and properties
+ * @dad: Parent struct device_node
+ * @nodepp: The device_node tree created by the call
+ *
+ * It returns the size of unflattened device tree or error code
+ */
+static int unflatten_dt_nodes(const void *blob,
+			      void *mem,
+			      struct device_node *dad,
+			      struct device_node **nodepp)
+{
+	struct device_node *root;
+	int offset = 0, depth = 0, initial_depth = 0;
+#define FDT_MAX_DEPTH	64
+	unsigned int fpsizes[FDT_MAX_DEPTH];
+	struct device_node *nps[FDT_MAX_DEPTH];
+	void *base = mem;
+	bool dryrun = !base;
+
+	if (nodepp)
+		*nodepp = NULL;
+
+	/*
+	 * We&#39;re unflattening device sub-tree if @dad is valid. There are
+	 * possibly multiple nodes in the first level of depth. We need
+	 * set @depth to 1 to make fdt_next_node() happy as it bails
+	 * immediately when negative @depth is found. Otherwise, the device
+	 * nodes except the first one won&#39;t be unflattened successfully.
+	 */
+	if (dad)
+		depth = initial_depth = 1;
+
+	root = dad;
+	fpsizes[depth] = dad ? strlen(of_node_full_name(dad)) : 0;
+	nps[depth] = dad;
+
+	for (offset = 0;
+	     offset &amp;gt;= 0 &amp;amp;&amp;amp; depth &amp;gt;= initial_depth;
+	     offset = fdt_next_node(blob, offset, &amp;amp;depth)) {
+		if (WARN_ON_ONCE(depth &amp;gt;= FDT_MAX_DEPTH))
+			continue;
+
+		fpsizes[depth+1] = populate_node(blob, offset, &amp;amp;mem,
+						 nps[depth],
+						 fpsizes[depth],
+						 &amp;amp;nps[depth+1], dryrun);
+		if (!fpsizes[depth+1])
+			return mem - base;
+
+		if (!dryrun &amp;amp;&amp;amp; nodepp &amp;amp;&amp;amp; !*nodepp)
+			*nodepp = nps[depth+1];
+		if (!dryrun &amp;amp;&amp;amp; !root)
+			root = nps[depth+1];
+	}
+
+	if (offset &amp;lt; 0 &amp;amp;&amp;amp; offset != -FDT_ERR_NOTFOUND) {
+		pr_err(&amp;quot;Error %d processing FDT\n&amp;quot;, offset);
+		return -EINVAL;
+	}
+
+	/*
+	 * Reverse the child list. Some drivers assumes node order matches .dts
+	 * node order
+	 */
+	if (!dryrun)
+		reverse_nodes(root);
+
+	return mem - base;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;通过以上函数处理就得到了所有的struct device_node结构体，为每一个node都会自动添加一个名称为“name”的property，property.length的值为当前node的名称取最后一个“/”和“@”之间的子串（包括‘\0’）。例如：/serial@e2900800，则length = 7，property.value = device_node.name = “serial”。&lt;/p&gt;
+&lt;h1 id=&#34;6-platform_device和device_node绑定&#34;&gt;6. platform_device和device_node绑定&lt;/h1&gt;
+&lt;p&gt;经过以上解析，Device Tree的数据已经全部解析出具体的struct device_node和struct property结构体，下面需要和具体的device进行绑定。首先讲解platform_device和device_node的绑定过程。在arch/arm/kernel/setup.c文件中，customize_machine()函数负责填充struct platform_device结构体。函数调用过程如下图所示。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E7%BB%91%E5%AE%9A.png&#34; alt=&#34;编译&#34;&gt;&lt;/p&gt;
+&lt;p&gt;代码分析如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;
+const struct of_device_id of_default_bus_match_table[] = {
+    { .compatible = &amp;quot;simple-bus&amp;quot;, },
+    { .compatible = &amp;quot;simple-mfd&amp;quot;, },
+#ifdef CONFIG_ARM_AMBA
+    { .compatible = &amp;quot;arm,amba-bus&amp;quot;, },
+#endif /* CONFIG_ARM_AMBA */
+    {} /* Empty terminated list */
+};
+
+int of_platform_populate(struct device_node *root,
+            const struct of_device_id *matches,
+            const struct of_dev_auxdata *lookup,
+            struct device *parent)
+{
+    struct device_node *child;
+    int rc = 0;
+
+    /* 获取根节点 */
+    root = root ? of_node_get(root) : of_find_node_by_path(&amp;quot;/&amp;quot;);
+    if (!root)
+        return -EINVAL;
+
+    /* 为根节点下面的每一个节点创建platform_device结构体 */
+    for_each_child_of_node(root, child) {
+        rc = of_platform_bus_create(child, matches, lookup, parent, true);
+        if (rc) {
+            of_node_put(child);
+            break;
+        }
+    }
+    /* 更新device_node flag标志位 */
+    of_node_set_flag(root, OF_POPULATED_BUS);
+
+    of_node_put(root);
+    return rc;
+}
+
+static int of_platform_bus_create(struct device_node *bus,
+                  const struct of_device_id *matches,
+                  const struct of_dev_auxdata *lookup,
+                  struct device *parent, bool strict)
+{
+    const struct of_dev_auxdata *auxdata;
+    struct device_node *child;
+    struct platform_device *dev;
+    const char *bus_id = NULL;
+    void *platform_data = NULL;
+    int rc = 0;
+
+    /* 只有包含&amp;quot;compatible&amp;quot;属性的node节点才会生成相应的platform_device结构体 */
+    /* Make sure it has a compatible property */
+    if (strict &amp;amp;&amp;amp; (!of_get_property(bus, &amp;quot;compatible&amp;quot;, NULL))) {
+        return 0;
+    }
+    /* 省略部分代码 */
+    /* 
+     * 针对节点下面得到status = &amp;quot;ok&amp;quot; 或者status = &amp;quot;okay&amp;quot;或者不存在status属性的
+     * 节点分配内存并填充platform_device结构体
+     */
+    dev = of_platform_device_create_pdata(bus, bus_id, platform_data, parent);
+    if (!dev || !of_match_node(matches, bus))
+        return 0;
+
+    /* 递归调用节点解析函数，为子节点继续生成platform_device结构体，前提是父节点
+     * 的“compatible” = “simple-bus”，也就是匹配of_default_bus_match_table结构体中的数据
+     */
+    for_each_child_of_node(bus, child) {
+        rc = of_platform_bus_create(child, matches, lookup, &amp;amp;dev-&amp;gt;dev, strict);
+        if (rc) {
+            of_node_put(child);
+            break;
+        }
+    }
+    of_node_set_flag(bus, OF_POPULATED_BUS);
+    return rc;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;总的来说，当of_platform_populate()函数执行完毕:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;kernel就为DTB中所有包含compatible属性名的第一级node创建platform_device结构体，并向平台设备总线注册设备信息。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果第一级node的compatible属性值等于“simple-bus”、“simple-mfd”或者”arm,amba-bus”的话，kernel会继续为当前node的第二级包含compatible属性的node创建platform_device结构体，并注册设备。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Linux系统下的设备大多都是挂载在平台总线下的，因此在平台总线被注册后，会根据of_root节点的树结构，去寻找该总线的子节点，所有的子节点将被作为设备注册到该总线上。&lt;/p&gt;
+&lt;h1 id=&#34;7-i2c_client和device_node绑定&#34;&gt;7. i2c_client和device_node绑定&lt;/h1&gt;
+&lt;p&gt;经过customize_machine()函数的初始化，DTB已经转换成platform_device结构体，这其中就包含i2c adapter设备，不同的SoC需要通过平台设备总线的方式自己实现i2c adapter设备的驱动。例如：i2c_adapter驱动的probe函数中会调用i2c_add_numbered_adapter()注册adapter驱动，函数流执行如图9所示。
+&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/i2c.png&#34; alt=&#34;编译&#34;&gt;
+在of_i2c_register_devices()函数内部便利i2c节点下面的每一个子节点，并为子节点（status = “disable”的除外）创建i2c_client结构体，并与子节点的device_node挂接。其中i2c_client的填充是在i2c_new_device()中进行的，最后device_register()。在构建i2c_client的时候，会对node下面的compatible属性名称的厂商名字去除作为i2c_client的name。例如：compatible = “maxim,ds1338”,则i2c_client-&amp;gt;name = “ds1338”。&lt;/p&gt;
+&lt;h1 id=&#34;8-device_tree与sysfs&#34;&gt;8. Device_Tree与sysfs&lt;/h1&gt;
+&lt;p&gt;kernel启动流程为start_kernel()→rest_init()→kernel_thread():kernel_init()→do_basic_setup()→driver_init()→of_core_init()，在of_core_init()函数中在sys/firmware/devicetree/base目录下面为设备树展开成sysfs的目录和二进制属性文件，所有的node节点就是一个目录，所有的property属性就是一个二进制属性文件。&lt;/p&gt;
+&lt;h1 id=&#34;9-特此感谢&#34;&gt;9. 特此感谢&lt;/h1&gt;
+&lt;p&gt;感谢原创作者的文章，文章图片表达清晰，代码注释详细，对我帮助很大。
+————————————————
+版权声明：本文为CSDN博主「smcdef」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/smcdef/article/details/77387975&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>设备树语法</title>
