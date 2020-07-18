@@ -28,7 +28,7 @@
   
     
   
-  <meta name="description" content="1. 板子启动后查看设备树 1.1. 文件说明 2. 编译/反编译 设备树文件 2.1. 手动编译 2.2. 在内核根目录下自动编译 2.2.1. 过程解析 3. 给开发板更换设备树文件 3.1. 更换方法 3.2. 前后">
+  <meta name="description" content="1. 板子启动后查看设备树 1.1. 文件说明 2. 编译/反编译 设备树文件 2.1. 手动编译 2.2. 在内核根目录下自动编译 2.2.1. 过程解析 3. led驱动模板——设备树改造 3.1. 给开发板">
 
   
   <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/">
@@ -229,8 +229,8 @@
   
   <meta property="og:site_name" content="YoungFar的个人博客——Love&amp;Share">
   <meta property="og:url" content="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/">
-  <meta property="og:title" content="设备树语法 | YoungFar的个人博客——Love&amp;Share">
-  <meta property="og:description" content="1. 板子启动后查看设备树 1.1. 文件说明 2. 编译/反编译 设备树文件 2.1. 手动编译 2.2. 在内核根目录下自动编译 2.2.1. 过程解析 3. 给开发板更换设备树文件 3.1. 更换方法 3.2. 前后"><meta property="og:image" content="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/featured.jpg">
+  <meta property="og:title" content="Linux 设备驱动开发————设备树应用实例（imx6ull） | YoungFar的个人博客——Love&amp;Share">
+  <meta property="og:description" content="1. 板子启动后查看设备树 1.1. 文件说明 2. 编译/反编译 设备树文件 2.1. 手动编译 2.2. 在内核根目录下自动编译 2.2.1. 过程解析 3. led驱动模板——设备树改造 3.1. 给开发板"><meta property="og:image" content="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/featured.jpg">
   <meta property="twitter:image" content="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/featured.jpg"><meta property="og:locale" content="en-us">
   
     
@@ -262,7 +262,7 @@
     "@type": "WebPage",
     "@id": "https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/"
   },
-  "headline": "设备树语法",
+  "headline": "Linux 设备驱动开发————设备树应用实例（imx6ull）",
   
   "image": [
     "https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/featured.jpg"
@@ -284,7 +284,7 @@
       "url": "img/https://strivefar.github.io/"
     }
   },
-  "description": "1. 板子启动后查看设备树 1.1. 文件说明 2. 编译/反编译 设备树文件 2.1. 手动编译 2.2. 在内核根目录下自动编译 2.2.1. 过程解析 3. 给开发板更换设备树文件 3.1. 更换方法 3.2. 前后"
+  "description": "1. 板子启动后查看设备树 1.1. 文件说明 2. 编译/反编译 设备树文件 2.1. 手动编译 2.2. 在内核根目录下自动编译 2.2.1. 过程解析 3. led驱动模板——设备树改造 3.1. 给开发板"
 }
 </script>
 
@@ -302,7 +302,7 @@
 
 
 
-  <title>设备树语法 | YoungFar的个人博客——Love&amp;Share</title>
+  <title>Linux 设备驱动开发————设备树应用实例（imx6ull） | YoungFar的个人博客——Love&amp;Share</title>
 
 </head>
 
@@ -517,7 +517,7 @@
 
 
 <div class="article-container pt-3">
-  <h1>设备树语法</h1>
+  <h1>Linux 设备驱动开发————设备树应用实例（imx6ull）</h1>
 
   
   <p class="page-subtitle">如有问题，欢迎各位批评指正。 🚀&rsquo;</p>
@@ -617,13 +617,30 @@
 </li>
 </ul>
 </li>
-<li><a href="#3-%E7%BB%99%E5%BC%80%E5%8F%91%E6%9D%BF%E6%9B%B4%E6%8D%A2%E8%AE%BE%E5%A4%87%E6%A0%91%E6%96%87%E4%BB%B6">3. 给开发板更换设备树文件</a>
+<li><a href="#3-led%E9%A9%B1%E5%8A%A8%E6%A8%A1%E6%9D%BF%E8%AE%BE%E5%A4%87%E6%A0%91%E6%94%B9%E9%80%A0">3. led驱动模板——设备树改造</a>
 <ul>
-<li><a href="#31-%E6%9B%B4%E6%8D%A2%E6%96%B9%E6%B3%95">3.1. 更换方法</a></li>
-<li><a href="#32-%E5%89%8D%E5%90%8E%E5%AF%B9%E6%AF%94">3.2. 前后对比</a></li>
+<li><a href="#31-%E7%BB%99%E5%BC%80%E5%8F%91%E6%9D%BF%E6%9B%B4%E6%8D%A2%E8%AE%BE%E5%A4%87%E6%A0%91%E6%96%87%E4%BB%B6">3.1. 给开发板更换设备树文件</a></li>
+<li><a href="#32-%E5%86%85%E6%A0%B8%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%94%B9%E9%80%A0">3.2. 内核驱动程序的改造</a>
+<ul>
+<li><a href="#321-platform_device%E5%8C%85%E5%90%AB%E6%9D%A5%E8%87%AA%E8%AE%BE%E5%A4%87%E6%A0%91%E7%9A%84-%E5%A6%82%E4%BD%95%E4%B8%8E-platform_driver-%E9%85%8D%E5%AF%B9">3.2.1. platform_device（包含来自设备树的） 如何与 platform_driver 配对:</a>
+<ul>
+<li><a href="#3211-%E4%BD%BF%E7%94%A8%E8%AE%BE%E5%A4%87%E6%A0%91%E4%BF%A1%E6%81%AF%E6%9D%A5%E5%88%A4%E6%96%AD-dev-%E5%92%8C-drv-%E6%98%AF%E5%90%A6%E9%85%8D%E5%AF%B9%E6%97%B6">3.2.1.1. 使用设备树信息来判断 dev 和 drv 是否配对时</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#33-%E6%8C%89%E7%85%A7%E8%BF%99%E7%A7%8D%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB%E4%BB%A3%E7%A0%81%E6%94%B9%E9%80%A0%E5%A6%82%E4%B8%8B">3.3. 按照这种转换关系，代码改造如下</a></li>
+<li><a href="#34-%E5%8C%B9%E9%85%8D%E6%88%90%E5%8A%9F%E5%90%8E%E4%BC%9A%E8%B0%83%E7%94%A8chip_demo_gpio_probe-%E6%B3%A8%E5%86%8C%E5%88%86%E9%85%8D%E7%9A%84%E5%90%84%E7%A7%8D%E8%B5%84%E6%BA%90">3.4. 匹配成功后，会调用chip_demo_gpio_probe 注册分配的各种资源</a></li>
+<li><a href="#35-%E6%B3%A8%E9%94%80%E5%88%86%E9%85%8D%E7%9A%84%E5%90%84%E7%A7%8D%E8%B5%84%E6%BA%90">3.5. 注销分配的各种资源：</a></li>
+<li><a href="#36-%E7%84%B6%E5%90%8E%E6%98%AF%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%8D%B8%E8%BD%BD%E5%87%BD%E6%95%B0">3.6. 然后是模块加载和卸载函数：</a></li>
+<li><a href="#37-%E8%BF%9B%E5%85%A5%E5%BC%80%E5%8F%91%E6%9D%BF%E7%9A%84mnt%E7%9B%AE%E5%BD%95%E4%B8%8B">3.7. 进入开发板的/mnt目录下</a></li>
+<li><a href="#38-%E5%B0%86leddrvko-%E5%92%8C-chip_demo_gpioko-%E6%B3%A8%E5%86%8C%E8%BF%9B%E5%86%85%E6%A0%B8">3.8. 将leddrv.ko 和 chip_demo_gpio.ko 注册进内核</a></li>
+<li><a href="#39-%E6%89%A7%E8%A1%8C%E4%B8%80%E4%B8%8B%E5%91%BD%E4%BB%A4%E6%9D%A5%E8%BF%9B%E8%A1%8C%E7%82%B9%E7%81%AF%E7%9A%84%E6%93%8D%E4%BD%9C">3.9. 执行一下命令来进行点灯的操作</a></li>
+<li><a href="#310-%E5%89%8D%E5%90%8E%E5%AF%B9%E6%AF%94%E8%A7%82%E5%AF%9F%E4%B8%80%E4%B8%8B%E8%BD%AC%E5%8C%96%E5%85%B3%E7%B3%BB">3.10. 前后对比，观察一下转化关系</a></li>
 </ul>
 </li>
 <li><a href="#4-%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90">4. 参考来源</a></li>
+<li><a href="#5-%E7%A8%8B%E5%BA%8F">5. 程序</a></li>
 </ul>
 <h1 id="1-板子启动后查看设备树">1. 板子启动后查看设备树</h1>
 <p><strong>注意：开发板中仅存放dtb 二进制文件，所以想直接查看开发板中的dts文件是查看不到的，需要先通过网络文件系统将开发板中dtb 二进制文件的copy到虚拟机，在虚拟机中反编译得到dts文件</strong></p>
@@ -632,7 +649,7 @@
 devicetree fdt
 </code></pre>
 <h2 id="11-文件说明">1.1. 文件说明</h2>
-<p>/sys/firmware/devicetree 目录下是以目录结构程现的 dtb 文件, 根节点对应 base 目录, 每一个节点对应一个目录, 每一个属性对应一个文件。</p>
+<p>/sys/firmware/devicetree 目录下是以目录结构程现的 dtb 文件, 根结点对应 base 目录, 每一个结点对应一个目录, 每一个属性对应一个文件。</p>
 <p>这些属性的值如果是字符串，可以使用 cat 命令把它打印出来；对于数值可以用 hexdump 把它打印出来。</p>
 <p>还可以看到/sys/firmware/fdt 文件，它就是 dtb 格式的设备树文件，可以把它复制出来放到 ubuntu上，执行下面的命令反编译出来(-I dtb：输入格式是 dtb，-O dts：输出格式是 dts)：</p>
 <pre><code class="language-bash">cd 板子所用的内核源码目录
@@ -672,41 +689,876 @@ arm-linux-gnueabihf-gcc -E
 <h3 id="221-过程解析">2.2.1. 过程解析</h3>
 <p>它首先用 arm-linux-gnueabihf-gcc 预处理 dts 文件，把其中的.h 头文件包含进来，把宏展开。</p>
 <p>然后使用 scripts/dtc/dtc 生成 dtb 文件。</p>
-<p>可见，dts 文件之所以支持“#include”语法，是因为 arm-linux-gnueabihf-gcc 帮忙。</p>
+<p><code>可见，dts 文件之所以支持“#include”语法，是因为 arm-linux-gnueabihf-gcc 帮忙。</code></p>
 <p>如果只用 dtc 工具，它是不支持”#include”语法的，只支持“/include”语法。</p>
-<h1 id="3-给开发板更换设备树文件">3. 给开发板更换设备树文件</h1>
-<h2 id="31-更换方法">3.1. 更换方法</h2>
-<p>对于 100ask-am335x 单板
-设备树文件是：内核源码目录中 arch/arm/boot/dts/100ask-am335x.dtb
-要更换板子上的设备树文件，启动板子后，更换这个文件：/boot/mx6ull-14x14-ebf.dtb</p>
-<p>对于 firefly-rk3288
-设备树文件是：内核源码目录中 arch/arm/boot/dts/rk3288-firefly.dtb
-对于这款板子，本教程中我们使用 SD 卡上的系统。
-要更换板上的设备树文件，你可以使用 SD 卡启动开发板后，更换这个文件：/boot/rk3288-firefly.dtb</p>
+<h1 id="3-led驱动模板设备树改造">3. led驱动模板——设备树改造</h1>
+<h2 id="31-给开发板更换设备树文件">3.1. 给开发板更换设备树文件</h2>
+<p>imx6ull 单板
+设备树文件是：内核源码目录中：</p>
+<pre><code>/home/book/100ask_imx6ull-sdk/Linux-4.9.88
+</code></pre>
+<p>其在内核源码目录中的路径为</p>
+<pre><code>arch/arm/boot/dts/100ask_imx6ull-14x14.dts
+</code></pre>
+<p>要更换板子上的设备树文件，启动板子后，更换这个文件：</p>
+<pre><code>/boot/100ask_imx6ull-14x14.dtb
+</code></pre>
 <ul>
 <li>
-<p>在虚拟机中：先搜索dts文件
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E6%90%9C%E7%B4%A2%E5%AD%90%E7%9B%AE%E5%BD%95.png" alt="搜索子目录"></p>
-</li>
-<li>
-<p>然后更改：
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB1.png" alt="转换关系1"></p>
-</li>
-<li>
-<p>在内核源码目录中编译dts得到dtb文件，然后通过网络传输一下：
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E6%9B%B4%E6%96%B0%E8%AE%BE%E5%A4%87%E6%A0%911.png" alt="更新设备树1"></p>
-</li>
-<li>
-<p>在开发板中（串口操作）
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E6%9B%B4%E6%96%B0%E8%AE%BE%E5%A4%87%E6%A0%91.png" alt="更新设备树"></p>
+<ol>
+<li>远程登录Linux服务器后：先搜索dts文件</li>
+</ol>
 </li>
 </ul>
-<h2 id="32-前后对比">3.2. 前后对比</h2>
-<p>我们来看一下，内核是如何解析设备树文件的（有待补充）
-<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB1.png" alt="转换关系1"></p>
-<p><img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB2.png" alt="转换关系2"></p>
+<pre><code class="language-bash">book@100ask:~/100ask_imx6ull-sdk/Linux-4.9.88/arch/arm/boot/dts$ find -name 100ask_imx6ull-14x14.dts
+./100ask_imx6ull-14x14.dts
+</code></pre>
+<ul>
+<li>
+<ol start="2">
+<li>然后打开后添加node（子结点）：
+在根结点下添加100ask_led@0和100ask_led@1这两个子结点（由于dts篇幅较长，这里仅展示一部分）</li>
+</ol>
+</li>
+</ul>
+<pre><code>/dts-v1/;
+
+#include &lt;dt-bindings/input/input.h&gt;
+#include &quot;imx6ull.dtsi&quot;
+#define GROUP_PIN(g,p) ((g&lt;&lt;16) | (p))
+
+/ {
+    model = &quot;Freescale i.MX6 ULL 14x14 EVK Board&quot;;
+    compatible = &quot;fsl,imx6ull-14x14-evk&quot;, &quot;fsl,imx6ull&quot;;
+
+    chosen {
+        stdout-path = &amp;uart1;
+    };
+
+    memory {
+        reg = &lt;0x80000000 0x20000000&gt;;
+    };
+
+    reserved-memory {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        ranges;
+
+        linux,cma {
+            compatible = &quot;shared-dma-pool&quot;;
+            reusable;
+            size = &lt;0x14000000&gt;;
+            linux,cma-default;
+        };
+    };
+
+    100ask_led@0 {
+        compatible = &quot;100as,leddrv&quot;;
+        pin = &lt;GROUP_PIN(5,3)&gt;;
+    };
+
+    100ask_led@1 {
+        compatible = &quot;100as,leddrv&quot;;
+        pin = &lt;GROUP_PIN(5,8)&gt;;
+    };
+</code></pre>
+<ul>
+<li>
+<ol start="3">
+<li>在内核源码目录中执行<strong>make dtbs</strong>编译dts得到dtb文件：</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-bash">book@100ask:~/100ask_imx6ull-sdk/Linux-4.9.88/arch/arm/boot/dts$ cd /home/book/100ask_imx6ull-sdk/Linux-4.9.88
+book@100ask:~/100ask_imx6ull-sdk/Linux-4.9.88$ make dtbs
+  CHK     include/config/kernel.release
+  CHK     include/generated/uapi/linux/version.h
+  CHK     include/generated/utsrelease.h
+  CHK     include/generated/bounds.h
+  CHK     include/generated/timeconst.h
+  CHK     include/generated/asm-offsets.h
+  CALL    scripts/checksyscalls.sh
+  DTC     arch/arm/boot/dts/100ask_imx6ull-14x14.dtb
+</code></pre>
+<p>上述编译结果中，<strong>DTC 后面的即为编译好的设备树的二进制文件</strong></p>
+<p>然后通过网络传输一下：</p>
+<pre><code class="language-bash">book@100ask:~/100ask_imx6ull-sdk/Linux-4.9.88$ cp arch/arm/boot/dts/100ask_imx6ull-14x14.dtb ~/nfs_rootfs/
+</code></pre>
+<ul>
+<li>
+<ol start="4">
+<li>在开发板中（串口操作）
+首先进入到/boot目录中</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-bash">cd /boot
+</code></pre>
+<p>然后查看一下/boot/ 的内容</p>
+<pre><code class="language-bash">[root@imx6ull:/boot]# ls
+100ask_imx6ull-14x14.dtb       zImage
+100ask_imx6ull-14x14_back.dtb
+
+</code></pre>
+<p>这里的100ask_imx6ull-14x14_back.dtb 是原来的100ask_imx6ull-14x14.dtb的备份，建议备份一下</p>
+<p>然后重启开发板</p>
+<pre><code class="language-bash">[root@imx6ull:/boot]# reboot
+</code></pre>
+<h2 id="32-内核驱动程序的改造">3.2. 内核驱动程序的改造</h2>
+<p>内核处理设备树的函数调用过程，这里不去分析；我们只需要得到如下结论：</p>
+<ul>
+<li>A. <strong><code>platform_device</code></strong> 中含有 <strong><code>resource</code></strong> 数组, 它来自 device_node 的 reg, interrupts 属性;</li>
+<li>B. <strong><code>platform_device.dev.of_node</code></strong> 指向 <strong><code>device_node</code></strong>, 可以通过它获得其他属性</li>
+</ul>
+<p>在/home/book/100ask_imx6ull-sdk/Linux-4.9.88/include/linux/的device.h中
+定义了一个struct device 结构体</p>
+<pre><code class="language-c">/**
+ * struct device - The basic device structure
+ * @of_node:	Associated device tree node.
+ */
+struct device {
+  /* ...省略部分代码 */
+	struct device_node	*of_node; /* associated device tree node */
+
+	struct fwnode_handle	*fwnode; /* firmware device node */
+
+  /* ...省略部分代码 */
+};
+
+
+</code></pre>
+<h3 id="321-platform_device包含来自设备树的-如何与-platform_driver-配对">3.2.1. platform_device（包含来自设备树的） 如何与 platform_driver 配对:</h3>
+<p><img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E5%8C%B9%E9%85%8D1.png" alt="匹配"></p>
+<h4 id="3211-使用设备树信息来判断-dev-和-drv-是否配对时">3.2.1.1. 使用设备树信息来判断 dev 和 drv 是否配对时</h4>
+<ul>
+<li>
+<p>首先，如果 of_match_table 中含有 compatible 值，就跟 dev 的 compatile 属性比较，若一致则成功，否则返回失败；</p>
+</li>
+<li>
+<p>其次，如果 of_match_table 中含有 type 值，就跟 dev 的 device_type 属性比较，若一致则成功，否则返回失败；</p>
+</li>
+<li>
+<p>最后，如果 of_match_table 中含有 name 值，就跟 dev 的 name 属性比较，若一致则成功，否则返回失败。</p>
+</li>
+<li>
+<p><strong><code>而设备树中建议不再使用 devcie_type 和 name 属性，所以基本上只使用设备节点的 compatible 属性 来寻找匹配的 platform_driver。</code></strong></p>
+</li>
+</ul>
+<p>对上述关系还有一个非常有趣的拟人化解释，这个解释出自这位博主的博客，链接如下：
+<a href="https://blog.csdn.net/zqixiao_09/article/details/50888795">https://blog.csdn.net/zqixiao_09/article/details/50888795</a></p>
+<p>打个比方，就好比相亲，总线是红娘，设备是男方，驱动是女方：</p>
+<p>a &ndash; 红娘（总线）负责男方（设备）和女方（驱动）的撮合；     </p>
+<p>b &ndash; 男方（女方）找到红娘，说我来登记一下，看有没有合适的姑娘（汉子）—— 设备或驱动的注册；</p>
+<p>c &ndash; 红娘这时候就需要看看有没有八字（二者的name 字段）匹配的姑娘（汉子）——match 函数进行匹配，看name是否相同；</p>
+<p>d &ndash; 如果八字不合，就告诉男方（女方）没有合适的对象，先等着，别急着乱做事 —— 设备和驱动会等待，直到匹配成功；</p>
+<p>e &ndash; 终于遇到八字匹配的了，那就结婚呗！接完婚，男方就向女方交代，我有多少存款，我的房子在哪，钱放在哪等等（ struct resource    *resource），女方说好啊，于是去房子里拿钱，去给男方买菜啦，给自己买衣服、化妆品、首饰啊等等（int (*probe)(struct platform_device *) 匹配成功后驱动执行的第一个函数），当然如果男的跟小三跑了（设备卸载），女方也不会继续待下去的（  int (*remove)(struct platform_device *)）。</p>
+<h2 id="33-按照这种转换关系代码改造如下">3.3. 按照这种转换关系，代码改造如下</h2>
+<pre><code class="language-c">/* of_device_id */
+static const struct of_device_id ask100_leds[] = {
+    { .compatible = &quot;100as,leddrv&quot; },
+    { }, //标志结束，不可省略
+};
+
+static struct platform_driver chip_demo_gpio_driver = {
+    .probe      = chip_demo_gpio_probe,
+    .remove     = chip_demo_gpio_remove,
+    .driver     = {
+        .name   = &quot;mytest_led&quot;,
+        .of_match_table = ask100_leds,  //得到of_device_id
+    },
+};
+</code></pre>
+<h2 id="34-匹配成功后会调用chip_demo_gpio_probe-注册分配的各种资源">3.4. 匹配成功后，会调用chip_demo_gpio_probe 注册分配的各种资源</h2>
+<pre><code class="language-c">
+static int chip_demo_gpio_probe(struct platform_device *pdev)
+{
+    struct device_node *np;
+    int err = 0;
+    int led_pin;
+
+    np = pdev-&gt;dev.of_node;
+    if (!np)
+        return -1;
+    
+    /* 从设备树转化过来的平台设备中提取pin资源 */
+    err = of_property_read_u32(np, &quot;pin&quot;, &amp;led_pin);
+    
+    /* 利用设备的资源依次注册设备 */
+    g_ledpins[g_ledcnt] = led_pin;
+    led_class_create_device(g_ledcnt);
+    g_ledcnt++;
+        
+    return 0;
+    
+}
+</code></pre>
+<h2 id="35-注销分配的各种资源">3.5. 注销分配的各种资源：</h2>
+<pre><code class="language-c">
+static int chip_demo_gpio_remove(struct platform_device *pdev)
+{
+    int i = 0;
+    int err;
+    struct device_node *np;
+    int led_pin;
+
+    np = pdev-&gt;dev.of_node;
+    if (!np)
+        return -1;
+    
+    /* 判断一下是否为之前已解析到的pin属性 */
+    err = of_property_read_u32(np, &quot;pin&quot;, &amp;led_pin);
+
+    for (i = 0; i &lt; g_ledcnt; i++)
+    {
+        /* 如果是，则销毁设备，并把存放引脚属性的数组对应元素置为-1 */
+        if (g_ledpins[i] == led_pin)
+        {
+            led_class_destroy_device(i);
+            g_ledpins[i] = -1;
+            break;
+        };
+    }
+    
+    /* 遍历一遍引脚属性数组，如果均为-1，说明都已经销毁掉了 */
+    for (i = 0; i &lt; g_ledcnt; i++)
+    {
+        if (g_ledpins[i] != -1)
+            break;
+    }
+
+    /*如果均已销毁，引脚属性数组为空，则把已注册的LED灯的个数置为0，方便下次注册 */
+    if (i == g_ledcnt)
+        g_ledcnt = 0;
+    
+    return 0;
+}
+</code></pre>
+<h2 id="36-然后是模块加载和卸载函数">3.6. 然后是模块加载和卸载函数：</h2>
+<pre><code class="language-c">static int __init chip_demo_gpio_drv_init(void)
+{
+    int err;
+    
+    err = platform_driver_register(&amp;chip_demo_gpio_driver); 
+    register_led_operations(&amp;board_demo_led_opr);
+    
+    return 0;
+}
+
+static void __exit lchip_demo_gpio_drv_exit(void)
+{
+    platform_driver_unregister(&amp;chip_demo_gpio_driver);
+}
+
+module_init(chip_demo_gpio_drv_init);
+module_exit(lchip_demo_gpio_drv_exit);
+
+MODULE_LICENSE(&quot;GPL&quot;);
+</code></pre>
+<p>可以看到,模块加载和卸载函数仅仅通过paltform_driver_register()、paltform_driver_unregister() 函数进行 platform_driver 的注册和注销，而原先注册和注销字符设备的工作已经被移交到 platform_driver 的 probe() 和 remove() 成员函数中。</p>
+<h2 id="37-进入开发板的mnt目录下">3.7. 进入开发板的/mnt目录下</h2>
+<pre><code class="language-bash">[root@imx6ull:/mnt]# ls
+100ask_imx6ull-14x14.dtb  leddrv.ko
+chip_demo_gpio.ko         ledtest
+</code></pre>
+<h2 id="38-将leddrvko-和-chip_demo_gpioko-注册进内核">3.8. 将leddrv.ko 和 chip_demo_gpio.ko 注册进内核</h2>
+<pre><code class="language-bash">[root@imx6ull:/mnt]# insmod leddrv.ko
+[root@imx6ull:/mnt]# insmod chip_demo_gpio.ko
+</code></pre>
+<p>进入到如下目录来查看一下，匹配之后的目录结构如下：
+<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E7%9B%AE%E5%BD%95.png" alt="转换关系新"></p>
+<h2 id="39-执行一下命令来进行点灯的操作">3.9. 执行一下命令来进行点灯的操作</h2>
+<pre><code class="language-bash">[root@imx6ull:/mnt]# ./ledtest /dev/mytest_led0 on
+[root@imx6ull:/mnt]# ./ledtest /dev/mytest_led0 off
+</code></pre>
+<p>注意：这里设备名之所以是mytest_ledx，是因为上层驱动中的device_create函数以&quot;mytest_led%d&quot;进行设备的创建</p>
+<pre><code class="language-c">void led_class_create_device(int minor)
+{
+	device_create(led_class, NULL, MKDEV(major, minor), NULL, &quot;mytest_led%d&quot;, minor); /* /dev/mytest_led0,1,... */
+}
+</code></pre>
+<p>文末给出了具体的chip_demo_gpio.c 和 应用层的led_test.c等代码</p>
+<h2 id="310-前后对比观察一下转化关系">3.10. 前后对比，观察一下转化关系</h2>
+<p>关于内核对设备树文件的解析，可以参考设备树详解中的内容。这里仅针对目录结构对应的转化关系来看看结果。</p>
+<ul>
+<li>
+<p>根结点下的子结点（一级结点）中的属性名，将来会成为开发板中/sys/firmware/devicetree/base目录下的文件，base则对应为根结点;
+<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB%E6%96%B0.png" alt="转换关系新"></p>
+</li>
+<li>
+<p>对于根结点下的二级结点，同样会以一级结点名作为目录，二级结点中的属性名将成为该目录下的文件
+以reserved-memory结点为例，其包含linux,cma这一子结点：
+<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E4%BA%8C%E7%BA%A7%E7%BB%93%E7%82%B9.png" alt="二级结点">
+<img src="/img/%E8%AE%BE%E5%A4%87%E6%A0%91/%E4%BA%8C%E7%BA%A7%E7%BB%93%E7%82%B92.png" alt="二级结点"></p>
+</li>
+</ul>
+<pre><code class="language-bash">[root@imx6ull:/sys/firmware/devicetree/base/reserved-memory]# cd linux,cma
+[root@imx6ull:/sys/firmware/devicetree/base/reserved-memory/linux,cma]# ls
+compatible         name               size
+linux,cma-default  reusable
+</code></pre>
+<ul>
+<li>对于结点中包含的属性，按照不同类型的值转换为不同类型的文件</li>
+<li>
+<ul>
+<li>这些属性的值如果是字符串，可以使用 cat 命令把它打印出来；</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-bash">[root@imx6ull:/sys/firmware/devicetree/base/reserved-memory]# ls
+#address-cells  #size-cells     linux,cma       name            ranges
+[root@imx6ull:/sys/firmware/devicetree/base/reserved-memory]# cat name
+reserved-memory
+</code></pre>
+<ul>
+<li>
+<ul>
+<li>对于数值，可以用 hexdump 把它打印出来</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-bash">[root@imx6ull:/sys/firmware/devicetree/base/reserved-memory/linux,cma]# ls
+compatible         name               size
+linux,cma-default  reusable
+izeot@imx6ull:/sys/firmware/devicetree/base/reserved-memory/linux,cma]# hexdump s
+0000000 0014 0000
+0000004
+</code></pre>
 <h1 id="4-参考来源">4. 参考来源</h1>
 <p>本文参考了并学习了韦东山老师的视频和配套的文档，特此感谢</p>
+<h1 id="5-程序">5. 程序</h1>
+<ul>
+<li><strong>chip_demo_gpio.c</strong></li>
+</ul>
+<pre><code class="language-c">#include &lt;linux/module.h&gt;
+
+#include &lt;linux/fs.h&gt;
+#include &lt;linux/errno.h&gt;
+#include &lt;linux/miscdevice.h&gt;
+#include &lt;linux/kernel.h&gt;
+#include &lt;linux/major.h&gt;
+#include &lt;linux/mutex.h&gt;
+#include &lt;linux/proc_fs.h&gt;
+#include &lt;linux/seq_file.h&gt;
+#include &lt;linux/stat.h&gt;
+#include &lt;linux/init.h&gt;
+#include &lt;linux/device.h&gt;
+#include &lt;linux/tty.h&gt;
+#include &lt;linux/kmod.h&gt;
+#include &lt;linux/gfp.h&gt;
+#include &lt;linux/platform_device.h&gt;
+#include &lt;linux/of.h&gt;
+#include &lt;asm/io.h&gt;
+
+#include &quot;led_opr.h&quot;
+#include &quot;leddrv.h&quot;
+#include &quot;led_resource.h&quot;
+
+static int g_ledpins[100];
+static int g_ledcnt = 0;
+
+static volatile unsigned int val;
+static volatile unsigned int* CCM_CCGR1;
+static volatile unsigned int* IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3;
+static volatile unsigned int* GPIO5_GDIR;
+static volatile unsigned int* GPIO5_DR;
+
+
+static int board_demo_led_init(int which) /* 初始化LED, which-哪个LED */
+{
+	//printk(&quot;%s %s line %d, led %d\n&quot;, __FILE__, __FUNCTION__, __LINE__, which);
+
+	printk(&quot;init gpio: group %d, pin %d\n&quot;, GROUP(g_ledpins[which]), PIN(g_ledpins[which]));
+	switch (GROUP(g_ledpins[which]))
+	{
+	case 0:
+	{
+		printk(&quot;init pin of group 0 ...\n&quot;);
+		break;
+	}
+	case 1:
+	{
+		printk(&quot;init pin of group 1 ...\n&quot;);
+		break;
+	}
+	case 2:
+	{
+		printk(&quot;init pin of group 2 ...\n&quot;);
+		break;
+	}
+	case 3:
+	{
+		printk(&quot;init pin of group 3 ...\n&quot;);
+		break;
+	}
+	case 4:
+	{
+		printk(&quot;init pin of group 4 ...\n&quot;);
+		break;
+	}
+	case 5:
+	{
+
+		printk(&quot;init pin of group 5 ...\n&quot;);
+		if (!CCM_CCGR1)
+		{
+			CCM_CCGR1 = ioremap(0x20C406C, 4);
+			IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3 = ioremap(0x2290014, 4);
+			GPIO5_GDIR = ioremap(0x020AC000 + 0x4, 4);
+			GPIO5_DR = ioremap(0x020AC000 + 0, 4);
+		}
+
+		/* GPIO5_IO03 */
+		/* a. 使能GPIO5
+			* set CCM to enable GPIO5
+			* CCM_CCGR1[CG15] 0x20C406C
+			* bit[31:30] = 0b11
+			*/
+		*CCM_CCGR1 |= (3 &lt;&lt; 30);
+
+		/* b. 设置GPIO5_IO03用于GPIO
+			* set IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3
+			*      to configure GPIO5_IO03 as GPIO
+			* IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3  0x2290014
+			* bit[3:0] = 0b0101 alt5
+			*/
+		val = *IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3;
+		val &amp;= ~(0xf);
+		val |= (5);
+		*IOMUXC_SNVS_SW_MUX_CTL_PAD_SNVS_TAMPER3 = val;
+
+		/* b. 设置GPIO5_IO03作为output引脚
+			* set GPIO5_GDIR to configure GPIO5_IO03 as output
+			* GPIO5_GDIR  0x020AC000 + 0x4
+			* bit[3] = 0b1
+			*/
+		*GPIO5_GDIR |= (1 &lt;&lt; 3);
+		break;
+	}
+	}
+
+	return 0;
+}
+
+
+static int board_demo_led_ctl(int which, char status) /* 控制LED, which-哪个LED, status:1-亮,0-灭 */
+{
+	//printk(&quot;%s %s line %d, led %d, %s\n&quot;, __FILE__, __FUNCTION__, __LINE__, which, status ? &quot;on&quot; : &quot;off&quot;);
+	printk(&quot;set led %s: group %d, pin %d\n&quot;, status ? &quot;on&quot; : &quot;off&quot;, GROUP(g_ledpins[which]), PIN(g_ledpins[which]));
+
+	switch (GROUP(g_ledpins[which]))
+	{
+	case 0:
+	{
+		printk(&quot;set pin of group 0 ...\n&quot;);
+		break;
+	}
+	case 1:
+	{
+		printk(&quot;set pin of group 1 ...\n&quot;);
+		break;
+	}
+	case 2:
+	{
+		printk(&quot;set pin of group 2 ...\n&quot;);
+		break;
+	}
+	case 3:
+	{
+		printk(&quot;set pin of group 3 ...\n&quot;);
+		break;
+	}
+	case 4:
+	{
+		printk(&quot;set pin of group 4 ...\n&quot;);
+		break;
+	}
+	case 5:
+	{
+
+		switch (PIN(g_ledpins[which]))
+		{
+		case 0:
+			/* code */
+			break;
+		case 1:
+			/* code */
+			break;
+		case 2:
+			/* code */
+			break;
+		case 3:
+			if (status) /* on: output 0*/
+			{
+				/* d. 设置GPIO5_DR输出低电平
+			 * set GPIO5_DR to configure GPIO5_IO03 output 0
+			 * GPIO5_DR 0x020AC000 + 0
+			 * bit[3] = 0b0
+			 */
+				*GPIO5_DR &amp;= ~(1 &lt;&lt; 3);
+			}
+			else /* off: output 1*/
+			{
+				/* e. 设置GPIO5_IO3输出高电平
+			 * set GPIO5_DR to configure GPIO5_IO03 output 1
+			 * GPIO5_DR 0x020AC000 + 0
+			 * bit[3] = 0b1
+			 */
+				*GPIO5_DR |= (1 &lt;&lt; 3);
+			}
+			break;
+
+		default:
+			break;
+		}
+		printk(&quot;set pin of group 5 ...\n&quot;);
+		break;
+	}
+	}
+	return 0;
+}
+
+
+
+static struct led_operations board_demo_led_opr = {
+    .init = board_demo_led_init,
+    .ctl  = board_demo_led_ctl,
+};
+
+struct led_operations *get_board_led_opr(void)
+{
+    return &amp;board_demo_led_opr;
+}
+
+static int chip_demo_gpio_probe(struct platform_device *pdev)
+{
+    struct device_node *np;
+    int err = 0;
+    int led_pin;
+
+    np = pdev-&gt;dev.of_node;
+    if (!np)
+        return -1;
+    
+    /* 从设备树转化过来的平台设备中提取pin资源 */
+    err = of_property_read_u32(np, &quot;pin&quot;, &amp;led_pin);
+    
+    /* 利用设备的资源依次注册设备 */
+    g_ledpins[g_ledcnt] = led_pin;
+    led_class_create_device(g_ledcnt);
+    g_ledcnt++;
+        
+    return 0;
+    
+}
+
+static int chip_demo_gpio_remove(struct platform_device *pdev)
+{
+    int i = 0;
+    int err;
+    struct device_node *np;
+    int led_pin;
+
+    np = pdev-&gt;dev.of_node;
+    if (!np)
+        return -1;
+    
+    /* 判断一下是否为之前已解析到的pin属性 */
+    err = of_property_read_u32(np, &quot;pin&quot;, &amp;led_pin);
+
+    for (i = 0; i &lt; g_ledcnt; i++)
+    {
+        /* 如果是，则销毁设备，并把存放引脚属性的数组对应元素置为-1 */
+        if (g_ledpins[i] == led_pin)
+        {
+            led_class_destroy_device(i);
+            g_ledpins[i] = -1;
+            break;
+        };
+    }
+    
+    /* 遍历一遍引脚属性数组，如果均为-1，说明都已经销毁掉了 */
+    for (i = 0; i &lt; g_ledcnt; i++)
+    {
+        if (g_ledpins[i] != -1)
+            break;
+    }
+
+    /*如果均已销毁，引脚属性数组为空，则把已注册的LED灯的个数置为0，方便下次注册 */
+    if (i == g_ledcnt)
+        g_ledcnt = 0;
+    
+    return 0;
+}
+
+static const struct of_device_id ask100_leds[] = {
+    { .compatible = &quot;100as,leddrv&quot; },
+    { },
+};
+
+static struct platform_driver chip_demo_gpio_driver = {
+    .probe      = chip_demo_gpio_probe,
+    .remove     = chip_demo_gpio_remove,
+    .driver     = {
+        .name   = &quot;mytest_led&quot;,
+        .of_match_table = ask100_leds,
+    },
+};
+
+static int __init chip_demo_gpio_drv_init(void)
+{
+    int err;
+    
+    err = platform_driver_register(&amp;chip_demo_gpio_driver); 
+    register_led_operations(&amp;board_demo_led_opr);
+    
+    return 0;
+}
+
+static void __exit lchip_demo_gpio_drv_exit(void)
+{
+    platform_driver_unregister(&amp;chip_demo_gpio_driver);
+}
+
+module_init(chip_demo_gpio_drv_init);
+module_exit(lchip_demo_gpio_drv_exit);
+
+MODULE_LICENSE(&quot;GPL&quot;);
+
+</code></pre>
+<ul>
+<li>上层驱动leddrv.c</li>
+</ul>
+<pre><code class="language-c">#include &lt;linux/module.h&gt;
+
+#include &lt;linux/fs.h&gt;
+#include &lt;linux/errno.h&gt;
+#include &lt;linux/miscdevice.h&gt;
+#include &lt;linux/kernel.h&gt;
+#include &lt;linux/major.h&gt;
+#include &lt;linux/mutex.h&gt;
+#include &lt;linux/proc_fs.h&gt;
+#include &lt;linux/seq_file.h&gt;
+#include &lt;linux/stat.h&gt;
+#include &lt;linux/init.h&gt;
+#include &lt;linux/device.h&gt;
+#include &lt;linux/tty.h&gt;
+#include &lt;linux/kmod.h&gt;
+#include &lt;linux/gfp.h&gt;
+
+#include &quot;led_opr.h&quot;
+
+
+/* 1. 确定主设备号                                                                 */
+static int major = 0;
+static struct class *led_class;
+struct led_operations *p_led_opr;
+
+
+#define MIN(a, b) (a &lt; b ? a : b)
+
+
+    //void led_class_create_device(int minor)
+    //{
+    //	device_create(led_class, NULL, MKDEV(major, minor), NULL, &quot;100ask_led%d&quot;, minor); /* /dev/100ask_led0,1,... */
+    //}
+
+void led_class_create_device(int minor)
+{
+	device_create(led_class, NULL, MKDEV(major, minor), NULL, &quot;mytest_led%d&quot;, minor); /* /dev/mytest_led0,1,... */
+}
+
+void led_class_destroy_device(int minor)
+{
+	device_destroy(led_class, MKDEV(major, minor));
+}
+void register_led_operations(struct led_operations *opr)
+{
+	p_led_opr = opr;
+}
+
+EXPORT_SYMBOL(led_class_create_device);
+EXPORT_SYMBOL(led_class_destroy_device);
+EXPORT_SYMBOL(register_led_operations);
+
+
+
+/* 3. 实现对应的open/read/write等函数，填入file_operations结构体                   */
+static ssize_t led_drv_read (struct file *file, char __user *buf, size_t size, loff_t *offset)
+{
+	printk(&quot;%s %s line %d\n&quot;, __FILE__, __FUNCTION__, __LINE__);
+	return 0;
+}
+
+/* write(fd, &amp;val, 1); */
+static ssize_t led_drv_write (struct file *file, const char __user *buf, size_t size, loff_t *offset)
+{
+	int err;
+	char status;
+	struct inode *inode = file_inode(file);
+	int minor = iminor(inode);
+	
+	printk(&quot;%s %s line %d\n&quot;, __FILE__, __FUNCTION__, __LINE__);
+	err = copy_from_user(&amp;status, buf, 1);
+
+	/* 根据次设备号和status控制LED */
+	p_led_opr-&gt;ctl(minor, status);
+	
+	return 1;
+}
+
+static int led_drv_open (struct inode *node, struct file *file)
+{
+	int minor = iminor(node);
+	
+	printk(&quot;%s %s line %d\n&quot;, __FILE__, __FUNCTION__, __LINE__);
+	/* 根据次设备号初始化LED */
+	p_led_opr-&gt;init(minor);
+	
+	return 0;
+}
+
+static int led_drv_close (struct inode *node, struct file *file)
+{
+	printk(&quot;%s %s line %d\n&quot;, __FILE__, __FUNCTION__, __LINE__);
+	return 0;
+}
+
+/* 2. 定义自己的file_operations结构体                                              */
+static struct file_operations led_drv = {
+	.owner	 = THIS_MODULE,
+	.open    = led_drv_open,
+	.read    = led_drv_read,
+	.write   = led_drv_write,
+	.release = led_drv_close,
+};
+
+/* 4. 把file_operations结构体告诉内核：注册驱动程序                                */
+/* 5. 谁来注册驱动程序啊？得有一个入口函数：安装驱动程序时，就会去调用这个入口函数 */
+static int __init led_init(void)
+{
+	int err;
+	
+	printk(&quot;%s %s line %d\n&quot;, __FILE__, __FUNCTION__, __LINE__);
+	major = register_chrdev(0, &quot;100ask_led&quot;, &amp;led_drv);  /* /dev/led */
+
+
+	led_class = class_create(THIS_MODULE, &quot;100ask_led_class&quot;);
+	err = PTR_ERR(led_class);
+	if (IS_ERR(led_class)) {
+		printk(&quot;%s %s line %d\n&quot;, __FILE__, __FUNCTION__, __LINE__);
+		unregister_chrdev(major, &quot;100ask_led&quot;);
+		return -1;
+	}
+	
+	return 0;
+}
+
+/* 6. 有入口函数就应该有出口函数：卸载驱动程序时，就会去调用这个出口函数           */
+static void __exit led_exit(void)
+{
+	printk(&quot;%s %s line %d\n&quot;, __FILE__, __FUNCTION__, __LINE__);
+
+	class_destroy(led_class);
+	unregister_chrdev(major, &quot;100ask_led&quot;);
+}
+
+
+/* 7. 其他完善：提供设备信息，自动创建设备节点                                     */
+
+module_init(led_init);
+module_exit(led_exit);
+
+MODULE_LICENSE(&quot;GPL&quot;);
+
+
+</code></pre>
+<ul>
+<li>应用程序</li>
+</ul>
+<pre><code class="language-c">
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+/*
+ * ./ledtest /dev/100ask_led0 on
+ * ./ledtest /dev/100ask_led0 off
+ */
+int main(int argc, char **argv)
+{
+	int fd;
+	char status;
+	
+	/* 1. 判断参数 */
+	if (argc != 3) 
+	{
+		printf(&quot;Usage: %s &lt;dev&gt; &lt;on | off&gt;\n&quot;, argv[0]);
+		return -1;
+	}
+
+	/* 2. 打开文件 */
+	fd = open(argv[1], O_RDWR);
+	if (fd == -1)
+	{
+		printf(&quot;can not open file %s\n&quot;, argv[1]);
+		return -1;
+	}
+
+	/* 3. 写文件 */
+	if (0 == strcmp(argv[2], &quot;on&quot;))
+	{
+		status = 1;
+		write(fd, &amp;status, 1);
+	}
+	else
+	{
+		status = 0;
+		write(fd, &amp;status, 1);
+	}
+	
+	close(fd);
+	
+	return 0;
+}
+
+
+</code></pre>
+<ul>
+<li>Makefile</li>
+</ul>
+<pre><code class="language-bash">
+# 1. 使用不同的开发板内核时, 一定要修改KERN_DIR
+# 2. KERN_DIR中的内核要事先配置、编译, 为了能编译内核, 要先设置下列环境变量:
+# 2.1 ARCH,          比如: export ARCH=arm64
+# 2.2 CROSS_COMPILE, 比如: export CROSS_COMPILE=aarch64-linux-gnu-
+# 2.3 PATH,          比如: export PATH=$PATH:/home/book/100ask_roc-rk3399-pc/ToolChain-6.3.1/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin 
+# 注意: 不同的开发板不同的编译器上述3个环境变量不一定相同,
+#       请参考各开发板的高级用户使用手册
+
+KERN_DIR = /home/book/100ask_imx6ull-sdk/Linux-4.9.88
+
+all:
+	make -C $(KERN_DIR) M=`pwd` modules 
+	$(CROSS_COMPILE)gcc -o ledtest ledtest.c 
+
+clean:
+	make -C $(KERN_DIR) M=`pwd` modules clean
+	rm -rf modules.order
+	rm -f ledtest
+
+# 参考内核源码drivers/char/ipmi/Makefile
+# 要想把a.c, b.c编译成ab.ko, 可以这样指定:
+# ab-y := a.o b.o
+# obj-m += ab.o
+
+
+
+obj-m += leddrv.o chip_demo_gpio.o
+
+</code></pre>
 
     </div>
 
@@ -737,7 +1589,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;text=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;text=Linux%20%e8%ae%be%e5%a4%87%e9%a9%b1%e5%8a%a8%e5%bc%80%e5%8f%91%e2%80%94%e2%80%94%e2%80%94%e2%80%94%e8%ae%be%e5%a4%87%e6%a0%91%e5%ba%94%e7%94%a8%e5%ae%9e%e4%be%8b%ef%bc%88imx6ull%ef%bc%89" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -750,7 +1602,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;t=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;t=Linux%20%e8%ae%be%e5%a4%87%e9%a9%b1%e5%8a%a8%e5%bc%80%e5%8f%91%e2%80%94%e2%80%94%e2%80%94%e2%80%94%e8%ae%be%e5%a4%87%e6%a0%91%e5%ba%94%e7%94%a8%e5%ae%9e%e4%be%8b%ef%bc%88imx6ull%ef%bc%89" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -763,7 +1615,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="mailto:?subject=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95&amp;body=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=Linux%20%e8%ae%be%e5%a4%87%e9%a9%b1%e5%8a%a8%e5%bc%80%e5%8f%91%e2%80%94%e2%80%94%e2%80%94%e2%80%94%e8%ae%be%e5%a4%87%e6%a0%91%e5%ba%94%e7%94%a8%e5%ae%9e%e4%be%8b%ef%bc%88imx6ull%ef%bc%89&amp;body=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -776,7 +1628,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;title=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;title=Linux%20%e8%ae%be%e5%a4%87%e9%a9%b1%e5%8a%a8%e5%bc%80%e5%8f%91%e2%80%94%e2%80%94%e2%80%94%e2%80%94%e8%ae%be%e5%a4%87%e6%a0%91%e5%ba%94%e7%94%a8%e5%ae%9e%e4%be%8b%ef%bc%88imx6ull%ef%bc%89" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -789,7 +1641,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95%20https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=Linux%20%e8%ae%be%e5%a4%87%e9%a9%b1%e5%8a%a8%e5%bc%80%e5%8f%91%e2%80%94%e2%80%94%e2%80%94%e2%80%94%e8%ae%be%e5%a4%87%e6%a0%91%e5%ba%94%e7%94%a8%e5%ae%9e%e4%be%8b%ef%bc%88imx6ull%ef%bc%89%20https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -802,7 +1654,7 @@ arm-linux-gnueabihf-gcc -E
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;title=%e8%ae%be%e5%a4%87%e6%a0%91%e8%af%ad%e6%b3%95" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/&amp;title=Linux%20%e8%ae%be%e5%a4%87%e9%a9%b1%e5%8a%a8%e5%bc%80%e5%8f%91%e2%80%94%e2%80%94%e2%80%94%e2%80%94%e8%ae%be%e5%a4%87%e6%a0%91%e5%ba%94%e7%94%a8%e5%ae%9e%e4%be%8b%ef%bc%88imx6ull%ef%bc%89" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
