@@ -79,8 +79,14 @@
       <link>https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/</link>
       <pubDate>Tue, 11 Aug 2020 09:36:53 +0800</pubDate>
       <guid>https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/</guid>
-      <description>&lt;h1 id=&#34;c-primer-plus-第二章笔记&#34;&gt;C++ Primer Plus 第二章笔记&lt;/h1&gt;
-&lt;h2 id=&#34;程序清单26&#34;&gt;程序清单2.6&lt;/h2&gt;
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-%E7%A8%8B%E5%BA%8F%E6%B8%85%E5%8D%9526&#34;&gt;1. 程序清单2.6&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#11-26%E8%AF%B4%E6%98%8E&#34;&gt;1.1. 2.6说明：&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;1-程序清单26&#34;&gt;1. 程序清单2.6&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;// convert.cpp -- converts stone to pounds
 #include &amp;lt;iostream&amp;gt;
 int stonetolb(int);     // function prototype
@@ -102,7 +108,7 @@ int stonetolb(int sts)
 }
 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;26说明&#34;&gt;2.6说明：&lt;/h3&gt;
+&lt;h3 id=&#34;11-26说明&#34;&gt;1.1. 2.6说明：&lt;/h3&gt;
 &lt;pre&gt;&lt;code&gt;  cout &amp;lt;&amp;lt; stone &amp;lt;&amp;lt; &amp;quot; stone = &amp;quot;;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;

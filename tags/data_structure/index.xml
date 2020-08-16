@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data_Structure | YoungFar的个人博客——Love&amp;Share</title>
+    <link>https://strivefar.github.io/tags/data_structure/</link>
+      <atom:link href="https://strivefar.github.io/tags/data_structure/index.xml" rel="self" type="application/rss+xml" />
+    <description>Data_Structure</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Fri, 05 Jun 2020 18:26:48 +0800</lastBuildDate>
+    <image>
+      <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>Data_Structure</title>
+      <link>https://strivefar.github.io/tags/data_structure/</link>
+    </image>
+    
+    <item>
+      <title>链表中为何使用二级指针或者一级指针的引用</title>
+      <link>https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/</link>
+      <pubDate>Fri, 05 Jun 2020 18:26:48 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%89%8D%E8%A8%80&#34;&gt;前言&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%8F%82%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8%E6%96%B9%E5%BC%8F&#34;&gt;参数的调用方式&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#111-%E4%BC%A0%E5%80%BC%E8%B0%83%E7%94%A8&#34;&gt;11.1. 传值调用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#112-%E4%BC%A0%E5%9D%80%E8%B0%83%E7%94%A8&#34;&gt;11.2. 传址调用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#113-%E4%BC%A0%E5%BC%95%E7%94%A8%E8%B0%83%E7%94%A8&#34;&gt;11.3. 传引用调用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#114-%E7%A4%BA%E4%BE%8B%E8%AF%B4%E6%98%8E&#34;&gt;11.4. 示例说明&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9B%E5%BB%BA%E9%93%BE%E8%A1%A8%E6%97%B6%E7%9A%84%E5%AF%B9%E6%AF%94&#34;&gt;使用二级指针/一级指针创建链表时的对比&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#121-%E4%B8%BB%E5%87%BD%E6%95%B0%E4%B8%AD%E4%BD%9C%E6%AD%A4%E8%B0%83%E7%94%A8&#34;&gt;12.1. 主函数中作此调用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#122-%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9B%E5%BB%BA%E9%93%BE%E8%A1%A8&#34;&gt;12.2. 使用二级指针创建链表&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#123-%E4%BD%BF%E7%94%A8%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9B%E5%BB%BA%E9%93%BE%E8%A1%A8%E4%BC%9A%E6%88%90%E5%8A%9F%E5%90%97&#34;&gt;12.3. 使用一级指针创建链表会成功吗&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E9%94%80%E6%AF%81%E9%93%BE%E8%A1%A8%E6%97%B6%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E5%92%8C%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%AF%B9%E6%AF%94&#34;&gt;销毁链表时二级指针和一级指针的对比&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#131-%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E9%94%80%E6%AF%81%E9%93%BE%E8%A1%A8&#34;&gt;13.1. 使用二级指针销毁链表&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#132-%E4%BD%BF%E7%94%A8%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E9%94%80%E6%AF%81%E9%93%BE%E8%A1%A8%E4%BC%9A%E6%88%90%E5%8A%9F%E5%90%97&#34;&gt;13.2. 使用一级指针销毁链表会成功吗&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E6%80%BB%E7%BB%93&#34;&gt;总结&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81&#34;&gt;完整代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90&#34;&gt;参考来源&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
+&lt;p&gt;我们在学习数据结构时，在链表初始化或者销毁链表的时候，经常使用二级指针或者一级指针的引用，这是为什么呢？同样是指向内存单元的地址，为什么就不能使用一级指针呢？使用一级指针去初始化或者是销毁链表的时候，究竟会发生什么呢？到底什么时候该用二级指针，什么时候该用一级指针？&lt;/p&gt;
+&lt;p&gt;如果你对这些问题有疑问，可以参考本篇文章，以下是我个人对这些问题的理解，如有问题，欢迎随时联系我。&lt;/p&gt;
+&lt;h1 id=&#34;参数的调用方式&#34;&gt;参数的调用方式&lt;/h1&gt;
+&lt;p&gt;我们通常使用的函数调用方式无非两种，一种是&lt;strong&gt;传值调用&lt;/strong&gt;，一种是&lt;strong&gt;传址调用&lt;/strong&gt;。
+谈起&lt;strong&gt;指针&lt;/strong&gt;我们可能瞬间就会把它和传址调用联系在一起，但实际上，&lt;strong&gt;对于指针来讲，它也存在着这两种调用方式，传值调用和传值调用&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;111-传值调用&#34;&gt;11.1. 传值调用&lt;/h2&gt;
+&lt;p&gt;传值调用是指在调用参数时,不是对原参数进行操作,而是创建参数的拷贝并对其进行操作,这种调用有利于保护数据。&lt;/p&gt;
+&lt;h2 id=&#34;112-传址调用&#34;&gt;11.2. 传址调用&lt;/h2&gt;
+&lt;p&gt;传址调用的过程中把函数外部创建的变量的内存地址传递给函数参数，这种调用可以让函数和函数外边的变量建立起联系，函数内部可以直接操作函数外部；&lt;/p&gt;
+&lt;h2 id=&#34;113-传引用调用&#34;&gt;11.3. 传引用调用&lt;/h2&gt;
+&lt;p&gt;适用于C++，不适用于C语言&lt;/p&gt;
+&lt;h2 id=&#34;114-示例说明&#34;&gt;11.4. 示例说明&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;
+传递一级指针变量本身等价于在传递指针变量的值，虽然有指针参与其中，但在函数内部，也只是创建了指针的copy，无非就是把传过来的实参的值给指针的copy用一用，并没有对实参（原指针变量）进行操作&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;#include &amp;lt;iostream&amp;gt;    
+#include &amp;lt;string.h&amp;gt;    
+using namespace std;    
+    
+void fun1(char* str)    
+{    
+    str = new char[5];    
+    strcpy (str, &amp;quot;test string&amp;quot;);    
+}    
+    
+void fun2(char** str)    
+{    
+    *str = new char[5];    
+    strcpy (*str, &amp;quot;test string&amp;quot;);    
+}    
+    
+int main()    
+{    
+    char* s = NULL;        
+    cout &amp;lt;&amp;lt; &amp;quot;call function fun1&amp;quot; &amp;lt;&amp;lt; endl;    
+    fun1 (s);    
+    if (!s)    
+        cout &amp;lt;&amp;lt; &amp;quot;s is null!&amp;quot; &amp;lt;&amp;lt; endl;    
+    else    
+        cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; endl;    
+    
+    cout &amp;lt;&amp;lt; &amp;quot;call function fun2&amp;quot; &amp;lt;&amp;lt; endl;    
+    fun2 (&amp;amp;s);    
+    if (!s)    
+        cout &amp;lt;&amp;lt; &amp;quot;s is null!&amp;quot; &amp;lt;&amp;lt; endl;    
+    else    
+        cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; endl;    
+    return 0;    
+}    
+————————————————
+版权声明：本文为CSDN博主「踏莎行hyx」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/u012234115/article/details/39717215
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出结果：
+&lt;img src=&#34;https://strivefar.github.io/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png&#34; alt=&#34;wechat&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;使用二级指针一级指针创建链表时的对比&#34;&gt;使用二级指针/一级指针创建链表时的对比&lt;/h1&gt;
+&lt;h2 id=&#34;121-主函数中作此调用&#34;&gt;12.1. 主函数中作此调用&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;int main()
+{
+    LinkList L;
+    ElemType e;
+    Status i;
+    int j, k;
+    //InitList1(L);   //一级指针方式创建表头，失败
+    InitList2(&amp;amp;L);  //二级指针方式创建表头，成功
+ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;122-使用二级指针创建链表&#34;&gt;12.2. 使用二级指针创建链表&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//初始化表头，用二级指针
+Status InitList2(LinkList *L) //等价于Node **L
+{
+    *L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!(*L))                           /* 存储分配失败 */
+        return ERROR;
+    (*L)-&amp;gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;用图片说明更为直观：
+&lt;strong&gt;函数内部可以直接操作函数外部&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9D%E5%A7%8B%E5%8C%96.png&#34; alt=&#34;wechat&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;简明描述为：&lt;/strong&gt;
+&lt;img src=&#34;https://strivefar.github.io/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9B%E5%BB%BA%E9%93%BE%E8%A1%A8%E6%9C%89%E5%A4%B4%E7%BB%93%E7%82%B9%E7%9A%84%E6%A1%86%E5%9B%BE.png&#34; alt=&#34;wechat&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;如果没有头结点：&lt;/strong&gt;
+![在这里插入图片描述]&lt;img src=&#34;https://strivefar.github.io/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9B%E5%BB%BA%E9%93%BE%E8%A1%A8%E6%A1%86%E5%9B%BE.png&#34; alt=&#34;wechat&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;123-使用一级指针创建链表会成功吗&#34;&gt;12.3. 使用一级指针创建链表会成功吗&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//初始化表头，用一级指针（此方式无效）
+Status InitList1(LinkList L) //等价于Node *L
+{
+    L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!L)                             /* 存储分配失败 */
+        return ERROR;
+    L-&amp;gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;用图片说明更为直观：
+![在这里插入图片描述]&lt;img src=&#34;https://strivefar.github.io/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E5%88%9D%E5%A7%8B%E5%8C%96.png&#34; alt=&#34;wechat&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;很明显，把传过来的实参的值给指针的copy用一用，并没有对实参（原指针变量）进行操作&lt;/strong&gt;，这样创建的链表是毫无意义的，main.c后面再使用L时，用的依旧是个垃圾值，是有隐患的。&lt;/p&gt;
+&lt;h1 id=&#34;销毁链表时二级指针和一级指针的对比&#34;&gt;销毁链表时二级指针和一级指针的对比&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;main.c中&lt;/strong&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;printf(&amp;quot;销毁链表\n&amp;quot;);
+//DestroyList1(L);   //一级指针方式销毁链表，失败,且出现满屏乱码
+DestroyList2(&amp;amp;L);  //二级指针方式销毁链表，成功
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;131-使用二级指针销毁链表&#34;&gt;13.1. 使用二级指针销毁链表&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//销毁链表，使用二级指针
+Status DestroyList2(LinkList *L)
+{
+    LinkList p, q;
+    p = (*L)-&amp;gt;next; /*  p指向第一个结点 */
+    while (p)       /*  没到表尾 */
+    {
+        q = p-&amp;gt;next;
+        free(p);
+        p = q;
+    }
+    free(*L); //头结点彻底没有掉才是销毁
+    *L = NULL;
+    return OK;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;用图片说明更为直观：&lt;/p&gt;
+&lt;p&gt;![在这里插入图片描述]&lt;img src=&#34;https://strivefar.github.io/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E9%94%80%E6%AF%81%E9%93%BE%E8%A1%A8.png&#34; alt=&#34;wechat&#34;&gt;&lt;/p&gt;
+&lt;p&gt;简单来说：
+&lt;strong&gt;销毁链表就是让头指针为空，然后这个链表就彻底湮没在内存中了&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;![在这里插入图片描述]&lt;img src=&#34;https://strivefar.github.io/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E9%94%80%E6%AF%81%E5%A4%B4%E7%BB%93%E7%82%B9%E6%A1%86%E5%9B%BE.png&#34; alt=&#34;wechat&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;132-使用一级指针销毁链表会成功吗&#34;&gt;13.2. 使用一级指针销毁链表会成功吗&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//销毁链表，使用一级指针(此方式无效)
+Status DestroyList1(LinkList L)
+{
+    LinkList p, q;
+    p = L-&amp;gt;next; /*  p指向第一个结点 */
+    while (p)    /*  没到表尾 */
+    {
+        q = p-&amp;gt;next;
+        free(p);
+        p = q;
+    }
+    free(L);
+    L = NULL;
+    return OK;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;用图片说明更为直观：&lt;/p&gt;
+&lt;p&gt;![在这里插入图片描述]&lt;img src=&#34;https://strivefar.github.io/img/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8%E4%B8%AD%E4%B8%BA%E4%BD%95%E4%BD%BF%E7%94%A8%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E6%88%96%E8%80%85%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8/%E4%BD%BF%E7%94%A8%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E9%94%80%E6%AF%81%E9%93%BE%E8%A1%A8.png&#34; alt=&#34;wechat&#34;&gt;
+可见这种方式的确很危险，实际测试中也的确出现了乱码&lt;/p&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;1.初始化链表头部指针需要用二级指针或者一级指针的引用。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2.销毁链表需要用到二级指针或者一级指针的引用。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3.插入、删除、遍历、清空结点用一级指针即可。&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&#34;完整代码&#34;&gt;完整代码&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;quot;stdio.h&amp;quot;
+#include &amp;quot;stdlib.h&amp;quot;
+#include &amp;quot;time.h&amp;quot;
+#define OK 1
+#define ERROR 0
+#define TRUE 1
+#define FALSE 0
+#define MAXSIZE 20    /* 存储空间初始分配量 */
+typedef int Status;   /* Status是函数的类型,其值是函数结果状态代码，如OK等 */
+typedef int ElemType; /* ElemType类型根据实际情况而定，这里假设为int */
+Status visit(ElemType c)
+{
+    printf(&amp;quot;%d &amp;quot;, c);
+    return OK;
+}
+typedef struct Node
+{
+    ElemType data;
+    struct Node *next;
+} Node;
+typedef struct Node *LinkList; /* 定义LinkList */
+
+//初始化表头，用一级指针（此方式无效）
+Status InitList1(LinkList L) //等价于Node *L
+{
+    L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!L)                             /* 存储分配失败 */
+        return ERROR;
+    L-&amp;gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+
+//初始化表头，用二级指针
+Status InitList2(LinkList *L) //等价于Node **L
+{
+    *L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!(*L))                           /* 存储分配失败 */
+        return ERROR;
+    (*L)-&amp;gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+
+//初始化表头，用一级指针引用
+Status InitList3(LinkList &amp;amp;L) //等价于Node *&amp;amp;L
+{
+    L = (LinkList)malloc(sizeof(Node)); /* 产生头结点,并使L指向此头结点 */
+    if (!L)                             /* 存储分配失败 */
+        return ERROR;
+    L-&amp;gt;next = NULL; /* 指针域为空 */
+
+    return OK;
+}
+
+//清空链表，使用二级指针
+Status ClearList1(LinkList *L)
+{
+    LinkList p, q;
+    p = (*L)-&amp;gt;next; /*  p指向第一个结点 */
+    while (p)       /*  没到表尾 */
+    {
+        q = p-&amp;gt;next;
+        free(p);
+        p = q;
+    }
+    (*L)-&amp;gt;next = NULL; /* 头结点指针域为空 */
+    return OK;
+}
+
+//清空链表，使用一级指针
+Status ClearList2(LinkList L)
+{
+    LinkList p, q;
+    p = L-&amp;gt;next; /*  p指向(这里的第一个结点只头结点) */
+    while (p)    /*  没到表尾 */
+    {
+        q = p-&amp;gt;next;
+        free(p);
+        p = q;
+    }
+    L-&amp;gt;next = NULL; /* 头结点指针域为空 */
+    return OK;
+}
+
+//销毁链表，使用一级指针(此方式无效)
+Status DestroyList1(LinkList L)
+{
+    LinkList p, q;
+    p = L-&amp;gt;next; /*  p指向第一个结点 */
+    while (p)    /*  没到表尾 */
+    {
+        q = p-&amp;gt;next;
+        free(p);
+        p = q;
+    }
+    free(L);
+    L = NULL;
+    return OK;
+}
+
+//销毁链表，使用二级指针
+Status DestroyList2(LinkList *L)
+{
+    LinkList p, q;
+    p = (*L)-&amp;gt;next; /* p指向头结点(第一个结点) */
+    while (p)       /*  没到表尾 */
+    {
+        q = p-&amp;gt;next;
+        free(p);
+        p = q;
+    }
+    free(*L); //头结点彻底没有掉才是销毁
+    *L = NULL;
+    return OK;
+}
+
+//销毁链表，使用一级指针引用
+Status DestroyList3(LinkList &amp;amp;L)
+{
+    LinkList p, q;
+    p = L-&amp;gt;next; /*  p指向第一个结点 */
+    while (p)    /*  没到表尾 */
+    {
+        q = p-&amp;gt;next;
+        free(p);
+        p = q;
+    }
+    free(L);
+    L = NULL;
+    return OK;
+}
+/* 初始条件：顺序线性表L已存在，1≤i≤ListLength(L) */
+/* 操作结果：用e返回L中第i个数据元素的值 */
+Status GetElem(LinkList L, int i, ElemType *e)
+{
+    int j;
+    LinkList p;        /* 声明一结点p */
+    p = L-&amp;gt;next;       /* 让p指向链表L的第一个结点 */
+    j = 1;             /*  j为计数器 */
+    while (p &amp;amp;&amp;amp; j &amp;lt; i) /* p不为空或者计数器j还没有等于i时，循环继续 */
+    {
+        p = p-&amp;gt;next; /* 让p指向下一个结点 */
+        ++j;
+    }
+    if (!p || j &amp;gt; i)
+        return ERROR; /*  第i个元素不存在 */
+    *e = p-&amp;gt;data;     /*  取第i个元素的数据 */
+    return OK;
+}
+
+//在中间插入元素，用二级指针
+Status ListInsert1(LinkList *L, int i, ElemType e)
+{
+    int j;
+    LinkList p, s;
+    p = *L;
+    j = 1;
+    while (p &amp;amp;&amp;amp; j &amp;lt; i) /* 寻找第i个结点 */
+    {
+        p = p-&amp;gt;next;
+        ++j;
+    }
+    if (!p || j &amp;gt; i)
+        return ERROR;                   /* 第i个元素不存在 */
+    s = (LinkList)malloc(sizeof(Node)); /*  生成新结点(C语言标准函数) */
+    s-&amp;gt;data = e;
+    s-&amp;gt;next = p-&amp;gt;next; /* 将p的后继结点赋值给s的后继  */
+    p-&amp;gt;next = s;       /* 将s赋值给p的后继 */
+    return OK;
+}
+//在中间插入元素，用一级指针
+Status ListInsert2(LinkList L, int i, ElemType e)
+{
+    int j;
+    LinkList p, s;
+    p = L;
+    j = 1;
+    while (p &amp;amp;&amp;amp; j &amp;lt; i) /* 寻找第i个结点 */
+    {
+        p = p-&amp;gt;next;
+        ++j;
+    }
+    if (!p || j &amp;gt; i)
+        return ERROR;                   /* 第i个元素不存在 */
+    s = (LinkList)malloc(sizeof(Node)); /*  生成新结点(C语言标准函数) */
+    s-&amp;gt;data = e;
+    s-&amp;gt;next = p-&amp;gt;next; /* 将p的后继结点赋值给s的后继  */
+    p-&amp;gt;next = s;       /* 将s赋值给p的后继 */
+    return OK;
+}
+//删除一个元素，用二级指针
+Status ListDelete1(LinkList *L, int i, ElemType *e)
+{
+    int j;
+    LinkList p, q;
+    p = *L;
+    j = 1;
+    while (p-&amp;gt;next &amp;amp;&amp;amp; j &amp;lt; i) /* 遍历寻找第i个元素 */
+    {
+        p = p-&amp;gt;next;
+        ++j;
+    }
+    if (!(p-&amp;gt;next) || j &amp;gt; i)
+        return ERROR; /* 第i个元素不存在 */
+    q = p-&amp;gt;next;
+    p-&amp;gt;next = q-&amp;gt;next; /* 将q的后继赋值给p的后继 */
+    *e = q-&amp;gt;data;      /* 将q结点中的数据给e */
+    free(q);           /* 让系统回收此结点，释放内存 */
+    return OK;
+}
+//删除一个元素，用一级指针
+Status ListDelete2(LinkList L, int i, ElemType *e)
+{
+    int j;
+    LinkList p, q;
+    p = L;
+    j = 1;
+    while (p-&amp;gt;next &amp;amp;&amp;amp; j &amp;lt; i) /* 遍历寻找第i个元素 */
+    {
+        p = p-&amp;gt;next;
+        ++j;
+    }
+    if (!(p-&amp;gt;next) || j &amp;gt; i)
+        return ERROR; /* 第i个元素不存在 */
+    q = p-&amp;gt;next;
+    p-&amp;gt;next = q-&amp;gt;next; /* 将q的后继赋值给p的后继 */
+    *e = q-&amp;gt;data;      /* 将q结点中的数据给e */
+    free(q);           /* 让系统回收此结点，释放内存 */
+    return OK;
+}
+/* 初始条件：顺序线性表L已存在 */
+/* 操作结果：依次对L的每个数据元素输出 */
+Status ListTraverse(LinkList L)
+{
+    LinkList p = L-&amp;gt;next;
+    while (p)
+    {
+        visit(p-&amp;gt;data);
+        p = p-&amp;gt;next;
+    }
+    printf(&amp;quot;\n&amp;quot;);
+    return OK;
+}
+int main()
+{
+    LinkList L;
+    ElemType e;
+    Status i;
+    int j, k;
+    //InitList1(L);   //一级指针方式创建表头，失败
+    //InitList2(&amp;amp;L);  //二级指针方式创建表头，成功
+    InitList3(L); //一级指针引用方式创建表头，成功
+    for (j = 1; j &amp;lt;= 7; j++)
+        ListInsert2(L, 1, j);
+    printf(&amp;quot;一级指针方式在L的表头依次插入1～7后：&amp;quot;);
+    ListTraverse(L);
+
+    ListInsert1(&amp;amp;L, 3, 12);
+    printf(&amp;quot;二级指针方式在L的中间插入12后：&amp;quot;);
+    ListTraverse(L);
+
+    ListInsert2(L, 5, 27);
+    printf(&amp;quot;一级指针在L的中间插入27后：&amp;quot;);
+    ListTraverse(L);
+
+    GetElem(L, 5, &amp;amp;e);
+    printf(&amp;quot;第5个元素的值为：%d\n&amp;quot;, e);
+
+    ListDelete1(&amp;amp;L, 5, &amp;amp;e); /* 删除第5个数据 */
+    printf(&amp;quot;二级指针方式删除第%d个的元素值为：%d\n&amp;quot;, 5, e);
+    printf(&amp;quot;依次输出L的元素：&amp;quot;);
+    ListTraverse(L);
+
+    ListDelete2(L, 3, &amp;amp;e); /* 删除第3个数据 */
+    printf(&amp;quot;一级指针方式删除第%d个的元素值为：%d\n&amp;quot;, 3, e);
+    printf(&amp;quot;依次输出L的元素：&amp;quot;);
+    ListTraverse(L);
+
+    printf(&amp;quot;二级指针方式清空链表\n&amp;quot;);
+    ClearList1(&amp;amp;L);
+    printf(&amp;quot;依次输出L的元素：&amp;quot;);
+    ListTraverse(L);
+
+    for (j = 1; j &amp;lt;= 7; j++)
+        ListInsert2(L, j, j);
+    printf(&amp;quot;在L的表尾依次插入1～7后：&amp;quot;);
+    ListTraverse(L);
+
+    printf(&amp;quot;一级指针方式清空链表\n&amp;quot;);
+    ClearList2(L);
+    printf(&amp;quot;依次输出L的元素：&amp;quot;);
+    ListTraverse(L);
+
+    printf(&amp;quot;销毁链表\n&amp;quot;);
+    //DestroyList1(L);   //一级指针方式销毁链表，失败,且出现满屏乱码
+    DestroyList2(&amp;amp;L); //二级指针方式销毁链表，成功
+    DestroyList3(L);  //一级指针引用方式销毁链表，成功
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;参考来源&#34;&gt;参考来源&lt;/h1&gt;
+&lt;p&gt;本文参考了以下博文，结合自己的理解，总结记录了相关知识，特此感谢
+&lt;a href=&#34;https://blog.csdn.net/u012234115/article/details/39717215&#34;&gt;https://blog.csdn.net/u012234115/article/details/39717215&lt;/a&gt;
+&lt;a href=&#34;https://blog.csdn.net/DX_Jone/article/details/102817995&#34;&gt;https://blog.csdn.net/DX_Jone/article/details/102817995&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
