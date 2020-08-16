@@ -63,19 +63,9 @@
 	    - linux
 	    - gcc
 	    - C
-	    - 数据结构与算法
+	    - Data_Structure
 	    - STM32
 	    - IMX6ULL
-	    - 待添加
-	    categories:
-		#可选的种类
-	    - gcc编译调试问题
-	    - 嵌入式linux学习笔记
-	    - Git & Github
-	    - C语言学习
-	    - STM32
-	    - 天猫精灵IOT平台
-	    - 待添加
 
 
 #### <2>文章配图可以使用
