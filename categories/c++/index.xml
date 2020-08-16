@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C&#43;&#43; | YoungFar的个人博客——Love&amp;Share</title>
+    <link>https://strivefar.github.io/categories/c&#43;&#43;/</link>
+      <atom:link href="https://strivefar.github.io/categories/c++/index.xml" rel="self" type="application/rss+xml" />
+    <description>C&#43;&#43;</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Tue, 11 Aug 2020 09:36:53 +0800</lastBuildDate>
+    <image>
+      <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>C&#43;&#43;</title>
+      <link>https://strivefar.github.io/categories/c&#43;&#43;/</link>
+    </image>
+    
+    <item>
+      <title>C&#43;&#43;_Primer_Plus_chapter2</title>
+      <link>https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/</link>
+      <pubDate>Tue, 11 Aug 2020 09:36:53 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/</guid>
+      <description>&lt;h1 id=&#34;c-primer-plus-第二章笔记&#34;&gt;C++ Primer Plus 第二章笔记&lt;/h1&gt;
+&lt;h2 id=&#34;程序清单26&#34;&gt;程序清单2.6&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;// convert.cpp -- converts stone to pounds
+#include &amp;lt;iostream&amp;gt;
+int stonetolb(int);     // function prototype
+int main()
+{
+    using namespace std;
+    int stone;
+    cout &amp;lt;&amp;lt; &amp;quot;Enter the weight in stone: &amp;quot;;
+    cin &amp;gt;&amp;gt; stone;
+    int pounds = stonetolb(stone);
+    cout &amp;lt;&amp;lt; stone &amp;lt;&amp;lt; &amp;quot; stone = &amp;quot;;
+    cout &amp;lt;&amp;lt; pounds &amp;lt;&amp;lt; &amp;quot; pounds.&amp;quot; &amp;lt;&amp;lt; endl;
+    return 0;
+}
+
+int stonetolb(int sts)
+{
+    return 14 * sts;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;26说明&#34;&gt;2.6说明：&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;  cout &amp;lt;&amp;lt; stone &amp;lt;&amp;lt; &amp;quot; stone = &amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;输出到屏幕上的只能是字符串形式，所以在打印之前，cout必须将整数形式的数字转换为字符串形式。&lt;/li&gt;
+&lt;li&gt;cout 相比 printf 更“聪明”,知道stone是一个需要转换的整数，而printf则需要使用特殊代码进行指定要打印的是字符串还是整数&lt;/li&gt;
+&lt;li&gt;cout 的智能行为源自C++的面向对象的特性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;printf(&amp;quot;Printing a string : %s\n&amp;quot;,&amp;quot;25&amp;quot;);
+printf(&amp;quot;Printing an integer: %d\n&amp;quot;, 25);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#define  min(x,y)  ({                   \
+	 typeof(x)  __min1 = (x);        \
+     typeof(y) __min2 = (y);             \
+     (void)  (&amp;amp; __min1 == &amp;amp; __min2);     \
+    __min1 &amp;lt; __min2  ? __min1 :__min2})
+    
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
