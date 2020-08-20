@@ -5,12 +5,177 @@
     <link>https://strivefar.github.io/project/post/</link>
       <atom:link href="https://strivefar.github.io/project/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Tue, 11 Aug 2020 09:36:53 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Thu, 20 Aug 2020 16:02:29 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>https://strivefar.github.io/project/post/</link>
     </image>
+    
+    <item>
+      <title>关于取址符&#39;&amp;&#39;的讨论</title>
+      <link>https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/</link>
+      <pubDate>Thu, 20 Aug 2020 16:02:29 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/</guid>
+      <description>&lt;h1 id=&#34;-在数组中的应用&#34;&gt;&amp;amp; 在数组中的应用&lt;/h1&gt;
+&lt;p&gt;以下面这个数组为例，我们先来明确一些概念&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;int a[10];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;a与a0的关系&#34;&gt;&lt;strong&gt;a与&amp;amp;a[0]的关系&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;数组名a是数组0号元素的地址,也就是存在以下等价关系&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;a 等价于 &amp;amp;a[0]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;amp;a[0] 表示对一个int型变量取地址，a[0]是一个int变量， 一个int变量的地址类型是 int* ,所以 &amp;amp;a[0] 为 int* 类型&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;于是有 a 等价于 &amp;amp;a[0]，且二者均为 int* 类型&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a与a的关系&#34;&gt;&lt;strong&gt;a与&amp;amp;a的关系&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;amp;a 和 a 在数值上相同，但意义不同！&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;amp;a 代表数组地址，类型为 int(*)[10]&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;a 代表 数组0号元素的地址，类型为 int*
+&lt;img src=&#34;https://strivefar.github.io/img/%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/1.png&#34; alt=&#34;1&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;于是指向数组的指针可以定义为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;int(*p_arr)[10] = &amp;amp;a;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;指向数组成员的指针可以定义为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;int *p = a; 或 int *p = &amp;amp;a[0];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ai-中的隐式转换&#34;&gt;a+i 中的隐式转换&lt;/h2&gt;
+&lt;p&gt;我们经常在程序中看到类似这样的用法&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;printf(&amp;quot;%d\n&amp;quot;, *(a+i));
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;a 为int&lt;em&gt;类型，i为 int类型，a+i的结果是int&lt;/em&gt;类型，加几就越过几个sizeof(int)，所以&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;a+i 或 &amp;amp;a[0]+i&lt;/code&gt; = &lt;code&gt;被取址变量本身的地址&lt;/code&gt;  +  &lt;code&gt;i * sizeof(被取址的变量的类型)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;这个关系很重要，有的时候我们为使代码简洁，会直接对变量取址，进行上述操作后再解引用，而不是定义一个指针指来指去，下边的代码综合和柔性数组会遇到这种情况。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;示例代码1&#34;&gt;示例代码1&lt;/h2&gt;
+&lt;p&gt;以下示例代码包含了上边讨论的诸多情况，有助于对上述讨论内容的理解&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+
+int a[10] = {0};
+int main()
+{
+    int i;
+    for (i = 0; i &amp;lt; 10; i++)
+    {
+        a[i] = i + 1;
+    }
+
+    int *p = a;
+    int *p1 = &amp;amp;a[0];
+    int *p2 = &amp;amp;a[1];
+    int(*p_half)[5] = (int(*)[5]) &amp;amp; a;
+    int(*p_2)[2] = (int(*)[2]) &amp;amp; a[1];
+
+    printf(&amp;quot; p     = %p\n&amp;quot;, a);
+    printf(&amp;quot; p1    = %p\n&amp;quot;, p1);
+    printf(&amp;quot; p_half = %p\n&amp;quot;, p_half);
+
+    printf(&amp;quot; p2    = %p\n&amp;quot;, p2);
+    printf(&amp;quot; p_2   = %p\n&amp;quot;, p_2);
+
+    printf(&amp;quot;%d, %d, %d\n&amp;quot;, p[0], p1[0], *((int *)p_half));
+
+    printf(&amp;quot;%d , %d\n&amp;quot;, a[5], *((int *)(p_half + 1)));
+
+    printf(&amp;quot;%d , %d\n&amp;quot;, a[3], *((int *)(p_2 + 1)));
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在Linux执行&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;gcc - o test test.c
+./test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出结果如下：
+&lt;img src=&#34;https://strivefar.github.io/img/%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/2.png&#34; alt=&#34;2&#34;&gt;
+&lt;strong&gt;注意&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;代码中的p_2 的类型为 int(*)[2]&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;amp;a[1]为int*类型，此处需要强制类型转换
+&lt;img src=&#34;https://strivefar.github.io/img/%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/3.png&#34; alt=&#34;3&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;在结构体中的应用&#34;&gt;&amp;amp;在结构体中的应用&lt;/h1&gt;
+&lt;h2 id=&#34;结构和数组的联系与区别&#34;&gt;结构和数组的联系与区别&lt;/h2&gt;
+&lt;p&gt;数组和结构相似的地方是都不再是单一的原子类型，而是一个集合。区别在于数组是相同类型元素（元素可以是原子类型的整型、浮点型、字符型或者结构体、数组等）的集合，而结构是不同类型元素（元素可以是原子类型的整型、浮点型、字符型或者结构体、数组等）的集合。所以结构无所不包，当然结构中也可以定义相同类型的元素，而数组则不然，从这个角度，结构体的普世意义更为广泛，但是毫无疑问，如果结构定义为成员类型是相同的，那么相比定义数组要麻烦的多。&lt;/p&gt;
+&lt;p&gt;(来自 &lt;a href=&#34;https://blog.csdn.net/zhanshen112/article/details/80429861&#34;&gt;https://blog.csdn.net/zhanshen112/article/details/80429861&lt;/a&gt; )&lt;/p&gt;
+&lt;p&gt;为更为彻底的体会&amp;amp;的妙用，我们的示例代码将涉及柔性数组(也叫零长度数组)&lt;/p&gt;
+&lt;h2 id=&#34;示例代码2&#34;&gt;示例代码2&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+
+struct test
+{
+        int count;
+        //reverse is array name;the array is no item;
+        //the array address follow test struct
+        int reverse[0];
+};
+
+int main()
+{
+        int i;
+        struct test *ptest = (struct test *)malloc(sizeof(struct test) + sizeof(int) * 10);
+        for (i = 0; i &amp;lt; 10; i++)
+        {
+                ptest-&amp;gt;reverse[i] = i + 1;
+        }
+        for (i = 0; i &amp;lt; 10; i++)
+        {
+                printf(&amp;quot;reverse[%d]=%d \n&amp;quot;, i, ptest-&amp;gt;reverse[i]);
+        }
+        printf(&amp;quot;\n\n&amp;quot;);
+
+        printf(&amp;quot;sizeof(struct test) =%ld\n&amp;quot;, sizeof(struct test));
+
+        /* a+i 或 &amp;amp;a[0]+i = 被取址变量本身的地址  +  i * sizeof(被取址的变量的类型)*/
+        int a = *(&amp;amp;ptest-&amp;gt;count + 1);
+        printf(&amp;quot;&amp;amp;ptest-&amp;gt;count    = %p\n&amp;quot;, &amp;amp;ptest-&amp;gt;count);
+        printf(&amp;quot;&amp;amp;ptest-&amp;gt;count +1 = %p\n&amp;quot;, (&amp;amp;ptest-&amp;gt;count + 1));
+        printf(&amp;quot;a=%d\n\n\n&amp;quot;, a);
+
+        int(*p)[5] = (int(*)[5])(&amp;amp;ptest-&amp;gt;reverse[0]);
+
+        // int(*p)[5] = (&amp;amp;ptest-&amp;gt;reverse[0]);
+        /*
+        &amp;amp;ptest-&amp;gt;reverse[0]&amp;lt;=&amp;gt;数组0号元素的地址，类型为int* ，所以此处编译器会给出警告
+        */
+
+        /* 无论&amp;amp;取哪个成员的地址，只要加上正确的偏移，总能正确访问到目标 */
+        printf(&amp;quot;%d ,%d\n&amp;quot;, *(&amp;amp;ptest-&amp;gt;count + 1), *((int *)p));
+        printf(&amp;quot;%d ,%d\n&amp;quot;, *(&amp;amp;ptest-&amp;gt;count + 1 + 5), *((int *)(p + 1)));
+        printf(&amp;quot;%d ,%d\n&amp;quot;, *(&amp;amp;ptest-&amp;gt;reverse[0] + 5), *((int *)(p + 1)));
+        printf(&amp;quot;%d ,%d\n&amp;quot;, *(&amp;amp;ptest-&amp;gt;reverse[1] + 4), *((int *)(p + 1)));
+
+        free(ptest);
+        return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;gcc - o test_1 test1.c
+./test_1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/4.png&#34; alt=&#34;4&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>C&#43;&#43;_Primer_Plus_chapter2</title>

@@ -28,10 +28,10 @@
   
     
   
-  <meta name="description" content="1. 程序清单2.6 1.1. 2.6说明： 1. 程序清单2.6 // convert.cpp -- converts stone to pounds #include &lt;iostream&gt; int stonetolb(int); // function prototype int main() { using namespace std; int stone; cout &lt;&lt; &quot;Enter the weight in stone: &quot;; cin &gt;&gt; stone; int pounds = stonetolb(stone); cout &lt;&lt; stone &lt;&lt; &quot; stone = &quot;; cout &lt;&lt;">
+  <meta name="description" content="&amp; 在数组中的应用 以下面这个数组为例，我们先来明确一些概念 int a[10]; a与&amp;a[0]的关系 数组名a是数组0号元素的地址,也就是存在以下等价关系">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/">
+  <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/">
 
   
 
@@ -215,7 +215,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/">
+  <link rel="canonical" href="https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/">
 
   
   
@@ -228,15 +228,15 @@
   <meta property="twitter:card" content="summary_large_image">
   
   <meta property="og:site_name" content="YoungFar的个人博客——Love&amp;Share">
-  <meta property="og:url" content="https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/">
-  <meta property="og:title" content="C&#43;&#43;_Primer_Plus_chapter2 | YoungFar的个人博客——Love&amp;Share">
-  <meta property="og:description" content="1. 程序清单2.6 1.1. 2.6说明： 1. 程序清单2.6 // convert.cpp -- converts stone to pounds #include &lt;iostream&gt; int stonetolb(int); // function prototype int main() { using namespace std; int stone; cout &lt;&lt; &quot;Enter the weight in stone: &quot;; cin &gt;&gt; stone; int pounds = stonetolb(stone); cout &lt;&lt; stone &lt;&lt; &quot; stone = &quot;; cout &lt;&lt;"><meta property="og:image" content="https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/featured.jpg">
-  <meta property="twitter:image" content="https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/featured.jpg"><meta property="og:locale" content="en-us">
+  <meta property="og:url" content="https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/">
+  <meta property="og:title" content="关于取址符&#39;&amp;&#39;的讨论 | YoungFar的个人博客——Love&amp;Share">
+  <meta property="og:description" content="&amp; 在数组中的应用 以下面这个数组为例，我们先来明确一些概念 int a[10]; a与&amp;a[0]的关系 数组名a是数组0号元素的地址,也就是存在以下等价关系"><meta property="og:image" content="https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/featured.jpg">
+  <meta property="twitter:image" content="https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/featured.jpg"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2020-08-11T09:36:53&#43;08:00">
+      <meta property="article:published_time" content="2020-08-20T16:02:29&#43;08:00">
     
-    <meta property="article:modified_time" content="2020-08-11T09:36:53&#43;08:00">
+    <meta property="article:modified_time" content="2020-08-20T16:02:29&#43;08:00">
   
 
   
@@ -260,16 +260,16 @@
   "@type": "Article",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://strivefar.github.io/project/post/c++_primer_plus_chapter2/"
+    "@id": "https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/"
   },
-  "headline": "C++_Primer_Plus_chapter2",
+  "headline": "关于取址符'\u0026'的讨论",
   
   "image": [
-    "https://strivefar.github.io/project/post/c++_primer_plus_chapter2/featured.jpg"
+    "https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/featured.jpg"
   ],
   
-  "datePublished": "2020-08-11T09:36:53+08:00",
-  "dateModified": "2020-08-11T09:36:53+08:00",
+  "datePublished": "2020-08-20T16:02:29+08:00",
+  "dateModified": "2020-08-20T16:02:29+08:00",
   
   "author": {
     "@type": "Person",
@@ -284,7 +284,7 @@
       "url": "img/https://strivefar.github.io/"
     }
   },
-  "description": "1. 程序清单2.6 1.1. 2.6说明： 1. 程序清单2.6 // convert.cpp -- converts stone to pounds #include \u0026lt;iostream\u0026gt; int stonetolb(int); // function prototype int main() { using namespace std; int stone; cout \u0026lt;\u0026lt; \u0026quot;Enter the weight in stone: \u0026quot;; cin \u0026gt;\u0026gt; stone; int pounds = stonetolb(stone); cout \u0026lt;\u0026lt; stone \u0026lt;\u0026lt; \u0026quot; stone = \u0026quot;; cout \u0026lt;\u0026lt;"
+  "description": "\u0026amp; 在数组中的应用 以下面这个数组为例，我们先来明确一些概念 int a[10]; a与\u0026amp;a[0]的关系 数组名a是数组0号元素的地址,也就是存在以下等价关系"
 }
 </script>
 
@@ -302,7 +302,7 @@
 
 
 
-  <title>C&#43;&#43;_Primer_Plus_chapter2 | YoungFar的个人博客——Love&amp;Share</title>
+  <title>关于取址符&#39;&amp;&#39;的讨论 | YoungFar的个人博客——Love&amp;Share</title>
 
 </head>
 
@@ -517,7 +517,7 @@
 
 
 <div class="article-container pt-3">
-  <h1>C&#43;&#43;_Primer_Plus_chapter2</h1>
+  <h1>关于取址符&#39;&amp;&#39;的讨论</h1>
 
   
   <p class="page-subtitle">如有问题，欢迎各位批评指正。 🚀&rsquo;</p>
@@ -550,7 +550,7 @@
     
       
     
-    2020-08-11
+    2020-08-20
   </span>
   
 
@@ -585,9 +585,9 @@
 </div>
 
 
-<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 480px;">
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 501px;">
   <div style="position: relative">
-    <img src="/project/post/c&#43;&#43;_primer_plus_chapter2/featured_hu81014d476fc6b73014be06dc7a06f867_298284_720x0_resize_q90_lanczos.jpg" alt="" class="featured-image">
+    <img src="/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/featured_hu645719b72423bd7805a29c7d02c5c677_278558_720x0_resize_q90_lanczos.jpg" alt="" class="featured-image">
     
   </div>
 </div>
@@ -597,53 +597,163 @@
   <div class="article-container">
 
     <div class="article-style">
-      <ul>
-<li><a href="#1-%E7%A8%8B%E5%BA%8F%E6%B8%85%E5%8D%9526">1. 程序清单2.6</a>
+      <h1 id="-在数组中的应用">&amp; 在数组中的应用</h1>
+<p>以下面这个数组为例，我们先来明确一些概念</p>
+<pre><code>int a[10];
+</code></pre>
+<h2 id="a与a0的关系"><strong>a与&amp;a[0]的关系</strong></h2>
 <ul>
-<li><a href="#11-26%E8%AF%B4%E6%98%8E">1.1. 2.6说明：</a></li>
-</ul>
+<li>
+<p>数组名a是数组0号元素的地址,也就是存在以下等价关系</p>
+<pre><code>a 等价于 &amp;a[0]
+</code></pre>
+</li>
+<li>
+<p>&amp;a[0] 表示对一个int型变量取地址，a[0]是一个int变量， 一个int变量的地址类型是 int* ,所以 &amp;a[0] 为 int* 类型</p>
+</li>
+<li>
+<p>于是有 a 等价于 &amp;a[0]，且二者均为 int* 类型</p>
 </li>
 </ul>
-<h2 id="1-程序清单26">1. 程序清单2.6</h2>
-<pre><code class="language-c">// convert.cpp -- converts stone to pounds
-#include &lt;iostream&gt;
-int stonetolb(int);     // function prototype
+<h2 id="a与a的关系"><strong>a与&amp;a的关系</strong></h2>
+<ul>
+<li>
+<p>&amp;a 和 a 在数值上相同，但意义不同！</p>
+</li>
+<li>
+<p>&amp;a 代表数组地址，类型为 int(*)[10]</p>
+</li>
+<li>
+<p>a 代表 数组0号元素的地址，类型为 int*
+<img src="/img/%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/1.png" alt="1"></p>
+</li>
+<li>
+<p>于是指向数组的指针可以定义为：</p>
+<pre><code>int(*p_arr)[10] = &amp;a;
+</code></pre>
+</li>
+<li>
+<p>指向数组成员的指针可以定义为：</p>
+<pre><code>int *p = a; 或 int *p = &amp;a[0];
+</code></pre>
+</li>
+</ul>
+<h2 id="ai-中的隐式转换">a+i 中的隐式转换</h2>
+<p>我们经常在程序中看到类似这样的用法</p>
+<pre><code class="language-c">printf(&quot;%d\n&quot;, *(a+i));
+</code></pre>
+<p>a 为int<em>类型，i为 int类型，a+i的结果是int</em>类型，加几就越过几个sizeof(int)，所以</p>
+<p><code>a+i 或 &amp;a[0]+i</code> = <code>被取址变量本身的地址</code>  +  <code>i * sizeof(被取址的变量的类型)</code></p>
+<p><strong>这个关系很重要，有的时候我们为使代码简洁，会直接对变量取址，进行上述操作后再解引用，而不是定义一个指针指来指去，下边的代码综合和柔性数组会遇到这种情况。</strong></p>
+<h2 id="示例代码1">示例代码1</h2>
+<p>以下示例代码包含了上边讨论的诸多情况，有助于对上述讨论内容的理解</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int a[10] = {0};
 int main()
 {
-    using namespace std;
-    int stone;
-    cout &lt;&lt; &quot;Enter the weight in stone: &quot;;
-    cin &gt;&gt; stone;
-    int pounds = stonetolb(stone);
-    cout &lt;&lt; stone &lt;&lt; &quot; stone = &quot;;
-    cout &lt;&lt; pounds &lt;&lt; &quot; pounds.&quot; &lt;&lt; endl;
-    return 0;
-}
+    int i;
+    for (i = 0; i &lt; 10; i++)
+    {
+        a[i] = i + 1;
+    }
 
-int stonetolb(int sts)
-{
-    return 14 * sts;
-}
+    int *p = a;
+    int *p1 = &amp;a[0];
+    int *p2 = &amp;a[1];
+    int(*p_half)[5] = (int(*)[5]) &amp; a;
+    int(*p_2)[2] = (int(*)[2]) &amp; a[1];
 
+    printf(&quot; p     = %p\n&quot;, a);
+    printf(&quot; p1    = %p\n&quot;, p1);
+    printf(&quot; p_half = %p\n&quot;, p_half);
+
+    printf(&quot; p2    = %p\n&quot;, p2);
+    printf(&quot; p_2   = %p\n&quot;, p_2);
+
+    printf(&quot;%d, %d, %d\n&quot;, p[0], p1[0], *((int *)p_half));
+
+    printf(&quot;%d , %d\n&quot;, a[5], *((int *)(p_half + 1)));
+
+    printf(&quot;%d , %d\n&quot;, a[3], *((int *)(p_2 + 1)));
+}
 </code></pre>
-<h3 id="11-26说明">1.1. 2.6说明：</h3>
-<pre><code>  cout &lt;&lt; stone &lt;&lt; &quot; stone = &quot;;
+<p>在Linux执行</p>
+<pre><code class="language-bash">gcc - o test test.c
+./test
 </code></pre>
+<p>输出结果如下：
+<img src="/img/%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/2.png" alt="2">
+<strong>注意</strong>：</p>
 <ul>
-<li>输出到屏幕上的只能是字符串形式，所以在打印之前，cout必须将整数形式的数字转换为字符串形式。</li>
-<li>cout 相比 printf 更“聪明”,知道stone是一个需要转换的整数，而printf则需要使用特殊代码进行指定要打印的是字符串还是整数</li>
-<li>cout 的智能行为源自C++的面向对象的特性</li>
+<li>
+<p>代码中的p_2 的类型为 int(*)[2]</p>
+</li>
+<li>
+<p>&amp;a[1]为int*类型，此处需要强制类型转换
+<img src="/img/%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/3.png" alt="3"></p>
+</li>
 </ul>
-<pre><code class="language-c">printf(&quot;Printing a string : %s\n&quot;,&quot;25&quot;);
-printf(&quot;Printing an integer: %d\n&quot;, 25);
+<h1 id="在结构体中的应用">&amp;在结构体中的应用</h1>
+<h2 id="结构和数组的联系与区别">结构和数组的联系与区别</h2>
+<p>数组和结构相似的地方是都不再是单一的原子类型，而是一个集合。区别在于数组是相同类型元素（元素可以是原子类型的整型、浮点型、字符型或者结构体、数组等）的集合，而结构是不同类型元素（元素可以是原子类型的整型、浮点型、字符型或者结构体、数组等）的集合。所以结构无所不包，当然结构中也可以定义相同类型的元素，而数组则不然，从这个角度，结构体的普世意义更为广泛，但是毫无疑问，如果结构定义为成员类型是相同的，那么相比定义数组要麻烦的多。</p>
+<p>(来自 <a href="https://blog.csdn.net/zhanshen112/article/details/80429861">https://blog.csdn.net/zhanshen112/article/details/80429861</a> )</p>
+<p>为更为彻底的体会&amp;的妙用，我们的示例代码将涉及柔性数组(也叫零长度数组)</p>
+<h2 id="示例代码2">示例代码2</h2>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct test
+{
+        int count;
+        //reverse is array name;the array is no item;
+        //the array address follow test struct
+        int reverse[0];
+};
+
+int main()
+{
+        int i;
+        struct test *ptest = (struct test *)malloc(sizeof(struct test) + sizeof(int) * 10);
+        for (i = 0; i &lt; 10; i++)
+        {
+                ptest-&gt;reverse[i] = i + 1;
+        }
+        for (i = 0; i &lt; 10; i++)
+        {
+                printf(&quot;reverse[%d]=%d \n&quot;, i, ptest-&gt;reverse[i]);
+        }
+        printf(&quot;\n\n&quot;);
+
+        printf(&quot;sizeof(struct test) =%ld\n&quot;, sizeof(struct test));
+
+        /* a+i 或 &amp;a[0]+i = 被取址变量本身的地址  +  i * sizeof(被取址的变量的类型)*/
+        int a = *(&amp;ptest-&gt;count + 1);
+        printf(&quot;&amp;ptest-&gt;count    = %p\n&quot;, &amp;ptest-&gt;count);
+        printf(&quot;&amp;ptest-&gt;count +1 = %p\n&quot;, (&amp;ptest-&gt;count + 1));
+        printf(&quot;a=%d\n\n\n&quot;, a);
+
+        int(*p)[5] = (int(*)[5])(&amp;ptest-&gt;reverse[0]);
+
+        // int(*p)[5] = (&amp;ptest-&gt;reverse[0]);
+        /*
+        &amp;ptest-&gt;reverse[0]&lt;=&gt;数组0号元素的地址，类型为int* ，所以此处编译器会给出警告
+        */
+
+        /* 无论&amp;取哪个成员的地址，只要加上正确的偏移，总能正确访问到目标 */
+        printf(&quot;%d ,%d\n&quot;, *(&amp;ptest-&gt;count + 1), *((int *)p));
+        printf(&quot;%d ,%d\n&quot;, *(&amp;ptest-&gt;count + 1 + 5), *((int *)(p + 1)));
+        printf(&quot;%d ,%d\n&quot;, *(&amp;ptest-&gt;reverse[0] + 5), *((int *)(p + 1)));
+        printf(&quot;%d ,%d\n&quot;, *(&amp;ptest-&gt;reverse[1] + 4), *((int *)(p + 1)));
+
+        free(ptest);
+        return 0;
+}
 </code></pre>
-<pre><code class="language-c">#define  min(x,y)  ({                   \
-	 typeof(x)  __min1 = (x);        \
-     typeof(y) __min2 = (y);             \
-     (void)  (&amp; __min1 == &amp; __min2);     \
-    __min1 &lt; __min2  ? __min1 :__min2})
-    
+<pre><code class="language-bash">gcc - o test_1 test1.c
+./test_1
 </code></pre>
+<p><img src="/img/%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/4.png" alt="4"></p>
 
     </div>
 
@@ -655,7 +765,7 @@ printf(&quot;Printing an integer: %d\n&quot;, 25);
 
 <div class="article-tags">
   
-  <a class="badge badge-light" href="/tags/plus_c/">plus_C</a>
+  <a class="badge badge-light" href="/tags/c/">C</a>
   
 </div>
 
@@ -672,7 +782,7 @@ printf(&quot;Printing an integer: %d\n&quot;, 25);
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/&amp;text=C&#43;&#43;_Primer_Plus_chapter2" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/&amp;text=%e5%85%b3%e4%ba%8e%e5%8f%96%e5%9d%80%e7%ac%a6&amp;#39;&amp;amp;&amp;#39;%e7%9a%84%e8%ae%a8%e8%ae%ba" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -685,7 +795,7 @@ printf(&quot;Printing an integer: %d\n&quot;, 25);
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/&amp;t=C&#43;&#43;_Primer_Plus_chapter2" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/&amp;t=%e5%85%b3%e4%ba%8e%e5%8f%96%e5%9d%80%e7%ac%a6&amp;#39;&amp;amp;&amp;#39;%e7%9a%84%e8%ae%a8%e8%ae%ba" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -698,7 +808,7 @@ printf(&quot;Printing an integer: %d\n&quot;, 25);
       
       
       <li>
-        <a href="mailto:?subject=C&#43;&#43;_Primer_Plus_chapter2&amp;body=https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=%e5%85%b3%e4%ba%8e%e5%8f%96%e5%9d%80%e7%ac%a6&amp;#39;&amp;amp;&amp;#39;%e7%9a%84%e8%ae%a8%e8%ae%ba&amp;body=https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -711,7 +821,7 @@ printf(&quot;Printing an integer: %d\n&quot;, 25);
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/&amp;title=C&#43;&#43;_Primer_Plus_chapter2" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/&amp;title=%e5%85%b3%e4%ba%8e%e5%8f%96%e5%9d%80%e7%ac%a6&amp;#39;&amp;amp;&amp;#39;%e7%9a%84%e8%ae%a8%e8%ae%ba" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -724,7 +834,7 @@ printf(&quot;Printing an integer: %d\n&quot;, 25);
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=C&#43;&#43;_Primer_Plus_chapter2%20https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=%e5%85%b3%e4%ba%8e%e5%8f%96%e5%9d%80%e7%ac%a6&amp;#39;&amp;amp;&amp;#39;%e7%9a%84%e8%ae%a8%e8%ae%ba%20https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -737,7 +847,7 @@ printf(&quot;Printing an integer: %d\n&quot;, 25);
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/&amp;title=C&#43;&#43;_Primer_Plus_chapter2" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/&amp;title=%e5%85%b3%e4%ba%8e%e5%8f%96%e5%9d%80%e7%ac%a6&amp;#39;&amp;amp;&amp;#39;%e7%9a%84%e8%ae%a8%e8%ae%ba" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
@@ -794,6 +904,15 @@ printf(&quot;Printing an integer: %d\n&quot;, 25);
 
 
   
+  
+  <div class="article-widget content-widget-hr">
+    <h3>相关</h3>
+    <ul>
+      
+      <li><a href="/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/">Static的作用</a></li>
+      
+    </ul>
+  </div>
   
 
 
