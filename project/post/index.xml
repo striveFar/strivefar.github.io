@@ -5,12 +5,182 @@
     <link>https://strivefar.github.io/project/post/</link>
       <atom:link href="https://strivefar.github.io/project/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Tue, 01 Sep 2020 11:18:51 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Sun, 06 Sep 2020 16:23:31 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>https://strivefar.github.io/project/post/</link>
     </image>
+    
+    <item>
+      <title>浮点数的秘密</title>
+      <link>https://strivefar.github.io/project/post/c_advanced/</link>
+      <pubDate>Sun, 06 Sep 2020 16:23:31 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/c_advanced/</guid>
+      <description>&lt;h1 id=&#34;浮点数在内存中的存储方式&#34;&gt;浮点数在内存中的存储方式&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;浮点数在内存中由以下三部分组成：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;符号位&lt;/li&gt;
+&lt;li&gt;指数&lt;/li&gt;
+&lt;li&gt;尾数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;无论是float类型还是double类型的数据，在计算机内部的表示方法是相同的，但由于所占的存储空间不同，其分别能够表示的数值范围和精度不同。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;类型&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;符号位&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;指数&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;尾数&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1位（第31位）&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8位（第23~30位）&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;23位（第0~22位）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;double&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1位（第63位）&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;11位（第52~62位）&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;52位（第0~51位）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&#34;浮点数存储示例&#34;&gt;浮点数存储示例&lt;/h1&gt;
+&lt;p&gt;浮点数的转换&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;将浮点数转换成二进制&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;用科学计数法表示二进制浮点数&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;计算指数偏移后的值&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意∶&lt;/strong&gt;
+计算&lt;code&gt;指数&lt;/code&gt;时需要加上偏移量，而&lt;code&gt;偏移量的值与类型有关&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;对于指数6，偏移后的值如下：
+float : 127 + 6 = 123
+double: 1023 + 6 = 1030&lt;/p&gt;
+&lt;h2 id=&#34;实数825在内存中的float表示&#34;&gt;实数8.25在内存中的float表示&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-1.png&#34; alt=&#34;1-1&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;编程验证&#34;&gt;编程验证&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+/**功能：输出内存片段中的每一位的值
+ * 参数：
+ *      p :指向占1、2、4、8字节内存的变量的指针
+ *      size ：变量在内存中所占的字节数
+ */
+void put_bin(void *p, char size)
+{
+    char i;
+    switch (size)
+    {
+    case 1:
+        for (i = sizeof(unsigned char) * 8; i &amp;gt; 0; i--)
+        {
+            printf(&amp;quot;%d&amp;quot;, !!(*((unsigned char *)p) &amp;amp; (1 &amp;lt;&amp;lt; (i - 1))));
+            if (0 == (i - 1) % 4)
+                printf(&amp;quot; &amp;quot;);
+        }
+        printf(&amp;quot;\n&amp;quot;);
+        break;
+    case 2:
+        for (i = sizeof(unsigned short) * 8; i &amp;gt; 0; i--)
+        {
+            printf(&amp;quot;%d&amp;quot;, !!(*((unsigned short *)p) &amp;amp; (1 &amp;lt;&amp;lt; (i - 1))));
+            if (0 == (i - 1) % 4)
+                printf(&amp;quot; &amp;quot;);
+        }
+        printf(&amp;quot;\n&amp;quot;);
+        break;
+    case 4:
+        for (i = sizeof(unsigned int) * 8; i &amp;gt; 0; i--)
+        {
+            printf(&amp;quot;%d&amp;quot;, !!(*((unsigned int *)p) &amp;amp; (1 &amp;lt;&amp;lt; (i - 1))));
+            if (0 == (i - 1) % 4)
+                printf(&amp;quot; &amp;quot;);
+        }
+        printf(&amp;quot;\n&amp;quot;);
+        break;
+    case 8:
+        for (i = sizeof(long long) * 8; i &amp;gt; 0; i--)
+        {
+            printf(&amp;quot;%d&amp;quot;, !!(*((unsigned long long int *)p) &amp;amp; (1 &amp;lt;&amp;lt; (i - 1))));
+            if (0 == (i - 1) % 4)
+                printf(&amp;quot; &amp;quot;);
+        }
+        printf(&amp;quot;\n&amp;quot;);
+        break;
+    default:
+        break;
+    }
+}
+
+int main()
+{
+    float f = 8.25;
+    unsigned int *p = (unsigned int *)&amp;amp;f; //占用内存大小相同
+    put_bin(p, sizeof(unsigned int));     //输出unsigned int内存片段中的每一位的值
+    printf(&amp;quot;0x%08x\n&amp;quot;, *p);               //16进制打印
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出结果：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gcc -o test 3-1.c -m32
+./test
+0100 0001 0000 0100 0000 0000 0000 0000
+0x41040000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;精度问题&#34;&gt;精度问题&lt;/h1&gt;
+&lt;p&gt;为了引出对这一问题的思考，我们先看一下int与float类型的范围
+&lt;img src=&#34;https://strivefar.github.io/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-3.png&#34; alt=&#34;1-3&#34;&gt;
+&lt;strong&gt;那么问题来了：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;int 和 float 都占4字节的内存，为什么float却比int的范围大呢？&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;目前我们知道&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;int和float都占4个字节的内存，因此float能表示的具体数字的个数与int相同&lt;/li&gt;
+&lt;li&gt;float类型所能表示的数字的范围却比int的范围大&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;原因如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;float可表示的数字之间不是连续的，&lt;code&gt;存在间隙&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;float只是一种&lt;code&gt;近似的表示法&lt;/code&gt;，不能作为精确数使用&lt;/li&gt;
+&lt;li&gt;由于内存表示法相对复杂，float的运算速度比int&lt;code&gt;慢&lt;/code&gt;得多&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;编程验证-1&#34;&gt;编程验证&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+
+int main()
+{
+    float f = 3.14159f;
+    float fa = 123456789;
+
+    printf(&amp;quot;%0.10f\n&amp;quot;, f);
+    printf(&amp;quot;%0.10f\n&amp;quot;, fa);
+    
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出结果：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;3.1415901184
+123456792.0000000000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;注：本文为学习唐老师C进阶课程的笔记，如有问题，欢迎各位批评指正。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>细究 unsigned 与 signed</title>
