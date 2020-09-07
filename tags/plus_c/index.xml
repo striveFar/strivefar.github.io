@@ -5,12 +5,194 @@
     <link>https://strivefar.github.io/tags/plus_c/</link>
       <atom:link href="https://strivefar.github.io/tags/plus_c/index.xml" rel="self" type="application/rss+xml" />
     <description>plus_C</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Tue, 11 Aug 2020 09:36:53 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Mon, 07 Sep 2020 08:59:06 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>plus_C</title>
       <link>https://strivefar.github.io/tags/plus_c/</link>
     </image>
+    
+    <item>
+      <title>布尔类型和引用</title>
+      <link>https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/</link>
+      <pubDate>Mon, 07 Sep 2020 08:59:06 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-c%E4%B8%AD%E7%9A%84-bool-%E7%B1%BB%E5%9E%8B&#34;&gt;1. C++中的 bool 类型&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#11-bool-%E7%B1%BB%E5%9E%8B%E5%8F%82%E4%B8%8E%E6%95%B0%E5%AD%A6%E8%BF%90%E7%AE%97%E4%B8%8D%E5%BB%BA%E8%AE%AE%E4%BD%86%E5%85%81%E8%AE%B8&#34;&gt;1.1. bool 类型参与数学运算（不建议但允许）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-c%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8&#34;&gt;2. C++中的引用&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#21-c%E5%AF%B9%E4%B8%89%E7%9B%AE%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%8D%87%E7%BA%A7&#34;&gt;2.1. C++对三目运算符的升级&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-c中的-bool-类型&#34;&gt;1. C++中的 bool 类型&lt;/h1&gt;
+&lt;p&gt;特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;bool 可取的值只有true 和 false&lt;/li&gt;
+&lt;li&gt;理论上bool只占用一个字节&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;注意：&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;true 代表真值，编译器内部用 1 来表示
+false 代表非真值，编译器内部用 0 来表示
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;11-bool-类型参与数学运算不建议但允许&#34;&gt;1.1. bool 类型参与数学运算（不建议但允许）&lt;/h2&gt;
+&lt;p&gt;为了兼容C语言，c++中的bool类型可以进行数学运算，g++编译器当遇到bool类型参与数学运算时，直接将其当做一个只占用一个字节的整型数来处理，但是会将最终的结果按照以下规则进行转换：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将非零值用&lt;code&gt;true&lt;/code&gt;（1）来代替&lt;/li&gt;
+&lt;li&gt;将零值用  &lt;code&gt;false&lt;/code&gt;（0）来代替&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;示例1：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+int main(int argc, char *argv[])
+{
+
+    bool b = false; 
+    printf(&amp;quot;sizeof(b) = %d\n&amp;quot;, sizeof(b));
+    printf(&amp;quot;b = %d\n&amp;quot;, b);
+
+    b++; // b = 1; =&amp;gt; 非零值;
+    printf(&amp;quot;b = %d\n&amp;quot;, b);
+
+    b = b - 3;// b = 1 - 3 = -2 =&amp;gt; 非零值;
+    printf(&amp;quot;b = %d\n&amp;quot;, b);
+
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;编译：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;g++ -o test  4-1.cpp -m32
+4-1.cpp: In function ‘int main(int, char**)’:
+4-1.cpp:8:6: warning: use of an operand of type ‘bool’ in ‘operator++’ is deprecated [-Wdeprecated]
+    b++;
+      ^~
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;可见：编译器给出了警告，bool 类型参与数学运算，编译器的态度是不建议但允许&lt;/p&gt;
+&lt;p&gt;运行:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出结果如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sizeof(b) = 1
+b = 0
+b = 1
+b = 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;示例2：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+
+int main(int argc, char *argv[])
+{
+    bool b = false;
+    int a = b;
+    
+    printf(&amp;quot;sizeof(b) = %d\n&amp;quot;, sizeof(b));
+    printf(&amp;quot;b = %d, a = %d\n&amp;quot;, b, a);
+    
+    b = 3;
+    a = b;
+    printf(&amp;quot;b = %d, a = %d\n&amp;quot;, b, a);
+    
+    b = -5;
+    a = b;
+    printf(&amp;quot;b = %d, a = %d\n&amp;quot;, b, a);
+    
+    a = 10;
+    b = a;
+    printf(&amp;quot;b = %d, a = %d\n&amp;quot;, b, a);
+    
+    a = 0;
+    b = a;
+    printf(&amp;quot;b = %d, a = %d\n&amp;quot;, b, a);
+    
+    return 0;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;编译：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;g++ -o test  4-2.cpp -m32
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;运行：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;./test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;输出结果如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sizeof(b) = 1
+b = 0, a = 0
+b = 1, a = 1
+b = 1, a = 1
+b = 1, a = 10
+b = 0, a = 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;2-c中的引用&#34;&gt;2. C++中的引用&lt;/h1&gt;
+&lt;p&gt;在讨论引用之前，我们先来明确几个概念：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;变量是一段实际连续存储空间的别名&lt;/li&gt;
+&lt;li&gt;程序中通过变量来申请并命名存储空间&lt;/li&gt;
+&lt;li&gt;通过变量的名字可以使用存储空间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;但一段连续的存储空间不止可以有一个别名&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;于是在C++中新增加了引用的概念&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;引用可以看作一个已定义变量的别名&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;引用的语法:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Type &amp;amp; name = var;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;注意： C++是强类型的，普通引用在定义时必须用同类型的变量进行初始化。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;21-c对三目运算符的升级&#34;&gt;2.1. C++对三目运算符的升级&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/bool/1-1.png&#34; alt=&#34;1-1&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当三目运算符的可能返回都是变量时，返回的是&lt;code&gt;变量的引用&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;当三目运算符的可能返回中有常量时，返回的是&lt;code&gt;值&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;示例3： 4-3.cpp&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+
+int main(int argc, char *argv[])
+{
+    int a = 1;
+    int b = 2;
+
+    float f = 0.123f;
+    float &amp;amp;f_quote = f;
+    printf(&amp;quot;f = %f, f_quote= %f\n&amp;quot;, f, f_quote);
+    printf(&amp;quot;&amp;amp;f = %p, &amp;amp;f_quote = %p\n&amp;quot;, &amp;amp;f, &amp;amp;f_quote);
+
+    (a &amp;lt; b ? a : b) = 3;     //正确，返回a或b的引用，可作为左值
+    printf(&amp;quot;a = %d, b = %d\n&amp;quot;, a, b);
+
+    //printf(a &amp;lt; b ? 1 : b); //错误，返回1或b的值，不能作为左值
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;编译运行：
+gcc -o test  4-3.cpp -m32
+./test&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;f = 0.123000, f_quote= 0.123000
+&amp;amp;f = 0xfff78cec, &amp;amp;f_quote = 0xfff78cec
+a = 3, b = 2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：这里三目运算符的可能返回都是变量，返回的是&lt;code&gt;变量的引用&lt;/code&gt;，也就是a的引用，也就是a的另外一个名字，我们先不管a变量空间的另外一个名字是啥，从概念上我们很容易知道，a的引用就是a变量本身&lt;/p&gt;
+&lt;p&gt;仅保留三目运算符相关代码，将文件后缀改为.c
+编译报错如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gcc -o test  4-3.c -m32
+
+4-3.c: In function ‘main’:
+4-3.c:8:21: error: lvalue required as left operand of assignment
+    (a &amp;lt; b ? a : b) = 3; //正确，返回a或b的引用，可作为左值
+                    ^
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;由此可见：&lt;code&gt; C语言不允许三目运算符做左值&lt;/code&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>C&#43;&#43;_Primer_Plus_chapter2</title>

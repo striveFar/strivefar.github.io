@@ -28,10 +28,10 @@
   
     
   
-  <meta name="description" content="1. 浮点数在内存中的存储方式 2. 浮点数存储示例 2.1. 实数8.25在内存中的float表示 2.2. 编程验证 3. 精度问题 3.1. 编程验证 1. 浮点数在内存中的存储方式 浮点">
+  <meta name="description" content="1. C&#43;&#43;中的 bool 类型 1.1. bool 类型参与数学运算（不建议但允许） 2. C&#43;&#43;中的引用 2.1. C&#43;&#43;对三目运算符的升级 1. C&#43;&#43;中的 bool 类型 特点： bool 可取的值只有tru">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/c_advanced/">
+  <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/">
 
   
 
@@ -215,7 +215,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="https://strivefar.github.io/project/post/c_advanced/">
+  <link rel="canonical" href="https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/">
 
   
   
@@ -228,15 +228,15 @@
   <meta property="twitter:card" content="summary_large_image">
   
   <meta property="og:site_name" content="YoungFar的个人博客——Love&amp;Share">
-  <meta property="og:url" content="https://strivefar.github.io/project/post/c_advanced/">
-  <meta property="og:title" content="浮点数的秘密 | YoungFar的个人博客——Love&amp;Share">
-  <meta property="og:description" content="1. 浮点数在内存中的存储方式 2. 浮点数存储示例 2.1. 实数8.25在内存中的float表示 2.2. 编程验证 3. 精度问题 3.1. 编程验证 1. 浮点数在内存中的存储方式 浮点"><meta property="og:image" content="https://strivefar.github.io/project/post/c_advanced/featured.jpg">
-  <meta property="twitter:image" content="https://strivefar.github.io/project/post/c_advanced/featured.jpg"><meta property="og:locale" content="en-us">
+  <meta property="og:url" content="https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/">
+  <meta property="og:title" content="布尔类型和引用 | YoungFar的个人博客——Love&amp;Share">
+  <meta property="og:description" content="1. C&#43;&#43;中的 bool 类型 1.1. bool 类型参与数学运算（不建议但允许） 2. C&#43;&#43;中的引用 2.1. C&#43;&#43;对三目运算符的升级 1. C&#43;&#43;中的 bool 类型 特点： bool 可取的值只有tru"><meta property="og:image" content="https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/featured.jpg">
+  <meta property="twitter:image" content="https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/featured.jpg"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2020-09-06T16:23:31&#43;08:00">
+      <meta property="article:published_time" content="2020-09-07T08:59:06&#43;08:00">
     
-    <meta property="article:modified_time" content="2020-09-06T16:23:31&#43;08:00">
+    <meta property="article:modified_time" content="2020-09-07T08:59:06&#43;08:00">
   
 
   
@@ -260,16 +260,16 @@
   "@type": "Article",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://strivefar.github.io/project/post/c_advanced/"
+    "@id": "https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/"
   },
-  "headline": "浮点数的秘密",
+  "headline": "布尔类型和引用",
   
   "image": [
-    "https://strivefar.github.io/project/post/c_advanced/featured.jpg"
+    "https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/featured.jpg"
   ],
   
-  "datePublished": "2020-09-06T16:23:31+08:00",
-  "dateModified": "2020-09-06T16:23:31+08:00",
+  "datePublished": "2020-09-07T08:59:06+08:00",
+  "dateModified": "2020-09-07T08:59:06+08:00",
   
   "author": {
     "@type": "Person",
@@ -284,7 +284,7 @@
       "url": "img/https://strivefar.github.io/"
     }
   },
-  "description": "1. 浮点数在内存中的存储方式 2. 浮点数存储示例 2.1. 实数8.25在内存中的float表示 2.2. 编程验证 3. 精度问题 3.1. 编程验证 1. 浮点数在内存中的存储方式 浮点"
+  "description": "1. C++中的 bool 类型 1.1. bool 类型参与数学运算（不建议但允许） 2. C++中的引用 2.1. C++对三目运算符的升级 1. C++中的 bool 类型 特点： bool 可取的值只有tru"
 }
 </script>
 
@@ -302,7 +302,7 @@
 
 
 
-  <title>浮点数的秘密 | YoungFar的个人博客——Love&amp;Share</title>
+  <title>布尔类型和引用 | YoungFar的个人博客——Love&amp;Share</title>
 
 </head>
 
@@ -517,7 +517,7 @@
 
 
 <div class="article-container pt-3">
-  <h1>浮点数的秘密</h1>
+  <h1>布尔类型和引用</h1>
 
   
   <p class="page-subtitle">如有问题，欢迎各位批评指正。 🚀&rsquo;</p>
@@ -550,7 +550,7 @@
     
       
     
-    2020-09-06
+    2020-09-07
   </span>
   
 
@@ -585,9 +585,9 @@
 </div>
 
 
-<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 480px;">
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 481px;">
   <div style="position: relative">
-    <img src="/project/post/c_advanced/featured_hued65cdc45023487030d1bd843be4fe39_710347_720x0_resize_q90_lanczos.jpg" alt="" class="featured-image">
+    <img src="/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/featured_hu7ef3e059e4015578665659cdf970cef7_237505_720x0_resize_q90_lanczos.jpg" alt="" class="featured-image">
     
   </div>
 </div>
@@ -598,209 +598,179 @@
 
     <div class="article-style">
       <ul>
-<li><a href="#1-%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F">1. 浮点数在内存中的存储方式</a></li>
-<li><a href="#2-%E6%B5%AE%E7%82%B9%E6%95%B0%E5%AD%98%E5%82%A8%E7%A4%BA%E4%BE%8B">2. 浮点数存储示例</a>
+<li><a href="#1-c%E4%B8%AD%E7%9A%84-bool-%E7%B1%BB%E5%9E%8B">1. C++中的 bool 类型</a>
 <ul>
-<li><a href="#21-%E5%AE%9E%E6%95%B0825%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84float%E8%A1%A8%E7%A4%BA">2.1. 实数8.25在内存中的float表示</a></li>
-<li><a href="#22-%E7%BC%96%E7%A8%8B%E9%AA%8C%E8%AF%81">2.2. 编程验证</a></li>
+<li><a href="#11-bool-%E7%B1%BB%E5%9E%8B%E5%8F%82%E4%B8%8E%E6%95%B0%E5%AD%A6%E8%BF%90%E7%AE%97%E4%B8%8D%E5%BB%BA%E8%AE%AE%E4%BD%86%E5%85%81%E8%AE%B8">1.1. bool 类型参与数学运算（不建议但允许）</a></li>
 </ul>
 </li>
-<li><a href="#3-%E7%B2%BE%E5%BA%A6%E9%97%AE%E9%A2%98">3. 精度问题</a>
+<li><a href="#2-c%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8">2. C++中的引用</a>
 <ul>
-<li><a href="#31-%E7%BC%96%E7%A8%8B%E9%AA%8C%E8%AF%81">3.1. 编程验证</a></li>
+<li><a href="#21-c%E5%AF%B9%E4%B8%89%E7%9B%AE%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%8D%87%E7%BA%A7">2.1. C++对三目运算符的升级</a></li>
 </ul>
 </li>
 </ul>
-<h1 id="1-浮点数在内存中的存储方式">1. 浮点数在内存中的存储方式</h1>
-<p><strong>浮点数在内存中由以下三部分组成：</strong></p>
+<h1 id="1-c中的-bool-类型">1. C++中的 bool 类型</h1>
+<p>特点：</p>
 <ul>
-<li>符号位</li>
-<li>指数</li>
-<li>尾数</li>
+<li>bool 可取的值只有true 和 false</li>
+<li>理论上bool只占用一个字节</li>
 </ul>
-<p>无论是float类型还是double类型的数据，在计算机内部的表示方法是相同的，但由于所占的存储空间不同，其分别能够表示的数值范围和精度不同。</p>
-<table>
-<thead>
-<tr>
-<th align="center">类型</th>
-<th align="center">符号位</th>
-<th align="center">指数</th>
-<th align="center">尾数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center">float</td>
-<td align="center">1位（第31位）</td>
-<td align="center">8位（第23~30位）</td>
-<td align="center">23位（第0~22位）</td>
-</tr>
-<tr>
-<td align="center">double</td>
-<td align="center">1位（第63位）</td>
-<td align="center">11位（第52~62位）</td>
-<td align="center">52位（第0~51位）</td>
-</tr>
-</tbody>
-</table>
-<h1 id="2-浮点数存储示例">2. 浮点数存储示例</h1>
-<p>浮点数的转换</p>
-<ul>
-<li>
-<ol>
-<li>将浮点数转换成二进制</li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li>用科学计数法表示二进制浮点数</li>
-</ol>
-</li>
-<li>
-<ol start="3">
-<li>计算指数偏移后的值</li>
-</ol>
-</li>
-</ul>
-<p><strong>注意∶</strong></p>
-<ul>
-<li>
-<ol>
-<li>计算<code>指数</code>时需要加上偏移量，而<code>偏移量的值与类型有关</code>。</li>
-</ol>
-</li>
-</ul>
-<p>对于指数6，偏移后的值如下：</p>
-<pre><code>float : 127 + 6 = 123
-double: 1023 + 6 = 1030
+<p><strong><code>注意：</code></strong></p>
+<pre><code>true 代表真值，编译器内部用 1 来表示
+false 代表非真值，编译器内部用 0 来表示
 </code></pre>
+<h2 id="11-bool-类型参与数学运算不建议但允许">1.1. bool 类型参与数学运算（不建议但允许）</h2>
+<p>为了兼容C语言，c++中的bool类型可以进行数学运算，g++编译器当遇到bool类型参与数学运算时，直接将其当做一个只占用一个字节的整型数来处理，但是会将最终的结果按照以下规则进行转换：</p>
 <ul>
-<li>
-<ol start="2">
-<li>小数用二进制如何表示</li>
-</ol>
-</li>
+<li>将非零值用<code>true</code>（1）来代替</li>
+<li>将零值用  <code>false</code>（0）来代替</li>
 </ul>
-<p>首先，给出一个任意实数，整数部分用普通的二进制便可以表示，这里只说小数部分如何表示</p>
-<p>例如0.6</p>
-<p>文字描述该过程如下：将该数字乘以2，取出整数部分作为二进制表示的第1位；然后再将小数部分乘以2，将得到的整数部分作为二进制表示的第2位；以此类推，知道小数部分为0。</p>
-<p>特殊情况： 小数部分出现循环，无法停止，则用有限的二进制位无法准确表示一个小数，这也是在编程语言中表示小数会出现误差的原因</p>
-<p>下面我们具体计算一下0.6的小数表示过程</p>
-<pre><code>0.6 * 2 = 1.2 ——————- 1
-0.2 * 2 = 0.4 ——————- 0
-0.4 * 2 = 0.8 ——————- 0
-0.8 * 2 = 1.6 ——————- 1
-0.6 * 2 = 1.2 ——————- 1
-…………
-</code></pre>
-<p>我们可以发现在该计算中已经出现了循环，0.6用二进制表示为 1001 1001 1001 1001 ……
-如果是10.6，那个10.6的完整二进制表示为 1010.100110011001……</p>
-<p>参考：https://blog.csdn.net/xingtanzjr/article/details/50803832</p>
-<h2 id="21-实数825在内存中的float表示">2.1. 实数8.25在内存中的float表示</h2>
-<p><img src="/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-1.png" alt="1-1"></p>
-<h2 id="22-编程验证">2.2. 编程验证</h2>
+<p>示例1：</p>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
-/**功能：输出内存片段中的每一位的值
- * 参数：
- *      p :指向占1、2、4、8字节内存的变量的指针
- *      size ：变量在内存中所占的字节数
- */
-void put_bin(void *p, char size)
+int main(int argc, char *argv[])
 {
-    char i;
-    switch (size)
-    {
-    case 1:
-        for (i = sizeof(unsigned char) * 8; i &gt; 0; i--)
-        {
-            printf(&quot;%d&quot;, !!(*((unsigned char *)p) &amp; (1 &lt;&lt; (i - 1))));
-            if (0 == (i - 1) % 4)
-                printf(&quot; &quot;);
-        }
-        printf(&quot;\n&quot;);
-        break;
-    case 2:
-        for (i = sizeof(unsigned short) * 8; i &gt; 0; i--)
-        {
-            printf(&quot;%d&quot;, !!(*((unsigned short *)p) &amp; (1 &lt;&lt; (i - 1))));
-            if (0 == (i - 1) % 4)
-                printf(&quot; &quot;);
-        }
-        printf(&quot;\n&quot;);
-        break;
-    case 4:
-        for (i = sizeof(unsigned int) * 8; i &gt; 0; i--)
-        {
-            printf(&quot;%d&quot;, !!(*((unsigned int *)p) &amp; (1 &lt;&lt; (i - 1))));
-            if (0 == (i - 1) % 4)
-                printf(&quot; &quot;);
-        }
-        printf(&quot;\n&quot;);
-        break;
-    case 8:
-        for (i = sizeof(long long) * 8; i &gt; 0; i--)
-        {
-            printf(&quot;%d&quot;, !!(*((unsigned long long int *)p) &amp; (1 &lt;&lt; (i - 1))));
-            if (0 == (i - 1) % 4)
-                printf(&quot; &quot;);
-        }
-        printf(&quot;\n&quot;);
-        break;
-    default:
-        break;
-    }
-}
 
-int main()
-{
-    float f = 8.25;
-    unsigned int *p = (unsigned int *)&amp;f; //占用内存大小相同
-    put_bin(p, sizeof(unsigned int));     //输出unsigned int内存片段中的每一位的值
-    printf(&quot;0x%08x\n&quot;, *p);               //16进制打印
+    bool b = false; 
+    printf(&quot;sizeof(b) = %d\n&quot;, sizeof(b));
+    printf(&quot;b = %d\n&quot;, b);
+
+    b++; // b = 1; =&gt; 非零值;
+    printf(&quot;b = %d\n&quot;, b);
+
+    b = b - 3;// b = 1 - 3 = -2 =&gt; 非零值;
+    printf(&quot;b = %d\n&quot;, b);
+
     return 0;
 }
 </code></pre>
-<p>输出结果：</p>
-<pre><code>gcc -o test 3-1.c -m32
-./test
-0100 0001 0000 0100 0000 0000 0000 0000
-0x41040000
+<p>编译：</p>
+<pre><code>g++ -o test  4-1.cpp -m32
+4-1.cpp: In function ‘int main(int, char**)’:
+4-1.cpp:8:6: warning: use of an operand of type ‘bool’ in ‘operator++’ is deprecated [-Wdeprecated]
+    b++;
+      ^~
 </code></pre>
-<h1 id="3-精度问题">3. 精度问题</h1>
-<p>为了引出对这一问题的思考，我们先看一下int与float类型的范围
-<img src="/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-3.png" alt="1-3">
-<strong>那么问题来了：</strong></p>
-<p><code>int 和 float 都占4字节的内存，为什么float却比int的范围大呢？</code></p>
-<p>目前我们知道</p>
-<ul>
-<li>int和float都占4个字节的内存，因此float能表示的具体数字的个数与int相同</li>
-<li>float类型所能表示的数字的范围却比int的范围大</li>
-</ul>
-<p>因此：</p>
-<ul>
-<li>float可表示的数字之间不是连续的，<code>存在间隙</code></li>
-<li>float只是一种<code>近似的表示法</code>，不能作为精确数使用</li>
-<li>由于内存表示法相对复杂，float的运算速度比int<code>慢</code>得多</li>
-</ul>
-<h2 id="31-编程验证">3.1. 编程验证</h2>
+<p>可见：编译器给出了警告，bool 类型参与数学运算，编译器的态度是不建议但允许</p>
+<p>运行:</p>
+<pre><code>./test
+</code></pre>
+<p>输出结果如下：</p>
+<pre><code>sizeof(b) = 1
+b = 0
+b = 1
+b = 1
+</code></pre>
+<p>示例2：</p>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
 
-int main()
+int main(int argc, char *argv[])
 {
-    float f = 3.14159f;
-    float fa = 123456789;
-
-    printf(&quot;%0.10f\n&quot;, f);
-    printf(&quot;%0.10f\n&quot;, fa);
+    bool b = false;
+    int a = b;
+    
+    printf(&quot;sizeof(b) = %d\n&quot;, sizeof(b));
+    printf(&quot;b = %d, a = %d\n&quot;, b, a);
+    
+    b = 3;
+    a = b;
+    printf(&quot;b = %d, a = %d\n&quot;, b, a);
+    
+    b = -5;
+    a = b;
+    printf(&quot;b = %d, a = %d\n&quot;, b, a);
+    
+    a = 10;
+    b = a;
+    printf(&quot;b = %d, a = %d\n&quot;, b, a);
+    
+    a = 0;
+    b = a;
+    printf(&quot;b = %d, a = %d\n&quot;, b, a);
     
     return 0;
 }
+
 </code></pre>
-<p>输出结果：</p>
-<pre><code>3.1415901184
-123456792.0000000000
+<p>编译：</p>
+<pre><code>g++ -o test  4-2.cpp -m32
 </code></pre>
-<p>注：本文为学习唐老师C进阶课程的笔记，如有问题，欢迎各位批评指正。</p>
+<p>运行：</p>
+<pre><code>./test
+</code></pre>
+<p>输出结果如下：</p>
+<pre><code>sizeof(b) = 1
+b = 0, a = 0
+b = 1, a = 1
+b = 1, a = 1
+b = 1, a = 10
+b = 0, a = 0
+</code></pre>
+<h1 id="2-c中的引用">2. C++中的引用</h1>
+<p>在讨论引用之前，我们先来明确几个概念：</p>
+<ul>
+<li>变量是一段实际连续存储空间的别名</li>
+<li>程序中通过变量来申请并命名存储空间</li>
+<li>通过变量的名字可以使用存储空间</li>
+</ul>
+<p><strong>但一段连续的存储空间不止可以有一个别名</strong></p>
+<p>于是在C++中新增加了引用的概念</p>
+<ul>
+<li>
+<p>引用可以看作一个已定义变量的别名</p>
+</li>
+<li>
+<p>引用的语法:</p>
+<pre><code>Type &amp; name = var;
+</code></pre>
+</li>
+<li>
+<p>注意： C++是强类型的，普通引用在定义时必须用同类型的变量进行初始化。</p>
+</li>
+</ul>
+<h2 id="21-c对三目运算符的升级">2.1. C++对三目运算符的升级</h2>
+<p><img src="/img/bool/1-1.png" alt="1-1"></p>
+<ul>
+<li>当三目运算符的可能返回都是变量时，返回的是<code>变量的引用</code></li>
+<li>当三目运算符的可能返回中有常量时，返回的是<code>值</code></li>
+</ul>
+<p>示例3： 4-3.cpp</p>
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+int main(int argc, char *argv[])
+{
+    int a = 1;
+    int b = 2;
+
+    float f = 0.123f;
+    float &amp;f_quote = f;
+    printf(&quot;f = %f, f_quote= %f\n&quot;, f, f_quote);
+    printf(&quot;&amp;f = %p, &amp;f_quote = %p\n&quot;, &amp;f, &amp;f_quote);
+
+    (a &lt; b ? a : b) = 3;     //正确，返回a或b的引用，可作为左值
+    printf(&quot;a = %d, b = %d\n&quot;, a, b);
+
+    //printf(a &lt; b ? 1 : b); //错误，返回1或b的值，不能作为左值
+    return 0;
+}
+</code></pre>
+<p>编译运行：
+gcc -o test  4-3.cpp -m32
+./test</p>
+<pre><code>f = 0.123000, f_quote= 0.123000
+&amp;f = 0xfff78cec, &amp;f_quote = 0xfff78cec
+a = 3, b = 2
+</code></pre>
+<p><strong>注意</strong>：这里三目运算符的可能返回都是变量，返回的是<code>变量的引用</code>，也就是a的引用，也就是a的另外一个名字，我们先不管a变量空间的另外一个名字是啥，从概念上我们很容易知道，a的引用就是a变量本身</p>
+<p>仅保留三目运算符相关代码，将文件后缀改为.c
+编译报错如下：</p>
+<pre><code>gcc -o test  4-3.c -m32
+
+4-3.c: In function ‘main’:
+4-3.c:8:21: error: lvalue required as left operand of assignment
+    (a &lt; b ? a : b) = 3; //正确，返回a或b的引用，可作为左值
+                    ^
+</code></pre>
+<p>由此可见：<code> C语言不允许三目运算符做左值</code></p>
 
     </div>
 
@@ -812,7 +782,7 @@ int main()
 
 <div class="article-tags">
   
-  <a class="badge badge-light" href="/tags/c/">C</a>
+  <a class="badge badge-light" href="/tags/plus_c/">plus_C</a>
   
 </div>
 
@@ -829,7 +799,7 @@ int main()
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/c_advanced/&amp;text=%e6%b5%ae%e7%82%b9%e6%95%b0%e7%9a%84%e7%a7%98%e5%af%86" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/&amp;text=%e5%b8%83%e5%b0%94%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%bc%95%e7%94%a8" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -842,7 +812,7 @@ int main()
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/c_advanced/&amp;t=%e6%b5%ae%e7%82%b9%e6%95%b0%e7%9a%84%e7%a7%98%e5%af%86" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/&amp;t=%e5%b8%83%e5%b0%94%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%bc%95%e7%94%a8" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -855,7 +825,7 @@ int main()
       
       
       <li>
-        <a href="mailto:?subject=%e6%b5%ae%e7%82%b9%e6%95%b0%e7%9a%84%e7%a7%98%e5%af%86&amp;body=https://strivefar.github.io/project/post/c_advanced/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=%e5%b8%83%e5%b0%94%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%bc%95%e7%94%a8&amp;body=https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -868,7 +838,7 @@ int main()
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/c_advanced/&amp;title=%e6%b5%ae%e7%82%b9%e6%95%b0%e7%9a%84%e7%a7%98%e5%af%86" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/&amp;title=%e5%b8%83%e5%b0%94%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%bc%95%e7%94%a8" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -881,7 +851,7 @@ int main()
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=%e6%b5%ae%e7%82%b9%e6%95%b0%e7%9a%84%e7%a7%98%e5%af%86%20https://strivefar.github.io/project/post/c_advanced/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=%e5%b8%83%e5%b0%94%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%bc%95%e7%94%a8%20https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -894,7 +864,7 @@ int main()
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/c_advanced/&amp;title=%e6%b5%ae%e7%82%b9%e6%95%b0%e7%9a%84%e7%a7%98%e5%af%86" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8/&amp;title=%e5%b8%83%e5%b0%94%e7%b1%bb%e5%9e%8b%e5%92%8c%e5%bc%95%e7%94%a8" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
@@ -956,11 +926,7 @@ int main()
     <h3>相关</h3>
     <ul>
       
-      <li><a href="/project/post/unsigned%E4%B8%8Esigned/">细究 unsigned 与 signed</a></li>
-      
-      <li><a href="/project/post/%E5%85%B3%E4%BA%8E%E5%8F%96%E5%9D%80%E7%AC%A6%E7%9A%84%E8%AE%A8%E8%AE%BA/">关于取址符&#39;&amp;&#39;的讨论</a></li>
-      
-      <li><a href="/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/">Static的作用</a></li>
+      <li><a href="/project/post/c&#43;&#43;_primer_plus_chapter2/">C&#43;&#43;_Primer_Plus_chapter2</a></li>
       
     </ul>
   </div>
