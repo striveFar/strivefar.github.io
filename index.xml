@@ -79,7 +79,21 @@
       <link>https://strivefar.github.io/project/post/c_advanced/</link>
       <pubDate>Sun, 06 Sep 2020 16:23:31 +0800</pubDate>
       <guid>https://strivefar.github.io/project/post/c_advanced/</guid>
-      <description>&lt;h1 id=&#34;浮点数在内存中的存储方式&#34;&gt;浮点数在内存中的存储方式&lt;/h1&gt;
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F&#34;&gt;1. 浮点数在内存中的存储方式&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-%E6%B5%AE%E7%82%B9%E6%95%B0%E5%AD%98%E5%82%A8%E7%A4%BA%E4%BE%8B&#34;&gt;2. 浮点数存储示例&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#21-%E5%AE%9E%E6%95%B0825%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84float%E8%A1%A8%E7%A4%BA&#34;&gt;2.1. 实数8.25在内存中的float表示&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#22-%E7%BC%96%E7%A8%8B%E9%AA%8C%E8%AF%81&#34;&gt;2.2. 编程验证&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-%E7%B2%BE%E5%BA%A6%E9%97%AE%E9%A2%98&#34;&gt;3. 精度问题&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#31-%E7%BC%96%E7%A8%8B%E9%AA%8C%E8%AF%81&#34;&gt;3.1. 编程验证&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-浮点数在内存中的存储方式&#34;&gt;1. 浮点数在内存中的存储方式&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;浮点数在内存中由以下三部分组成：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;符号位&lt;/li&gt;
@@ -111,7 +125,7 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h1 id=&#34;浮点数存储示例&#34;&gt;浮点数存储示例&lt;/h1&gt;
+&lt;h1 id=&#34;2-浮点数存储示例&#34;&gt;2. 浮点数存储示例&lt;/h1&gt;
 &lt;p&gt;浮点数的转换&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -130,14 +144,43 @@
 &lt;/ol&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;注意∶&lt;/strong&gt;
-计算&lt;code&gt;指数&lt;/code&gt;时需要加上偏移量，而&lt;code&gt;偏移量的值与类型有关&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;对于指数6，偏移后的值如下：
-float : 127 + 6 = 123
-double: 1023 + 6 = 1030&lt;/p&gt;
-&lt;h2 id=&#34;实数825在内存中的float表示&#34;&gt;实数8.25在内存中的float表示&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;注意∶&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;计算&lt;code&gt;指数&lt;/code&gt;时需要加上偏移量，而&lt;code&gt;偏移量的值与类型有关&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于指数6，偏移后的值如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;float : 127 + 6 = 123
+double: 1023 + 6 = 1030
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;小数用二进制如何表示&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;首先，给出一个任意实数，整数部分用普通的二进制便可以表示，这里只说小数部分如何表示&lt;/p&gt;
+&lt;p&gt;例如0.6&lt;/p&gt;
+&lt;p&gt;文字描述该过程如下：将该数字乘以2，取出整数部分作为二进制表示的第1位；然后再将小数部分乘以2，将得到的整数部分作为二进制表示的第2位；以此类推，知道小数部分为0。&lt;/p&gt;
+&lt;p&gt;特殊情况： 小数部分出现循环，无法停止，则用有限的二进制位无法准确表示一个小数，这也是在编程语言中表示小数会出现误差的原因&lt;/p&gt;
+&lt;p&gt;下面我们具体计算一下0.6的小数表示过程&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;0.6 * 2 = 1.2 ——————- 1
+0.2 * 2 = 0.4 ——————- 0
+0.4 * 2 = 0.8 ——————- 0
+0.8 * 2 = 1.6 ——————- 1
+0.6 * 2 = 1.2 ——————- 1
+…………
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;我们可以发现在该计算中已经出现了循环，0.6用二进制表示为 1001 1001 1001 1001 ……
+如果是10.6，那个10.6的完整二进制表示为 1010.100110011001……&lt;/p&gt;
+&lt;p&gt;参考：https://blog.csdn.net/xingtanzjr/article/details/50803832&lt;/p&gt;
+&lt;h2 id=&#34;21-实数825在内存中的float表示&#34;&gt;2.1. 实数8.25在内存中的float表示&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-1.png&#34; alt=&#34;1-1&#34;&gt;&lt;/p&gt;
-&lt;h2 id=&#34;编程验证&#34;&gt;编程验证&lt;/h2&gt;
+&lt;h2 id=&#34;22-编程验证&#34;&gt;2.2. 编程验证&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
 /**功能：输出内存片段中的每一位的值
  * 参数：
@@ -205,7 +248,7 @@ int main()
 0100 0001 0000 0100 0000 0000 0000 0000
 0x41040000
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h1 id=&#34;精度问题&#34;&gt;精度问题&lt;/h1&gt;
+&lt;h1 id=&#34;3-精度问题&#34;&gt;3. 精度问题&lt;/h1&gt;
 &lt;p&gt;为了引出对这一问题的思考，我们先看一下int与float类型的范围
 &lt;img src=&#34;https://strivefar.github.io/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-3.png&#34; alt=&#34;1-3&#34;&gt;
 &lt;strong&gt;那么问题来了：&lt;/strong&gt;&lt;/p&gt;
@@ -214,15 +257,14 @@ int main()
 &lt;ul&gt;
 &lt;li&gt;int和float都占4个字节的内存，因此float能表示的具体数字的个数与int相同&lt;/li&gt;
 &lt;li&gt;float类型所能表示的数字的范围却比int的范围大&lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;原因如下：&lt;/p&gt;
+&lt;p&gt;因此：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;float可表示的数字之间不是连续的，&lt;code&gt;存在间隙&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;float只是一种&lt;code&gt;近似的表示法&lt;/code&gt;，不能作为精确数使用&lt;/li&gt;
 &lt;li&gt;由于内存表示法相对复杂，float的运算速度比int&lt;code&gt;慢&lt;/code&gt;得多&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;编程验证-1&#34;&gt;编程验证&lt;/h2&gt;
+&lt;h2 id=&#34;31-编程验证&#34;&gt;3.1. 编程验证&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
 
 int main()

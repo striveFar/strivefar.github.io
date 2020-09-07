@@ -28,7 +28,7 @@
   
     
   
-  <meta name="description" content="浮点数在内存中的存储方式 浮点数在内存中由以下三部分组成： 符号位 指数 尾数 无论是float类型还是double类型的数据，在计算机内部的表示方法">
+  <meta name="description" content="1. 浮点数在内存中的存储方式 2. 浮点数存储示例 2.1. 实数8.25在内存中的float表示 2.2. 编程验证 3. 精度问题 3.1. 编程验证 1. 浮点数在内存中的存储方式 浮点">
 
   
   <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/c_advanced/">
@@ -230,7 +230,7 @@
   <meta property="og:site_name" content="YoungFar的个人博客——Love&amp;Share">
   <meta property="og:url" content="https://strivefar.github.io/project/post/c_advanced/">
   <meta property="og:title" content="浮点数的秘密 | YoungFar的个人博客——Love&amp;Share">
-  <meta property="og:description" content="浮点数在内存中的存储方式 浮点数在内存中由以下三部分组成： 符号位 指数 尾数 无论是float类型还是double类型的数据，在计算机内部的表示方法"><meta property="og:image" content="https://strivefar.github.io/project/post/c_advanced/featured.jpg">
+  <meta property="og:description" content="1. 浮点数在内存中的存储方式 2. 浮点数存储示例 2.1. 实数8.25在内存中的float表示 2.2. 编程验证 3. 精度问题 3.1. 编程验证 1. 浮点数在内存中的存储方式 浮点"><meta property="og:image" content="https://strivefar.github.io/project/post/c_advanced/featured.jpg">
   <meta property="twitter:image" content="https://strivefar.github.io/project/post/c_advanced/featured.jpg"><meta property="og:locale" content="en-us">
   
     
@@ -284,7 +284,7 @@
       "url": "img/https://strivefar.github.io/"
     }
   },
-  "description": "浮点数在内存中的存储方式 浮点数在内存中由以下三部分组成： 符号位 指数 尾数 无论是float类型还是double类型的数据，在计算机内部的表示方法"
+  "description": "1. 浮点数在内存中的存储方式 2. 浮点数存储示例 2.1. 实数8.25在内存中的float表示 2.2. 编程验证 3. 精度问题 3.1. 编程验证 1. 浮点数在内存中的存储方式 浮点"
 }
 </script>
 
@@ -584,7 +584,21 @@
   <div class="article-container">
 
     <div class="article-style">
-      <h1 id="浮点数在内存中的存储方式">浮点数在内存中的存储方式</h1>
+      <ul>
+<li><a href="#1-%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F">1. 浮点数在内存中的存储方式</a></li>
+<li><a href="#2-%E6%B5%AE%E7%82%B9%E6%95%B0%E5%AD%98%E5%82%A8%E7%A4%BA%E4%BE%8B">2. 浮点数存储示例</a>
+<ul>
+<li><a href="#21-%E5%AE%9E%E6%95%B0825%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84float%E8%A1%A8%E7%A4%BA">2.1. 实数8.25在内存中的float表示</a></li>
+<li><a href="#22-%E7%BC%96%E7%A8%8B%E9%AA%8C%E8%AF%81">2.2. 编程验证</a></li>
+</ul>
+</li>
+<li><a href="#3-%E7%B2%BE%E5%BA%A6%E9%97%AE%E9%A2%98">3. 精度问题</a>
+<ul>
+<li><a href="#31-%E7%BC%96%E7%A8%8B%E9%AA%8C%E8%AF%81">3.1. 编程验证</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="1-浮点数在内存中的存储方式">1. 浮点数在内存中的存储方式</h1>
 <p><strong>浮点数在内存中由以下三部分组成：</strong></p>
 <ul>
 <li>符号位</li>
@@ -616,7 +630,7 @@
 </tr>
 </tbody>
 </table>
-<h1 id="浮点数存储示例">浮点数存储示例</h1>
+<h1 id="2-浮点数存储示例">2. 浮点数存储示例</h1>
 <p>浮点数的转换</p>
 <ul>
 <li>
@@ -635,14 +649,43 @@
 </ol>
 </li>
 </ul>
-<p><strong>注意∶</strong>
-计算<code>指数</code>时需要加上偏移量，而<code>偏移量的值与类型有关</code>。</p>
-<p>对于指数6，偏移后的值如下：
-float : 127 + 6 = 123
-double: 1023 + 6 = 1030</p>
-<h2 id="实数825在内存中的float表示">实数8.25在内存中的float表示</h2>
+<p><strong>注意∶</strong></p>
+<ul>
+<li>
+<ol>
+<li>计算<code>指数</code>时需要加上偏移量，而<code>偏移量的值与类型有关</code>。</li>
+</ol>
+</li>
+</ul>
+<p>对于指数6，偏移后的值如下：</p>
+<pre><code>float : 127 + 6 = 123
+double: 1023 + 6 = 1030
+</code></pre>
+<ul>
+<li>
+<ol start="2">
+<li>小数用二进制如何表示</li>
+</ol>
+</li>
+</ul>
+<p>首先，给出一个任意实数，整数部分用普通的二进制便可以表示，这里只说小数部分如何表示</p>
+<p>例如0.6</p>
+<p>文字描述该过程如下：将该数字乘以2，取出整数部分作为二进制表示的第1位；然后再将小数部分乘以2，将得到的整数部分作为二进制表示的第2位；以此类推，知道小数部分为0。</p>
+<p>特殊情况： 小数部分出现循环，无法停止，则用有限的二进制位无法准确表示一个小数，这也是在编程语言中表示小数会出现误差的原因</p>
+<p>下面我们具体计算一下0.6的小数表示过程</p>
+<pre><code>0.6 * 2 = 1.2 ——————- 1
+0.2 * 2 = 0.4 ——————- 0
+0.4 * 2 = 0.8 ——————- 0
+0.8 * 2 = 1.6 ——————- 1
+0.6 * 2 = 1.2 ——————- 1
+…………
+</code></pre>
+<p>我们可以发现在该计算中已经出现了循环，0.6用二进制表示为 1001 1001 1001 1001 ……
+如果是10.6，那个10.6的完整二进制表示为 1010.100110011001……</p>
+<p>参考：https://blog.csdn.net/xingtanzjr/article/details/50803832</p>
+<h2 id="21-实数825在内存中的float表示">2.1. 实数8.25在内存中的float表示</h2>
 <p><img src="/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-1.png" alt="1-1"></p>
-<h2 id="编程验证">编程验证</h2>
+<h2 id="22-编程验证">2.2. 编程验证</h2>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
 /**功能：输出内存片段中的每一位的值
  * 参数：
@@ -710,7 +753,7 @@ int main()
 0100 0001 0000 0100 0000 0000 0000 0000
 0x41040000
 </code></pre>
-<h1 id="精度问题">精度问题</h1>
+<h1 id="3-精度问题">3. 精度问题</h1>
 <p>为了引出对这一问题的思考，我们先看一下int与float类型的范围
 <img src="/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-3.png" alt="1-3">
 <strong>那么问题来了：</strong></p>
@@ -719,15 +762,14 @@ int main()
 <ul>
 <li>int和float都占4个字节的内存，因此float能表示的具体数字的个数与int相同</li>
 <li>float类型所能表示的数字的范围却比int的范围大</li>
-<li></li>
 </ul>
-<p>原因如下：</p>
+<p>因此：</p>
 <ul>
 <li>float可表示的数字之间不是连续的，<code>存在间隙</code></li>
 <li>float只是一种<code>近似的表示法</code>，不能作为精确数使用</li>
 <li>由于内存表示法相对复杂，float的运算速度比int<code>慢</code>得多</li>
 </ul>
-<h2 id="编程验证-1">编程验证</h2>
+<h2 id="31-编程验证">3.1. 编程验证</h2>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
 
 int main()
