@@ -46,7 +46,7 @@ false 代表非真值，编译器内部用 0 来表示
 &lt;li&gt;将零值用  &lt;code&gt;false&lt;/code&gt;（0）来代替&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;示例1：&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
 int main(int argc, char *argv[])
 {
 
@@ -64,24 +64,24 @@ int main(int argc, char *argv[])
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;编译：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;g++ -o test  4-1.cpp -m32
-4-1.cpp: In function ‘int main(int, char**)’:
-4-1.cpp:8:6: warning: use of an operand of type ‘bool’ in ‘operator++’ is deprecated [-Wdeprecated]
-    b++;
-      ^~
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    g++ -o test  4-1.cpp -m32
+    4-1.cpp: In function ‘int main(int, char**)’:
+    4-1.cpp:8:6: warning: use of an operand of type ‘bool’ in ‘operator++’ is deprecated [-Wdeprecated]
+        b++;
+          ^~
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;可见：编译器给出了警告，bool 类型参与数学运算，编译器的态度是不建议但允许&lt;/p&gt;
 &lt;p&gt;运行:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;./test
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    ./test
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;输出结果如下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sizeof(b) = 1
-b = 0
-b = 1
-b = 1
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    sizeof(b) = 1
+    b = 0
+    b = 1
+    b = 1
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;示例2：&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+&lt;pre&gt;&lt;code class=&#34;language-cpp&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
 
 int main(int argc, char *argv[])
 {
@@ -112,18 +112,18 @@ int main(int argc, char *argv[])
 
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;编译：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;g++ -o test  4-2.cpp -m32
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    g++ -o test  4-2.cpp -m32
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;运行：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;./test
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    ./test
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;输出结果如下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sizeof(b) = 1
-b = 0, a = 0
-b = 1, a = 1
-b = 1, a = 1
-b = 1, a = 10
-b = 0, a = 0
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    sizeof(b) = 1
+    b = 0, a = 0
+    b = 1, a = 1
+    b = 1, a = 1
+    b = 1, a = 10
+    b = 0, a = 0
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h1 id=&#34;2-c中的引用&#34;&gt;2. C++中的引用&lt;/h1&gt;
 &lt;p&gt;在讨论引用之前，我们先来明确几个概念：&lt;/p&gt;
@@ -173,22 +173,23 @@ int main(int argc, char *argv[])
     return 0;
 }
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;编译运行：
-gcc -o test  4-3.cpp -m32
-./test&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;f = 0.123000, f_quote= 0.123000
-&amp;amp;f = 0xfff78cec, &amp;amp;f_quote = 0xfff78cec
-a = 3, b = 2
+&lt;p&gt;编译运行：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    gcc -o test  4-3.cpp -m32
+    ./test
+
+    f = 0.123000, f_quote= 0.123000
+    &amp;amp;f = 0xfff78cec, &amp;amp;f_quote = 0xfff78cec
+    a = 3, b = 2
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：这里三目运算符的可能返回都是变量，返回的是&lt;code&gt;变量的引用&lt;/code&gt;，也就是a的引用，也就是a的另外一个名字，我们先不管a变量空间的另外一个名字是啥，从概念上我们很容易知道，a的引用就是a变量本身&lt;/p&gt;
 &lt;p&gt;仅保留三目运算符相关代码，将文件后缀改为.c
 编译报错如下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;gcc -o test  4-3.c -m32
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    gcc -o test  4-3.c -m32
 
-4-3.c: In function ‘main’:
-4-3.c:8:21: error: lvalue required as left operand of assignment
-    (a &amp;lt; b ? a : b) = 3; //正确，返回a或b的引用，可作为左值
-                    ^
+    4-3.c: In function ‘main’:
+    4-3.c:8:21: error: lvalue required as left operand of assignment
+        (a &amp;lt; b ? a : b) = 3; //正确，返回a或b的引用，可作为左值
+                        ^
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;由此可见：&lt;code&gt; C语言不允许三目运算符做左值&lt;/code&gt;&lt;/p&gt;
 </description>

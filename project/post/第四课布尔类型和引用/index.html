@@ -626,7 +626,7 @@ false 代表非真值，编译器内部用 0 来表示
 <li>将零值用  <code>false</code>（0）来代替</li>
 </ul>
 <p>示例1：</p>
-<pre><code class="language-c">#include &lt;stdio.h&gt;
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
 int main(int argc, char *argv[])
 {
 
@@ -644,24 +644,24 @@ int main(int argc, char *argv[])
 }
 </code></pre>
 <p>编译：</p>
-<pre><code>g++ -o test  4-1.cpp -m32
-4-1.cpp: In function ‘int main(int, char**)’:
-4-1.cpp:8:6: warning: use of an operand of type ‘bool’ in ‘operator++’ is deprecated [-Wdeprecated]
-    b++;
-      ^~
+<pre><code class="language-bash">    g++ -o test  4-1.cpp -m32
+    4-1.cpp: In function ‘int main(int, char**)’:
+    4-1.cpp:8:6: warning: use of an operand of type ‘bool’ in ‘operator++’ is deprecated [-Wdeprecated]
+        b++;
+          ^~
 </code></pre>
 <p>可见：编译器给出了警告，bool 类型参与数学运算，编译器的态度是不建议但允许</p>
 <p>运行:</p>
-<pre><code>./test
+<pre><code class="language-bash">    ./test
 </code></pre>
 <p>输出结果如下：</p>
-<pre><code>sizeof(b) = 1
-b = 0
-b = 1
-b = 1
+<pre><code class="language-bash">    sizeof(b) = 1
+    b = 0
+    b = 1
+    b = 1
 </code></pre>
 <p>示例2：</p>
-<pre><code class="language-c">#include &lt;stdio.h&gt;
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
 
 int main(int argc, char *argv[])
 {
@@ -692,18 +692,18 @@ int main(int argc, char *argv[])
 
 </code></pre>
 <p>编译：</p>
-<pre><code>g++ -o test  4-2.cpp -m32
+<pre><code class="language-bash">    g++ -o test  4-2.cpp -m32
 </code></pre>
 <p>运行：</p>
-<pre><code>./test
+<pre><code class="language-bash">    ./test
 </code></pre>
 <p>输出结果如下：</p>
-<pre><code>sizeof(b) = 1
-b = 0, a = 0
-b = 1, a = 1
-b = 1, a = 1
-b = 1, a = 10
-b = 0, a = 0
+<pre><code class="language-bash">    sizeof(b) = 1
+    b = 0, a = 0
+    b = 1, a = 1
+    b = 1, a = 1
+    b = 1, a = 10
+    b = 0, a = 0
 </code></pre>
 <h1 id="2-c中的引用">2. C++中的引用</h1>
 <p>在讨论引用之前，我们先来明确几个概念：</p>
@@ -753,22 +753,23 @@ int main(int argc, char *argv[])
     return 0;
 }
 </code></pre>
-<p>编译运行：
-gcc -o test  4-3.cpp -m32
-./test</p>
-<pre><code>f = 0.123000, f_quote= 0.123000
-&amp;f = 0xfff78cec, &amp;f_quote = 0xfff78cec
-a = 3, b = 2
+<p>编译运行：</p>
+<pre><code class="language-bash">    gcc -o test  4-3.cpp -m32
+    ./test
+
+    f = 0.123000, f_quote= 0.123000
+    &amp;f = 0xfff78cec, &amp;f_quote = 0xfff78cec
+    a = 3, b = 2
 </code></pre>
 <p><strong>注意</strong>：这里三目运算符的可能返回都是变量，返回的是<code>变量的引用</code>，也就是a的引用，也就是a的另外一个名字，我们先不管a变量空间的另外一个名字是啥，从概念上我们很容易知道，a的引用就是a变量本身</p>
 <p>仅保留三目运算符相关代码，将文件后缀改为.c
 编译报错如下：</p>
-<pre><code>gcc -o test  4-3.c -m32
+<pre><code class="language-bash">    gcc -o test  4-3.c -m32
 
-4-3.c: In function ‘main’:
-4-3.c:8:21: error: lvalue required as left operand of assignment
-    (a &lt; b ? a : b) = 3; //正确，返回a或b的引用，可作为左值
-                    ^
+    4-3.c: In function ‘main’:
+    4-3.c:8:21: error: lvalue required as left operand of assignment
+        (a &lt; b ? a : b) = 3; //正确，返回a或b的引用，可作为左值
+                        ^
 </code></pre>
 <p>由此可见：<code> C语言不允许三目运算符做左值</code></p>
 
