@@ -5,12 +5,90 @@
     <link>https://strivefar.github.io/authors/youngfar/</link>
       <atom:link href="https://strivefar.github.io/authors/youngfar/index.xml" rel="self" type="application/rss+xml" />
     <description>youngfar</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Mon, 07 Sep 2020 08:59:06 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Wed, 09 Sep 2020 16:26:11 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>youngfar</title>
       <link>https://strivefar.github.io/authors/youngfar/</link>
     </image>
+    
+    <item>
+      <title>类型转换</title>
+      <link>https://strivefar.github.io/project/post/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</link>
+      <pubDate>Wed, 09 Sep 2020 16:26:11 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-1.png&#34; alt=&#34;1-1&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;auto-关键字&#34;&gt;auto 关键字&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;auto即C语言中局部变量的默认属性&lt;/li&gt;
+&lt;li&gt;auto表明将被修饰的变量存储于栈上&lt;/li&gt;
+&lt;li&gt;编译器默认所有的局部变量都是auto的
+示例：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;void f()
+{
+  int i;      //局部变量默认属性为 auto
+  auto int j; //显示声明 auto 属性
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;register-关键字&#34;&gt;register 关键字&lt;/h1&gt;
+&lt;p&gt;用于向编译器申请在CPU寄存器上分配空间，以实现高速访问，但是要注意，申请不一定能成功，因为占用CPU寄存器是一件花销很大的事情，ARM算上影子寄存器加起来总共37个，下面我们看一下什么情况下编译器会拒绝该申请。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;    #include &amp;lt;stdio.h&amp;gt;
+
+    register unsigned int a;
+
+    int main()
+    {
+        register unsigned int i;
+
+        printf(&amp;quot;&amp;amp;i = %p\n&amp;quot;, &amp;amp;i);]
+
+        return 0;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;对于全局变量，&lt;code&gt;在程序的整个运行期间内始终存活&lt;/code&gt;，编译器一旦允许，则会长时间的占用CPU寄存器，所以这种情况编译器&lt;code&gt;直接拒绝&lt;/code&gt;了&lt;/p&gt;
+&lt;p&gt;不能用 &amp;amp; 符获取register变量地址，地址是相对内存而言的，CPU寄存器尽管可以记录内存地址信息，但CPU寄存器本身没有地址的概念。&lt;/p&gt;
+&lt;p&gt;上述两处错误给出提示如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;4-1.c: In function ‘main’:
+4-1.c:9:5: error: address of register variable ‘i’ requested
+     printf(&amp;quot;&amp;amp;i = %p\n&amp;quot;, &amp;amp;i);]
+     ^~~~~~
+4-1.c:9:29: error: expected statement before ‘]’ token
+     printf(&amp;quot;&amp;amp;i = %p\n&amp;quot;, &amp;amp;i);]
+                             ^
+4-1.c: At top level:
+4-1.c:3:23: error: register name not specified for ‘a’
+ register unsigned int a;
+                       ^
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;所以对于register关键字，现总结如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;register关键字指明将局部变量存储于寄存器中&lt;/li&gt;
+&lt;li&gt;register只是请求寄存器变量，但不一定请求成功&lt;/li&gt;
+&lt;li&gt;register变量的必须是CPU寄存器可以接受的值&lt;/li&gt;
+&lt;li&gt;不能用&amp;amp;运算符获取register变量的地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;static关键字&#34;&gt;static关键字&lt;/h1&gt;
+&lt;p&gt;这个在以前的博客中做过详细讨论，&lt;/p&gt;
+&lt;p&gt;这里仅给出以下特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;static关键字指明变量的“静态”属性&lt;/li&gt;
+&lt;li&gt;static修饰的局部变量存储在程序静态区&lt;/li&gt;
+&lt;li&gt;static关键字同时具有“作用域限定符”的意义&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;static修饰的全局变量作用域只是声明的文件中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;static修饰的函数作用域只是声明的文件中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>布尔类型和引用</title>
@@ -747,8 +825,48 @@ Options: -[dshV]
 &lt;p&gt;fdtdump工具的输出信息即是以上结构中每一个成员的值，struct fdt_header结构体包含了Device Tree的私有信息。例如: fdt_header.magic是fdt的魔数,固定值为0xd00dfeed，fdt_header.totalsize是fdt文件的大小。使用二进制工具打开s5pv21_smc.dtb验证。s5pv21_smc.dtb二进制文件头信息如图2所示。从图2中可以得到Device Tree的文件是以大端模式储存。并且，头部信息和fdtdump的输出信息一致。&lt;/p&gt;
 &lt;p&gt;Device Tree中的节点信息举例如下所示。
 &lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/node.png&#34; alt=&#34;编译&#34;&gt;&lt;/p&gt;
-&lt;p&gt;上述.dts文件并没有什么真实的用途，但它基本表征了一个Device Tree源文件的结构。1个root结点”/”；root结点下面含一系列子结点，本例中为”node@0”和”node@1”；结点”node@0”下又含有一系列子结点，本例中为”child-node@0”；各结点都有一系列属性。这些属性可能为空，如” an-empty-property”；可能为字符串，如”a-string-property”；可能为字符串数组，如”a-string-list-property”；可能为Cells（由u32整数组成），如”second-child-property”，可能为二进制数，如”a-byte-data-property”。Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。header为头信息，fill_area为填充区域，填充数字0，dt_struct存储节点数值及名称相关信息，dt_string存储属性名。例如：a-string-property就存储在dt_string区，”A string”及node1就存储在dt_struct区域。
-我们可以给一个设备节点添加lable，之后可以通过&amp;amp;lable的形式访问这个lable，这种引用是通过phandle（pointer handle）进行的。例如，图3中的node1就是一个lable，node@0的子节点child-node@0通过&amp;amp;node1引用node@1节点。像是这种phandle的节点，在经过DTC工具编译之后，&amp;amp;node1会变成一个特殊的整型数字n，假设n值为1，那么在node@1节点下自动生成两个属性，属性如下：
+&lt;p&gt;上述.dts文件并没有什么真实的用途，但它基本表征了一个Device Tree源文件的结构。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;1个root结点“ &lt;strong&gt;/&lt;/strong&gt; ”；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;root结点下面含一系列子结点，本例中为“&lt;strong&gt;node@0&lt;/strong&gt;”和“&lt;strong&gt;node@1&lt;/strong&gt;”；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;结点“node@0”下又含有一系列子结点，本例中为“ &lt;strong&gt;child-node@0&lt;/strong&gt; ”；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;各结点都有一系列属性：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;这些属性可能为空，如“ &lt;strong&gt;an-empty-property&lt;/strong&gt;”；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;可能为字符串，如“&lt;strong&gt;a-string-property&lt;/strong&gt;”；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;可能为字符串序列，如“&lt;strong&gt;a-string-list-property&lt;/strong&gt;”；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;可能为Cells（&lt;code&gt;由u32整数组成，用尖括号括起来&lt;/code&gt;），如“&lt;strong&gt;second-child-property&lt;/strong&gt;”；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;可能为字节数据，（&lt;code&gt;每个byte用2个16进制数表示，用“[]”括起来&lt;/code&gt;）如“&lt;strong&gt;a-byte-data-property&lt;/strong&gt;”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。header为头信息，fill_area为填充区域，填充数字0，dt_struct存储节点数值及名称相关信息，dt_string存储属性名。例如：a-string-property就存储在dt_string区，”A string”及node1就存储在dt_struct区域。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;我们可以给一个设备节点添加lable，之后可以通过&amp;amp;lable的形式访问这个lable&lt;/code&gt;，这种引用是通过phandle（pointer handle）进行的。例如，图3中的&lt;strong&gt;node1&lt;/strong&gt;就是一个lable，node@0的子节点child-node@0通过&lt;strong&gt;&amp;lt;&amp;amp;node1&amp;gt;&lt;/strong&gt;引用node@1节点。像是这种phandle的节点，在经过DTC工具编译之后，&amp;amp;node1会变成一个特殊的整型数字n，假设n值为1，那么在node@1节点下自动生成两个属性，属性如下：
 linux,phandle = &amp;lt;0x00000001&amp;gt;;
 phandle = &amp;lt;0x00000001&amp;gt;;
 node@0的子节点child-node@0中的a-reference-to-something = &amp;lt;&amp;amp;node1&amp;gt;会变成a-reference-to-something = &amp;lt; 0x00000001&amp;gt;。此处0x00000001就是一个phandle得值，每一个phandle都有一个独一无二的整型值，在后续kernel中通过这个特殊的数字间接找到引用的节点。通过查看fdtdump输出信息以及dtb二进制文件信息，得到struct fdt_header和文件结构之间的关系信息如所示。&lt;/p&gt;

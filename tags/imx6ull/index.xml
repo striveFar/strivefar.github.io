@@ -97,8 +97,48 @@ Options: -[dshV]
 &lt;p&gt;fdtdump工具的输出信息即是以上结构中每一个成员的值，struct fdt_header结构体包含了Device Tree的私有信息。例如: fdt_header.magic是fdt的魔数,固定值为0xd00dfeed，fdt_header.totalsize是fdt文件的大小。使用二进制工具打开s5pv21_smc.dtb验证。s5pv21_smc.dtb二进制文件头信息如图2所示。从图2中可以得到Device Tree的文件是以大端模式储存。并且，头部信息和fdtdump的输出信息一致。&lt;/p&gt;
 &lt;p&gt;Device Tree中的节点信息举例如下所示。
 &lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E6%A0%91/node.png&#34; alt=&#34;编译&#34;&gt;&lt;/p&gt;
-&lt;p&gt;上述.dts文件并没有什么真实的用途，但它基本表征了一个Device Tree源文件的结构。1个root结点”/”；root结点下面含一系列子结点，本例中为”node@0”和”node@1”；结点”node@0”下又含有一系列子结点，本例中为”child-node@0”；各结点都有一系列属性。这些属性可能为空，如” an-empty-property”；可能为字符串，如”a-string-property”；可能为字符串数组，如”a-string-list-property”；可能为Cells（由u32整数组成），如”second-child-property”，可能为二进制数，如”a-byte-data-property”。Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。header为头信息，fill_area为填充区域，填充数字0，dt_struct存储节点数值及名称相关信息，dt_string存储属性名。例如：a-string-property就存储在dt_string区，”A string”及node1就存储在dt_struct区域。
-我们可以给一个设备节点添加lable，之后可以通过&amp;amp;lable的形式访问这个lable，这种引用是通过phandle（pointer handle）进行的。例如，图3中的node1就是一个lable，node@0的子节点child-node@0通过&amp;amp;node1引用node@1节点。像是这种phandle的节点，在经过DTC工具编译之后，&amp;amp;node1会变成一个特殊的整型数字n，假设n值为1，那么在node@1节点下自动生成两个属性，属性如下：
+&lt;p&gt;上述.dts文件并没有什么真实的用途，但它基本表征了一个Device Tree源文件的结构。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;1个root结点“ &lt;strong&gt;/&lt;/strong&gt; ”；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;root结点下面含一系列子结点，本例中为“&lt;strong&gt;node@0&lt;/strong&gt;”和“&lt;strong&gt;node@1&lt;/strong&gt;”；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;结点“node@0”下又含有一系列子结点，本例中为“ &lt;strong&gt;child-node@0&lt;/strong&gt; ”；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;各结点都有一系列属性：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;这些属性可能为空，如“ &lt;strong&gt;an-empty-property&lt;/strong&gt;”；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;可能为字符串，如“&lt;strong&gt;a-string-property&lt;/strong&gt;”；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;可能为字符串序列，如“&lt;strong&gt;a-string-list-property&lt;/strong&gt;”；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;可能为Cells（&lt;code&gt;由u32整数组成，用尖括号括起来&lt;/code&gt;），如“&lt;strong&gt;second-child-property&lt;/strong&gt;”；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;可能为字节数据，（&lt;code&gt;每个byte用2个16进制数表示，用“[]”括起来&lt;/code&gt;）如“&lt;strong&gt;a-byte-data-property&lt;/strong&gt;”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。header为头信息，fill_area为填充区域，填充数字0，dt_struct存储节点数值及名称相关信息，dt_string存储属性名。例如：a-string-property就存储在dt_string区，”A string”及node1就存储在dt_struct区域。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;我们可以给一个设备节点添加lable，之后可以通过&amp;amp;lable的形式访问这个lable&lt;/code&gt;，这种引用是通过phandle（pointer handle）进行的。例如，图3中的&lt;strong&gt;node1&lt;/strong&gt;就是一个lable，node@0的子节点child-node@0通过&lt;strong&gt;&amp;lt;&amp;amp;node1&amp;gt;&lt;/strong&gt;引用node@1节点。像是这种phandle的节点，在经过DTC工具编译之后，&amp;amp;node1会变成一个特殊的整型数字n，假设n值为1，那么在node@1节点下自动生成两个属性，属性如下：
 linux,phandle = &amp;lt;0x00000001&amp;gt;;
 phandle = &amp;lt;0x00000001&amp;gt;;
 node@0的子节点child-node@0中的a-reference-to-something = &amp;lt;&amp;amp;node1&amp;gt;会变成a-reference-to-something = &amp;lt; 0x00000001&amp;gt;。此处0x00000001就是一个phandle得值，每一个phandle都有一个独一无二的整型值，在后续kernel中通过这个特殊的数字间接找到引用的节点。通过查看fdtdump输出信息以及dtb二进制文件信息，得到struct fdt_header和文件结构之间的关系信息如所示。&lt;/p&gt;

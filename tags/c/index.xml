@@ -5,12 +5,90 @@
     <link>https://strivefar.github.io/tags/c/</link>
       <atom:link href="https://strivefar.github.io/tags/c/index.xml" rel="self" type="application/rss+xml" />
     <description>C</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Sun, 06 Sep 2020 16:23:31 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><copyright>© 2005-2020版权所有[沪ICP备01234567号](http://www.beian.miit.gov.cn)</copyright><lastBuildDate>Wed, 09 Sep 2020 16:26:11 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>C</title>
       <link>https://strivefar.github.io/tags/c/</link>
     </image>
+    
+    <item>
+      <title>类型转换</title>
+      <link>https://strivefar.github.io/project/post/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</link>
+      <pubDate>Wed, 09 Sep 2020 16:26:11 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E6%B5%AE%E7%82%B9%E6%95%B0/1-1.png&#34; alt=&#34;1-1&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;auto-关键字&#34;&gt;auto 关键字&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;auto即C语言中局部变量的默认属性&lt;/li&gt;
+&lt;li&gt;auto表明将被修饰的变量存储于栈上&lt;/li&gt;
+&lt;li&gt;编译器默认所有的局部变量都是auto的
+示例：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;void f()
+{
+  int i;      //局部变量默认属性为 auto
+  auto int j; //显示声明 auto 属性
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;register-关键字&#34;&gt;register 关键字&lt;/h1&gt;
+&lt;p&gt;用于向编译器申请在CPU寄存器上分配空间，以实现高速访问，但是要注意，申请不一定能成功，因为占用CPU寄存器是一件花销很大的事情，ARM算上影子寄存器加起来总共37个，下面我们看一下什么情况下编译器会拒绝该申请。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;    #include &amp;lt;stdio.h&amp;gt;
+
+    register unsigned int a;
+
+    int main()
+    {
+        register unsigned int i;
+
+        printf(&amp;quot;&amp;amp;i = %p\n&amp;quot;, &amp;amp;i);]
+
+        return 0;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;对于全局变量，&lt;code&gt;在程序的整个运行期间内始终存活&lt;/code&gt;，编译器一旦允许，则会长时间的占用CPU寄存器，所以这种情况编译器&lt;code&gt;直接拒绝&lt;/code&gt;了&lt;/p&gt;
+&lt;p&gt;不能用 &amp;amp; 符获取register变量地址，地址是相对内存而言的，CPU寄存器尽管可以记录内存地址信息，但CPU寄存器本身没有地址的概念。&lt;/p&gt;
+&lt;p&gt;上述两处错误给出提示如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;4-1.c: In function ‘main’:
+4-1.c:9:5: error: address of register variable ‘i’ requested
+     printf(&amp;quot;&amp;amp;i = %p\n&amp;quot;, &amp;amp;i);]
+     ^~~~~~
+4-1.c:9:29: error: expected statement before ‘]’ token
+     printf(&amp;quot;&amp;amp;i = %p\n&amp;quot;, &amp;amp;i);]
+                             ^
+4-1.c: At top level:
+4-1.c:3:23: error: register name not specified for ‘a’
+ register unsigned int a;
+                       ^
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;所以对于register关键字，现总结如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;register关键字指明将局部变量存储于寄存器中&lt;/li&gt;
+&lt;li&gt;register只是请求寄存器变量，但不一定请求成功&lt;/li&gt;
+&lt;li&gt;register变量的必须是CPU寄存器可以接受的值&lt;/li&gt;
+&lt;li&gt;不能用&amp;amp;运算符获取register变量的地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;static关键字&#34;&gt;static关键字&lt;/h1&gt;
+&lt;p&gt;这个在以前的博客中做过详细讨论，&lt;/p&gt;
+&lt;p&gt;这里仅给出以下特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;static关键字指明变量的“静态”属性&lt;/li&gt;
+&lt;li&gt;static修饰的局部变量存储在程序静态区&lt;/li&gt;
+&lt;li&gt;static关键字同时具有“作用域限定符”的意义&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;static修饰的全局变量作用域只是声明的文件中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;static修饰的函数作用域只是声明的文件中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>浮点数的秘密</title>
