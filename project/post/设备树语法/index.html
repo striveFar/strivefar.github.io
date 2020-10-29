@@ -648,7 +648,7 @@ devicetree fdt
 <p>/sys/firmware/devicetree 目录下是以目录结构程现的 dtb 文件, 根结点对应 base 目录, 每一个结点对应一个目录, 每一个属性对应一个文件。</p>
 <p>这些属性的值如果是字符串，可以使用 cat 命令把它打印出来；对于数值可以用 hexdump 把它打印出来。</p>
 <p>还可以看到/sys/firmware/fdt 文件，它就是 dtb 格式的设备树文件，可以把它复制出来放到 ubuntu上，执行下面的命令反编译出来(-I dtb：输入格式是 dtb，-O dts：输出格式是 dts)：</p>
-<pre><code class="language-bash">cd 板子所用的内核源码目录
+<pre><code class="language-bash">cd 板子所用的内核源码目录为
 
 ./scripts/dtc/dtc -I dtb -O dts /从板子上/复制出来的/fdt -o tmp.dts
 </code></pre>
