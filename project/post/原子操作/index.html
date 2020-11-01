@@ -755,7 +755,6 @@
 
 /*******************************************************************/
 
-
 /* 
 * ATOMIC_OPS 表示 ops即operations 表示一系列原子操作，
 * ATOMIC_OP， ATOMIC_OP_RETURN，ATOMIC_FETCH_OP这几个宏 在 省略部分A 和 省略部分B 各有不同的定义
@@ -815,7 +814,6 @@ ATOMIC_OPS(xor, ^=, eor)
 #endif /* end of __KERNEL__ */
 
 #endif /* end of __ASM_ARM_ATOMIC_H */
-
 </code></pre>
 <p>刚刚省略掉的Section A 的代码如下：</p>
 <pre><code class="language-c">/*
@@ -892,7 +890,6 @@ ATOMIC_OPS(xor, ^=, eor)
         return result;                                                                  \
     }
 
-
 /* 这里不是很清楚为什么要重复封装，可能是为了方便修改接口吧，还请评论区指点 */
 #define atomic_add_return_relaxed atomic_add_return_relaxed
 #define atomic_sub_return_relaxed atomic_sub_return_relaxed
@@ -954,9 +951,6 @@ static inline int __atomic_add_unless(atomic_t *v, int a, int u)
 
     return oldval;
 }
-
-
-
 </code></pre>
 <p>刚刚省略掉的Section B 的代码如下：</p>
 <pre><code class="language-c">/* 
