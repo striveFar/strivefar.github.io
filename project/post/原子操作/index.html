@@ -889,8 +889,10 @@ ATOMIC_OPS(xor, ^=, eor)
                                                                                         \
         return result;                                                                  \
     }
+    
 
 /* 这里不是很清楚为什么要重复封装，可能是为了方便修改接口吧，还请评论区指点 */
+
 #define atomic_add_return_relaxed atomic_add_return_relaxed
 #define atomic_sub_return_relaxed atomic_sub_return_relaxed
 #define atomic_fetch_add_relaxed atomic_fetch_add_relaxed
