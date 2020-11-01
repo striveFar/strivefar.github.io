@@ -5,12 +5,582 @@
     <link>https://strivefar.github.io/authors/youngfar/</link>
       <atom:link href="https://strivefar.github.io/authors/youngfar/index.xml" rel="self" type="application/rss+xml" />
     <description>youngfar</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Wed, 09 Sep 2020 16:26:11 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Thu, 29 Oct 2020 20:29:10 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>youngfar</title>
       <link>https://strivefar.github.io/authors/youngfar/</link>
     </image>
+    
+    <item>
+      <title>原子操作 atomic.h 详解</title>
+      <link>https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/</link>
+      <pubDate>Thu, 29 Oct 2020 20:29:10 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C&#34;&gt;1. 什么是原子操作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C&#34;&gt;2. 为什么要引入原子操作&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#21-%E5%A4%B1%E8%B4%A5%E4%BE%8B%E5%AD%901&#34;&gt;2.1. 失败例子1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#22-%E5%A4%B1%E8%B4%A5%E4%BE%8B%E5%AD%902&#34;&gt;2.2. 失败例子2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#23-%E5%A4%B1%E8%B4%A5%E4%BE%8B%E5%AD%903&#34;&gt;2.3. 失败例子3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0atomich%E8%A7%A3%E6%9E%90&#34;&gt;3. 原子操作实现——atomic.h解析&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#4-%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C&#34;&gt;4. 内联汇编实现原子操作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#5-%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F%E5%86%85%E6%A0%B8%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB&#34;&gt;5. 原子变量内核操作函数汇总&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#51-%E6%93%8D%E4%BD%9C%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F&#34;&gt;5.1. 操作原子变量&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#52-%E6%93%8D%E4%BD%9C%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E6%9F%90%E4%B8%80%E4%BD%8D&#34;&gt;5.2. 操作原子变量中的某一位&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90&#34;&gt;参考来源&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-什么是原子操作&#34;&gt;1. 什么是原子操作&lt;/h1&gt;
+&lt;p&gt;原子（atom）指&lt;code&gt;化学反应不可再分&lt;/code&gt;的基本微粒，原子在化学反应中不可分割。&lt;/p&gt;
+&lt;p&gt;在操作系统中，用原子的这一特性形象生动的描述了一种操作————原子操作，顾名思义，原子操作是不可分割的， &lt;strong&gt;在执行完毕之前不被任何其它任务或事件中断或即便被中断但不影响最终结果的操作都可以称之为原子操作&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;在&lt;strong&gt;单处理器系统&lt;/strong&gt;（UniProcessor）中，能够在单条指令中完成的操作都可以认为是&amp;rdquo; 原子操作&amp;rdquo;，因为中断只能发生于指令之间；那么多条指令可不可以构成原子操作呢，当然可以，只要&lt;code&gt;确保这几条指令执行时不被抢占&lt;/code&gt;就好了，关闭总中断就可以做到。&lt;/p&gt;
+&lt;p&gt;在&lt;strong&gt;多处理器SMP系统&lt;/strong&gt;（Symmetric Multi-Processor）中，关中断可就不好使了，因为A处理器无法关闭它处理器的中断，A处理器只能关闭自己的中断。那么此时多条指令的执行还可以是“ 原子 ”的吗，其实也能，虽然被抢占是再所难免的，但只要&lt;code&gt;保证被抢占者不会影响原执行者的最终结果&lt;/code&gt;不就好了。&lt;/p&gt;
+&lt;h1 id=&#34;2-为什么要引入原子操作&#34;&gt;2. 为什么要引入原子操作&lt;/h1&gt;
+&lt;p&gt;先明确两个概念：同步和互斥&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;同步，又称直接制约关系，是指多个线程（或进程）为了合作完成任务，必须严格按照规定的 某种先后次序来运行。&lt;/li&gt;
+&lt;li&gt;互斥，又称间接制约关系，是指系统中的某些共享资源，一次只允许一个线程访问。当一个线程正在访问该临界资源时，其它线程必须等待。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这里举几个同步与互斥失败的例子来说明构建原子操作的必要性，该部分内容完全摘自韦东山老师的教程文档。&lt;/p&gt;
+&lt;h2 id=&#34;21-失败例子1&#34;&gt;2.1. 失败例子1&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;01 static int valid = 1;
+02
+03 static ssize_t gpio_key_drv_open (struct inode *node, struct file *file)
+04 {
+05      if (!valid)
+06      {
+07              return -EBUSY;
+08      }
+09      else
+10      {
+11              valid = 0;
+12      }
+13
+14      return 0; //成功
+15 }
+16
+17 static int gpio_key_drv_close (struct inode *node, struct file *file)
+18 {
+19      valid = 1;
+20      return 0;
+21 }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;看第5行，我们使用一个全局变量valid来实现互斥访问。这有问题吗？很大概率没问题，但是并非万无一失。
+注意：编写驱动程序时，要有系统的概念，程序A调用驱动程序时，它可能被程序B打断，程序B也去调用这个驱动程序。
+下图是一个例子，程序A在调用驱动程序的中途被程序B抢占了CPU资源：
+&lt;img src=&#34;https://strivefar.github.io/img/atomic/01.png&#34; alt=&#34;01&#34;&gt;&lt;/p&gt;
+&lt;p&gt;程序A执行到第11行之前，被程序B抢占了，这时valid尚未被改成0；
+程序B调用gpio_key_drv_open时，发现valid等于1，所以成功返回0；
+当程序A继续从第11行执行时，它最终也成功返回0；
+这样程序A、B都成功打开了驱动程序。
+注意：在内核态，程序A不是主动去休眠、主动放弃CPU资源；而是被优先级更高的程序B抢占了，这种行为被称为“preempt”(抢占)。&lt;/p&gt;
+&lt;h2 id=&#34;22-失败例子2&#34;&gt;2.2. 失败例子2&lt;/h2&gt;
+&lt;p&gt;上面的例子是不是第5行到第11行的时间跨度大长了？再优化一下程序行不行？代码如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;01 static int valid = 1;
+02
+03 static ssize_t gpio_key_drv_open (struct inode *node, struct file *file)
+04 {
+05      if (--valid)
+06      {
+07              valid++;
+08              return -EBUSY;
+09      }
+10      return 0;
+11 }
+12
+13 static int gpio_key_drv_close (struct inode *node, struct file *file)
+14 {
+15      valid = 1;
+16      return 0;
+17 }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;第5行先减1再判断，这样可以更大概率地避免问题，但是还是不能确保万无一失。对数据的修改分为3步：读出来、修改、写进去。请看下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/atomic/02.png&#34; alt=&#34;02&#34;&gt;&lt;/p&gt;
+&lt;p&gt;进程A在读出valid时发现它是1，减1后为0，这时if不成立；但是修改后的值尚未写回内存；
+假设这时被程序B抢占，程序B读出valid仍为1，减1后为0，这时if不成立，最后成功返回；
+轮到A继续执行，它把0值写到valid变量，最后也成功返回。
+这样程序A、B都成功打开了驱动程序。&lt;/p&gt;
+&lt;h2 id=&#34;23-失败例子3&#34;&gt;2.3. 失败例子3&lt;/h2&gt;
+&lt;p&gt;前面2个例子，都是在修改valid的过程中被别的进程抢占了，那么在修改valid的时候直接关中断不就可以了吗？&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;01 static int valid = 1;
+02
+03 static ssize_t gpio_key_drv_open (struct inode *node, struct file *file)
+04 {
+05       unsigned long flags;
+06       raw_local_irq_save(flags); // 关中断
+07      if (--valid)
+08      {
+09              valid++;
+10              raw_local_irq_restore(flags);  // 恢复之前的状态
+11              return -EBUSY;
+12      }
+13       raw_local_irq_restore(flags);          // 恢复之前的状态
+14      return 0;
+15 }
+16
+17 static int gpio_key_drv_close (struct inode *node, struct file *file)
+18 {
+19      valid = 1;
+20      return 0;
+21 }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;第06行直接关中断，这样别的线程、中断都不能来打扰本线程了，在它读取、修改valid变量的过程中无人打扰。&lt;/p&gt;
+&lt;p&gt;没有问题了？&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;对于单CPU核的系统上述代码是没问题的&lt;/code&gt;；但是对于SMP系统，你&lt;code&gt;只能关闭当前CPU核的中断&lt;/code&gt;，别的CPU核还可以运行程序，它们也可以来执行这个函数，同样导致问题，如下图：
+&lt;img src=&#34;https://strivefar.github.io/img/atomic/03.png&#34; alt=&#34;03&#34;&gt;&lt;/p&gt;
+&lt;p&gt;假设CPU0上进程A、CPU1上进程B同时运行到上图中读出valid的地方，它们同时发现valid都是1，减减后都等于0，在第07行判断条件都不成立，所以在第14行都可以返回0，都可以成功打开驱动。&lt;/p&gt;
+&lt;h1 id=&#34;3-原子操作实现atomich解析&#34;&gt;3. 原子操作实现——atomic.h解析&lt;/h1&gt;
+&lt;p&gt;为方便说明，这里对一些非关键的条件编译不做展开说明，完整的atomic.h文件路径为arch/arm/include/asm/atomic.h，您也可以点击下方链接，在线查看arch/arm/include/asm/atomic.h源码&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://elixir.bootlin.com/linux/v4.9.88/source/arch/arm/include/asm/atomic.h&#34;&gt;atomic.h源码在线阅读&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#ifndef __ASM_ARM_ATOMIC_H
+#define __ASM_ARM_ATOMIC_H
+
+#include &amp;lt;linux/compiler.h&amp;gt;
+#include &amp;lt;linux/prefetch.h&amp;gt;
+#include &amp;lt;linux/types.h&amp;gt;
+#include &amp;lt;linux/irqflags.h&amp;gt;
+#include &amp;lt;asm/barrier.h&amp;gt;
+#include &amp;lt;asm/cmpxchg.h&amp;gt;
+
+#define ATOMIC_INIT(i) \
+    {                  \
+        (i)            \
+    }
+
+#ifdef __KERNEL__    
+
+
+/* 读写操作只需要一条指令即可完成，本身就是原子的 */
+#define atomic_read(v) READ_ONCE((v)-&amp;gt;counter) 
+#define atomic_set(v, i) WRITE_ONCE(((v)-&amp;gt;counter), (i))
+
+/*******************************************************************/
+
+/*
+* 根据不同架构版本做设置不同的#define宏函数
+* ARMV6 以下，单核，无需内联汇编，直接关中断
+* ARMv6 及以上，支持多核，一律内联汇编！
+*/
+#if __LINUX_ARM_ARCH__ &amp;gt;= 6 
+... Section A
+#else
+... Section B
+#endif /* __LINUX_ARM_ARCH__ */
+
+/*******************************************************************/
+
+
+/* 
+* ATOMIC_OPS 表示 ops即operations 表示一系列原子操作，
+* ATOMIC_OP， ATOMIC_OP_RETURN，ATOMIC_FETCH_OP这几个宏 在 省略部分A 和 省略部分B 各有不同的定义
+*/
+#define ATOMIC_OPS(op, c_op, asm_op)   \
+    ATOMIC_OP(op, c_op, asm_op)        \  //这个宏还是没变
+    ATOMIC_OP_RETURN(op, c_op, asm_op) \
+    ATOMIC_FETCH_OP(op, c_op, asm_op)
+
+ATOMIC_OPS(add, +=, add)
+ATOMIC_OPS(sub, -=, sub)
+
+#define atomic_andnot atomic_andnot
+
+/*******************************************************************/
+
+/* 删除原来的ATOMIC_OPS宏 */
+#undef ATOMIC_OPS  
+/* 重新定义新的一系列原子操作 */
+#define ATOMIC_OPS(op, c_op, asm_op) \
+    ATOMIC_OP(op, c_op, asm_op)      \  //这个宏还是没变
+    ATOMIC_FETCH_OP(op, c_op, asm_op)
+
+ATOMIC_OPS(and, &amp;amp;=, and)
+ATOMIC_OPS(andnot, &amp;amp;= ~, bic)
+ATOMIC_OPS(or, |=, orr)
+ATOMIC_OPS(xor, ^=, eor)
+
+
+/*******************************************************************/
+/* 删除原来的各个宏，将已定义的这些宏的作用域限制在了改行以上，在该行之后，如又调用该标识符，则程序会编译出错 */
+#undef ATOMIC_OPS
+#undef ATOMIC_FETCH_OP
+#undef ATOMIC_OP_RETURN
+#undef ATOMIC_OP
+
+#define atomic_xchg(v, new) (xchg(&amp;amp;((v)-&amp;gt;counter), new))
+
+#define atomic_inc(v) atomic_add(1, v)
+#define atomic_dec(v) atomic_sub(1, v)
+
+#define atomic_inc_and_test(v) (atomic_add_return(1, v) == 0)
+#define atomic_dec_and_test(v) (atomic_sub_return(1, v) == 0)
+#define atomic_inc_return_relaxed(v) (atomic_add_return_relaxed(1, v))
+#define atomic_dec_return_relaxed(v) (atomic_sub_return_relaxed(1, v))
+#define atomic_sub_and_test(i, v) (atomic_sub_return(i, v) == 0)
+
+#define atomic_add_negative(i, v) (atomic_add_return(i, v) &amp;lt; 0)
+/*******************************************************************/
+
+/*如果是64位的系统，则重复32位的流程，只是让操作适配64位系统*/
+#ifndef CONFIG_GENERIC_ATOMIC64
+... 省略
+#endif /* !CONFIG_GENERIC_ATOMIC64 */
+/*******************************************************************/
+
+#endif /* end of __KERNEL__ */
+
+#endif /* end of __ASM_ARM_ATOMIC_H */
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;刚刚省略掉的Section A 的代码如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;/*
+ * ARMv6 UP and SMP safe atomic ops.  We use load exclusive and
+ * store exclusive to ensure that these are atomic.  We may loop
+ * to ensure that the update happens.
+ *
+ * ARMv6 UP和SMP安全原子操作。我们使用加载独占和存储独占来确保它们是原子的。
+ * 我们可以循环以确保更新发生。
+ */
+
+
+/*
+* 这部分主要定义了宏操作，然后二次封装进ATOMIC_OPS宏中，
+* 这样就可以使用类似ATOMIC_OPS(and, &amp;amp;=, and)这样的操作做置换了
+*/
+#define ATOMIC_OP(op, c_op, asm_op)                                         \
+    static inline void atomic_##op(int i, atomic_t *v)                      \
+    {                                                                       \
+        unsigned long tmp;                                                  \
+        int result;                                                         \
+                                                                            \
+        prefetchw(&amp;amp;v-&amp;gt;counter);                                             \
+        __asm__ __volatile__(&amp;quot;@ atomic_&amp;quot; #op &amp;quot;\n&amp;quot;                           \
+                             &amp;quot;1:	ldrex	%0, [%3]\n&amp;quot;                          \
+                             &amp;quot;	&amp;quot; #asm_op &amp;quot;	%0, %0, %4\n&amp;quot;                   \
+                             &amp;quot;	strex	%1, %0, [%3]\n&amp;quot;                        \
+                             &amp;quot;	teq	%1, #0\n&amp;quot;                                \
+                             &amp;quot;	bne	1b&amp;quot;                                      \
+                             : &amp;quot;=&amp;amp;r&amp;quot;(result), &amp;quot;=&amp;amp;r&amp;quot;(tmp), &amp;quot;+Qo&amp;quot;(v-&amp;gt;counter) \
+                             : &amp;quot;r&amp;quot;(&amp;amp;v-&amp;gt;counter), &amp;quot;Ir&amp;quot;(i)                    \
+                             : &amp;quot;cc&amp;quot;);                                       \
+    }
+
+#define ATOMIC_OP_RETURN(op, c_op, asm_op)                                  \
+    static inline int atomic_##op##_return_relaxed(int i, atomic_t *v)      \
+    {                                                                       \
+        unsigned long tmp;                                                  \
+        int result;                                                         \
+                                                                            \
+        prefetchw(&amp;amp;v-&amp;gt;counter);                                             \
+                                                                            \
+        __asm__ __volatile__(&amp;quot;@ atomic_&amp;quot; #op &amp;quot;_return\n&amp;quot;                    \
+                             &amp;quot;1:	ldrex	%0, [%3]\n&amp;quot;                          \
+                             &amp;quot;	&amp;quot; #asm_op &amp;quot;	%0, %0, %4\n&amp;quot;                   \
+                             &amp;quot;	strex	%1, %0, [%3]\n&amp;quot;                        \
+                             &amp;quot;	teq	%1, #0\n&amp;quot;                                \
+                             &amp;quot;	bne	1b&amp;quot;                                      \
+                             : &amp;quot;=&amp;amp;r&amp;quot;(result), &amp;quot;=&amp;amp;r&amp;quot;(tmp), &amp;quot;+Qo&amp;quot;(v-&amp;gt;counter) \
+                             : &amp;quot;r&amp;quot;(&amp;amp;v-&amp;gt;counter), &amp;quot;Ir&amp;quot;(i)                    \
+                             : &amp;quot;cc&amp;quot;);                                       \
+                                                                            \
+        return result;                                                      \
+    }
+
+#define ATOMIC_FETCH_OP(op, c_op, asm_op)                                               \
+    static inline int atomic_fetch_##op##_relaxed(int i, atomic_t *v)                   \
+    {                                                                                   \
+        unsigned long tmp;                                                              \
+        int result, val;                                                                \
+                                                                                        \
+        prefetchw(&amp;amp;v-&amp;gt;counter);                                                         \
+                                                                                        \
+        __asm__ __volatile__(&amp;quot;@ atomic_fetch_&amp;quot; #op &amp;quot;\n&amp;quot;                                 \
+                             &amp;quot;1:	ldrex	%0, [%4]\n&amp;quot;                                      \
+                             &amp;quot;	&amp;quot; #asm_op &amp;quot;	%1, %0, %5\n&amp;quot;                               \
+                             &amp;quot;	strex	%2, %1, [%4]\n&amp;quot;                                    \
+                             &amp;quot;	teq	%2, #0\n&amp;quot;                                            \
+                             &amp;quot;	bne	1b&amp;quot;                                                  \
+                             : &amp;quot;=&amp;amp;r&amp;quot;(result), &amp;quot;=&amp;amp;r&amp;quot;(val), &amp;quot;=&amp;amp;r&amp;quot;(tmp), &amp;quot;+Qo&amp;quot;(v-&amp;gt;counter) \
+                             : &amp;quot;r&amp;quot;(&amp;amp;v-&amp;gt;counter), &amp;quot;Ir&amp;quot;(i)                                \
+                             : &amp;quot;cc&amp;quot;);                                                   \
+                                                                                        \
+        return result;                                                                  \
+    }
+
+
+/* 这里不是很清楚为什么要重复封装，可能是为了方便修改接口吧，还请评论区指点 */
+#define atomic_add_return_relaxed atomic_add_return_relaxed
+#define atomic_sub_return_relaxed atomic_sub_return_relaxed
+#define atomic_fetch_add_relaxed atomic_fetch_add_relaxed
+#define atomic_fetch_sub_relaxed atomic_fetch_sub_relaxed
+
+#define atomic_fetch_and_relaxed atomic_fetch_and_relaxed
+#define atomic_fetch_andnot_relaxed atomic_fetch_andnot_relaxed
+#define atomic_fetch_or_relaxed atomic_fetch_or_relaxed
+#define atomic_fetch_xor_relaxed atomic_fetch_xor_relaxed
+
+static inline int atomic_cmpxchg_relaxed(atomic_t *ptr, int old, int new)
+{
+    int oldval;
+    unsigned long res;
+
+    prefetchw(&amp;amp;ptr-&amp;gt;counter);
+
+    do
+    {
+        __asm__ __volatile__(&amp;quot;@ atomic_cmpxchg\n&amp;quot;
+                             &amp;quot;ldrex	%1, [%3]\n&amp;quot;
+                             &amp;quot;mov	%0, #0\n&amp;quot;
+                             &amp;quot;teq	%1, %4\n&amp;quot;
+                             &amp;quot;strexeq %0, %5, [%3]\n&amp;quot;
+                             : &amp;quot;=&amp;amp;r&amp;quot;(res), &amp;quot;=&amp;amp;r&amp;quot;(oldval), &amp;quot;+Qo&amp;quot;(ptr-&amp;gt;counter)
+                             : &amp;quot;r&amp;quot;(&amp;amp;ptr-&amp;gt;counter), &amp;quot;Ir&amp;quot;(old), &amp;quot;r&amp;quot;(new)
+                             : &amp;quot;cc&amp;quot;);
+    } while (res);
+
+    return oldval;
+}
+/* 这里不是很清楚为什么要重复封装，可能是为了方便修改接口吧，还请评论区指点 */
+#define atomic_cmpxchg_relaxed atomic_cmpxchg_relaxed
+
+static inline int __atomic_add_unless(atomic_t *v, int a, int u)
+{
+    int oldval, newval;
+    unsigned long tmp;
+
+    smp_mb();
+    prefetchw(&amp;amp;v-&amp;gt;counter); //写预取
+
+    __asm__ __volatile__(&amp;quot;@ atomic_add_unless\n&amp;quot;
+                         &amp;quot;1:	ldrex	%0, [%4]\n&amp;quot;
+                         &amp;quot;	teq	%0, %5\n&amp;quot;
+                         &amp;quot;	beq	2f\n&amp;quot;
+                         &amp;quot;	add	%1, %0, %6\n&amp;quot;
+                         &amp;quot;	strex	%2, %1, [%4]\n&amp;quot;
+                         &amp;quot;	teq	%2, #0\n&amp;quot;
+                         &amp;quot;	bne	1b\n&amp;quot;
+                         &amp;quot;2:&amp;quot;
+                         : &amp;quot;=&amp;amp;r&amp;quot;(oldval), &amp;quot;=&amp;amp;r&amp;quot;(newval), &amp;quot;=&amp;amp;r&amp;quot;(tmp), &amp;quot;+Qo&amp;quot;(v-&amp;gt;counter)
+                         : &amp;quot;r&amp;quot;(&amp;amp;v-&amp;gt;counter), &amp;quot;r&amp;quot;(u), &amp;quot;r&amp;quot;(a)
+                         : &amp;quot;cc&amp;quot;);
+
+    if (oldval != u)
+        smp_mb();   //*_mb()是读写访问内存屏障，它保证在屏障（调用*_mb()的位置处）之后的任何读操作在执行之前，屏障之前的所有读操作都已经完成。
+
+    return oldval;
+}
+
+
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;刚刚省略掉的Section B 的代码如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;/* 
+* #error 是一种预编译器指示字，用于生成一个编译错误消息。
+* 之前说了，对于SMP系统，关中断是无法实现原子操作的，所以这里会报错
+*/
+#ifdef CONFIG_SMP
+#error SMP not supported on pre-ARMv6 CPUs
+#endif
+
+/*
+* raw_local_irq_save(flags); // 中断控制相关,保存并关闭中断
+* raw_local_irq_restore(flags); //中断控制相关,恢复中断
+*/
+#define ATOMIC_OP(op, c_op, asm_op)                    \
+    static inline void atomic_##op(int i, atomic_t *v) \
+    {                                                  \
+        unsigned long flags;                           \
+                                                       \
+        raw_local_irq_save(flags);                     \
+        v-&amp;gt;counter c_op i;                             \
+        raw_local_irq_restore(flags);                  \
+    }
+
+#define ATOMIC_OP_RETURN(op, c_op, asm_op)                     \
+    static inline int atomic_##op##_return(int i, atomic_t *v) \
+    {                                                          \
+        unsigned long flags;                                   \
+        int val;                                               \
+                                                               \
+        raw_local_irq_save(flags);                             \
+        v-&amp;gt;counter c_op i;                                     \
+        val = v-&amp;gt;counter;                                      \
+        raw_local_irq_restore(flags);                          \
+                                                               \
+        return val;                                            \
+    }
+
+#define ATOMIC_FETCH_OP(op, c_op, asm_op)                   \
+    static inline int atomic_fetch_##op(int i, atomic_t *v) \
+    {                                                       \
+        unsigned long flags;                                \
+        int val;                                            \
+                                                            \
+        raw_local_irq_save(flags);                          \
+        val = v-&amp;gt;counter;                                   \
+        v-&amp;gt;counter c_op i;                                  \
+        raw_local_irq_restore(flags);                       \
+                                                            \
+        return val;                                         \
+    }
+
+static inline int atomic_cmpxchg(atomic_t *v, int old, int new)
+{
+    int ret;
+    unsigned long flags;
+
+    raw_local_irq_save(flags);
+    ret = v-&amp;gt;counter;
+    if (likely(ret == old))
+        v-&amp;gt;counter = new;
+    raw_local_irq_restore(flags);
+
+    return ret;
+}
+
+static inline int __atomic_add_unless(atomic_t *v, int a, int u)
+{
+    int c, old;
+
+    c = atomic_read(v);
+    while (c != u &amp;amp;&amp;amp; (old = atomic_cmpxchg((v), c, c + a)) != c)
+        c = old;
+    return c;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;4-内联汇编实现原子操作&#34;&gt;4. 内联汇编实现原子操作&lt;/h1&gt;
+&lt;p&gt;上面的代码只是大体让我们了解了一下原子操作的基本架构，单核系统我们不在深究，主要细究一下多核系统如何实现原子操作的。&lt;/p&gt;
+&lt;p&gt;我们以Section A 的 __atomic_add_unless 函数为例，对其中使用到的内联汇编做深度解析
+该函数体如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-C&#34;&gt;  1 static inline int __atomic_add_unless(atomic_t *v, int a, int u)
+  2 {
+  3     int oldval, newval;
+  4     unsigned long tmp;
+  5
+  6     smp_mb();
+  7     prefetchw(&amp;amp;v-&amp;gt;counter); //写预取
+  8
+  9     __asm__ __volatile__(&amp;quot;@ atomic_add_unless\n&amp;quot;
+ 10                          &amp;quot;1:    ldrex   %0, [%4]\n&amp;quot;     ;读取counter到oldval，并标记[%4]所指的内存为独占访问
+ 11                          &amp;quot;      teq     %0, %5\n&amp;quot;       ;比较oldval和u是否相等
+ 12                          &amp;quot;      beq     2f\n&amp;quot;           ;相等则跳转至标签2，跳出该函数，不相等则继续顺序执行下—条指令
+ 13                          &amp;quot;      add     %1, %0, %6\n&amp;quot;   ;newval = oldval + a，这里oldval 就是原来的counter，这是第①步的影响
+ 14                          &amp;quot;      strex   %2, %1, [%4]\n&amp;quot; ;如果counter的独占访问标记还在，则把newval新值写入[%4所指的内存，并且清除独占访问标记，把tmp设为0表示成功,tmp = 1表示失败
+ 15                          &amp;quot;      teq     %2, #0\n&amp;quot;       ;测试tmp的值是否为0，为0表示一切正常，为1表示counter的独占访问标记不存在了，就不会更新counter的值
+ 16                          &amp;quot;      bne     1b\n&amp;quot;           ;如果不相等则跳转到lable 1处重新执行，总有─次能成功
+ 17                          &amp;quot;2:&amp;quot;
+ 18                          : &amp;quot;=&amp;amp;r&amp;quot;(oldval), &amp;quot;=&amp;amp;r&amp;quot;(newval), &amp;quot;=&amp;amp;r&amp;quot;(tmp), &amp;quot;+Qo&amp;quot;(v-&amp;gt;counter)
+ 19                          : &amp;quot;r&amp;quot;(&amp;amp;v-&amp;gt;counter), &amp;quot;r&amp;quot;(u), &amp;quot;r&amp;quot;(a)
+ 20                          : &amp;quot;cc&amp;quot;);
+ 21
+ 22     if (oldval != u)
+ 23         smp_mb();   //*_mb()是读写访问内存屏障，它保证在屏障（调用*_mb()的位置处）之后的任何读操作在执行之前，屏障之前的所有读操作都已经完成。
+ 24
+ 25     return oldval;
+ 26 }
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+&lt;li&gt;第7行：有一个共识是:程序访问的变量如果都能在系统内存cache中则能提升性能，prefetchw是内核中一个预热内存函数，这样下次遍历时就能高效命中内存cache，从而提升程序性能。&lt;/li&gt;
+&lt;li&gt;第9行到第20行，手机端见如下图片解析
+&lt;img src=&#34;https://strivefar.github.io/img/atomic/04.png&#34; alt=&#34;04&#34;&gt;&lt;/li&gt;
+&lt;li&gt;第6行和23行：
+&lt;em&gt;_mb()是读写访问内存屏障，它保证在屏障（调用&lt;/em&gt;_mb()的位置处）之后的任何读操作在执行之前，屏障之前的所有读操作都已经完成。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;仔细一分析，该函数的功能就是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;只要v-&amp;gt;counter还不等于u,就以原子的方式将a加到v-&amp;gt;counter中，最终返回原始的v-&amp;gt;counter的值，即临时变量oldval的值。&lt;/li&gt;
+&lt;li&gt;由于过程中独占访问内存，所以如果写回内存时发现独占访问标记消失，则表明该进程被其他处理器中的进程抢占执行了，则会重头再来，总有一次能成功，这就保证了被抢占者不会影响原执行者的最终结果，甚是巧妙！&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;5-原子变量内核操作函数汇总&#34;&gt;5. 原子变量内核操作函数汇总&lt;/h1&gt;
+&lt;p&gt;其它的函数也大同小异，这里记录如下&lt;/p&gt;
+&lt;h2 id=&#34;51-操作原子变量&#34;&gt;5.1. 操作原子变量&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;函数名&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;作用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_read(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;读出原子变量的值，即v-&amp;gt;counter&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_set(v,i)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;设置原子变量的值，即v-&amp;gt;counter = i&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_inc(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;v-&amp;gt;counter++&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_dec(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;v-&amp;gt;counter&amp;ndash;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_add(i,v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;v-&amp;gt;counter += i&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_sub(i,v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;v-&amp;gt;counter -= i&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_inc_and_test(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;先加1，再判断新值是否等于0；等于0的话，返回值为1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_dec_and_test(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;先减1，再判断新值是否等于0；等于0的话，返回值为1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;52-操作原子变量中的某一位&#34;&gt;5.2. 操作原子变量中的某一位&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;函数名&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;作用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;set_bit(nr,p)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;设置(*p)的bit nr为1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;clear_bit(nr,p)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;清除(*p)的bit nr为0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;change_bit(nr,p)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;改变(*p)的bit nr，从1变为0，或是从0变为1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;test_and_set_bit(nr,p)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;设置(*p)的bit nr为1，返回该位的老值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;test_and_clear_bit(nr,p)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;清除(*p)的bit nr为0，返回该位的老值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;test_and_change_bit(nr,p)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;改变(*p)的bit nr，从1变为0，或是从0变为1；返回该位的老值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&#34;参考来源&#34;&gt;参考来源&lt;/h1&gt;
+&lt;p&gt;本文是学习韦东山老师的Linux课程整理的笔记，特此感谢！！！&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>类型转换</title>

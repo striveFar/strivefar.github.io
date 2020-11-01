@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="YoungFar">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="1. 什么是原子操作 2. 为什么要引入原子操作 2.1. 失败例子1 2.2. 失败例子2 2.3. 失败例子3 3. 原子操作实现——atomic.h解析 4. 内联汇编实现原子操作 5. 原子">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="YoungFar的个人博客——Love&amp;Share">
+  <meta property="og:url" content="https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/">
+  <meta property="og:title" content="原子操作 atomic.h 详解 | YoungFar的个人博客——Love&amp;Share">
+  <meta property="og:description" content="1. 什么是原子操作 2. 为什么要引入原子操作 2.1. 失败例子1 2.2. 失败例子2 2.3. 失败例子3 3. 原子操作实现——atomic.h解析 4. 内联汇编实现原子操作 5. 原子"><meta property="og:image" content="https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/featured.jpg">
+  <meta property="twitter:image" content="https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/featured.jpg"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2020-10-29T20:29:10&#43;08:00">
+    
+    <meta property="article:modified_time" content="2020-10-29T20:29:10&#43;08:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/"
+  },
+  "headline": "原子操作 atomic.h 详解",
+  
+  "image": [
+    "https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/featured.jpg"
+  ],
+  
+  "datePublished": "2020-10-29T20:29:10+08:00",
+  "dateModified": "2020-10-29T20:29:10+08:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "youngfar"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "YoungFar的个人博客——Love\u0026Share",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/https://strivefar.github.io/"
+    }
+  },
+  "description": "1. 什么是原子操作 2. 为什么要引入原子操作 2.1. 失败例子1 2.2. 失败例子2 2.3. 失败例子3 3. 原子操作实现——atomic.h解析 4. 内联汇编实现原子操作 5. 原子"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>原子操作 atomic.h 详解 | YoungFar的个人博客——Love&amp;Share</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>搜索</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="搜索..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/">YoungFar的个人博客——Love&amp;Share</a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="切换导航">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/">YoungFar的个人博客——Love&amp;Share</a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>分类/专栏</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#hero"><span>关于我</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>请我喝杯酒</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+      <li class="nav-item">
+        <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article article-project">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+
+<div class="article-container pt-3">
+  <h1>原子操作 atomic.h 详解</h1>
+
+  
+  <p class="page-subtitle">如有问题，欢迎评论区批评指正。 🚀&rsquo;</p>
+  
+
+  
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  
+  <span><a href="/authors/youngfar/">youngfar</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    2020-10-29
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 960px;">
+  <div style="position: relative">
+    <img src="/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/featured_hu02ad17b9e2562b529e8fb560e78bc2ab_1816471_720x0_resize_q90_lanczos.jpg" alt="" class="featured-image">
+    
+  </div>
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <ul>
+<li><a href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C">1. 什么是原子操作</a></li>
+<li><a href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C">2. 为什么要引入原子操作</a>
+<ul>
+<li><a href="#21-%E5%A4%B1%E8%B4%A5%E4%BE%8B%E5%AD%901">2.1. 失败例子1</a></li>
+<li><a href="#22-%E5%A4%B1%E8%B4%A5%E4%BE%8B%E5%AD%902">2.2. 失败例子2</a></li>
+<li><a href="#23-%E5%A4%B1%E8%B4%A5%E4%BE%8B%E5%AD%903">2.3. 失败例子3</a></li>
+</ul>
+</li>
+<li><a href="#3-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0atomich%E8%A7%A3%E6%9E%90">3. 原子操作实现——atomic.h解析</a></li>
+<li><a href="#4-%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C">4. 内联汇编实现原子操作</a></li>
+<li><a href="#5-%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F%E5%86%85%E6%A0%B8%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB">5. 原子变量内核操作函数汇总</a>
+<ul>
+<li><a href="#51-%E6%93%8D%E4%BD%9C%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F">5.1. 操作原子变量</a></li>
+<li><a href="#52-%E6%93%8D%E4%BD%9C%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E6%9F%90%E4%B8%80%E4%BD%8D">5.2. 操作原子变量中的某一位</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90">参考来源</a></li>
+</ul>
+<h1 id="1-什么是原子操作">1. 什么是原子操作</h1>
+<p>原子（atom）指<code>化学反应不可再分</code>的基本微粒，原子在化学反应中不可分割。</p>
+<p>在操作系统中，用原子的这一特性形象生动的描述了一种操作————原子操作，顾名思义，原子操作是不可分割的， <strong>在执行完毕之前不被任何其它任务或事件中断或即便被中断但不影响最终结果的操作都可以称之为原子操作</strong>。</p>
+<p>在<strong>单处理器系统</strong>（UniProcessor）中，能够在单条指令中完成的操作都可以认为是&rdquo; 原子操作&rdquo;，因为中断只能发生于指令之间；那么多条指令可不可以构成原子操作呢，当然可以，只要<code>确保这几条指令执行时不被抢占</code>就好了，关闭总中断就可以做到。</p>
+<p>在<strong>多处理器SMP系统</strong>（Symmetric Multi-Processor）中，关中断可就不好使了，因为A处理器无法关闭它处理器的中断，A处理器只能关闭自己的中断。那么此时多条指令的执行还可以是“ 原子 ”的吗，其实也能，虽然被抢占是再所难免的，但只要<code>保证被抢占者不会影响原执行者的最终结果</code>不就好了。</p>
+<h1 id="2-为什么要引入原子操作">2. 为什么要引入原子操作</h1>
+<p>先明确两个概念：同步和互斥</p>
+<ol>
+<li>同步，又称直接制约关系，是指多个线程（或进程）为了合作完成任务，必须严格按照规定的 某种先后次序来运行。</li>
+<li>互斥，又称间接制约关系，是指系统中的某些共享资源，一次只允许一个线程访问。当一个线程正在访问该临界资源时，其它线程必须等待。</li>
+</ol>
+<p>这里举几个同步与互斥失败的例子来说明构建原子操作的必要性，该部分内容完全摘自韦东山老师的教程文档。</p>
+<h2 id="21-失败例子1">2.1. 失败例子1</h2>
+<pre><code class="language-c">01 static int valid = 1;
+02
+03 static ssize_t gpio_key_drv_open (struct inode *node, struct file *file)
+04 {
+05      if (!valid)
+06      {
+07              return -EBUSY;
+08      }
+09      else
+10      {
+11              valid = 0;
+12      }
+13
+14      return 0; //成功
+15 }
+16
+17 static int gpio_key_drv_close (struct inode *node, struct file *file)
+18 {
+19      valid = 1;
+20      return 0;
+21 }
+</code></pre>
+<p>看第5行，我们使用一个全局变量valid来实现互斥访问。这有问题吗？很大概率没问题，但是并非万无一失。
+注意：编写驱动程序时，要有系统的概念，程序A调用驱动程序时，它可能被程序B打断，程序B也去调用这个驱动程序。
+下图是一个例子，程序A在调用驱动程序的中途被程序B抢占了CPU资源：
+<img src="/img/atomic/01.png" alt="01"></p>
+<p>程序A执行到第11行之前，被程序B抢占了，这时valid尚未被改成0；
+程序B调用gpio_key_drv_open时，发现valid等于1，所以成功返回0；
+当程序A继续从第11行执行时，它最终也成功返回0；
+这样程序A、B都成功打开了驱动程序。
+注意：在内核态，程序A不是主动去休眠、主动放弃CPU资源；而是被优先级更高的程序B抢占了，这种行为被称为“preempt”(抢占)。</p>
+<h2 id="22-失败例子2">2.2. 失败例子2</h2>
+<p>上面的例子是不是第5行到第11行的时间跨度大长了？再优化一下程序行不行？代码如下：</p>
+<pre><code class="language-c">01 static int valid = 1;
+02
+03 static ssize_t gpio_key_drv_open (struct inode *node, struct file *file)
+04 {
+05      if (--valid)
+06      {
+07              valid++;
+08              return -EBUSY;
+09      }
+10      return 0;
+11 }
+12
+13 static int gpio_key_drv_close (struct inode *node, struct file *file)
+14 {
+15      valid = 1;
+16      return 0;
+17 }
+</code></pre>
+<p>第5行先减1再判断，这样可以更大概率地避免问题，但是还是不能确保万无一失。对数据的修改分为3步：读出来、修改、写进去。请看下图：</p>
+<p><img src="/img/atomic/02.png" alt="02"></p>
+<p>进程A在读出valid时发现它是1，减1后为0，这时if不成立；但是修改后的值尚未写回内存；
+假设这时被程序B抢占，程序B读出valid仍为1，减1后为0，这时if不成立，最后成功返回；
+轮到A继续执行，它把0值写到valid变量，最后也成功返回。
+这样程序A、B都成功打开了驱动程序。</p>
+<h2 id="23-失败例子3">2.3. 失败例子3</h2>
+<p>前面2个例子，都是在修改valid的过程中被别的进程抢占了，那么在修改valid的时候直接关中断不就可以了吗？</p>
+<pre><code class="language-c">01 static int valid = 1;
+02
+03 static ssize_t gpio_key_drv_open (struct inode *node, struct file *file)
+04 {
+05       unsigned long flags;
+06       raw_local_irq_save(flags); // 关中断
+07      if (--valid)
+08      {
+09              valid++;
+10              raw_local_irq_restore(flags);  // 恢复之前的状态
+11              return -EBUSY;
+12      }
+13       raw_local_irq_restore(flags);          // 恢复之前的状态
+14      return 0;
+15 }
+16
+17 static int gpio_key_drv_close (struct inode *node, struct file *file)
+18 {
+19      valid = 1;
+20      return 0;
+21 }
+</code></pre>
+<p>第06行直接关中断，这样别的线程、中断都不能来打扰本线程了，在它读取、修改valid变量的过程中无人打扰。</p>
+<p>没有问题了？</p>
+<p><code>对于单CPU核的系统上述代码是没问题的</code>；但是对于SMP系统，你<code>只能关闭当前CPU核的中断</code>，别的CPU核还可以运行程序，它们也可以来执行这个函数，同样导致问题，如下图：
+<img src="/img/atomic/03.png" alt="03"></p>
+<p>假设CPU0上进程A、CPU1上进程B同时运行到上图中读出valid的地方，它们同时发现valid都是1，减减后都等于0，在第07行判断条件都不成立，所以在第14行都可以返回0，都可以成功打开驱动。</p>
+<h1 id="3-原子操作实现atomich解析">3. 原子操作实现——atomic.h解析</h1>
+<p>为方便说明，这里对一些非关键的条件编译不做展开说明，完整的atomic.h文件路径为arch/arm/include/asm/atomic.h，您也可以点击下方链接，在线查看arch/arm/include/asm/atomic.h源码</p>
+<p><a href="https://elixir.bootlin.com/linux/v4.9.88/source/arch/arm/include/asm/atomic.h">atomic.h源码在线阅读</a></p>
+<pre><code class="language-c">#ifndef __ASM_ARM_ATOMIC_H
+#define __ASM_ARM_ATOMIC_H
+
+#include &lt;linux/compiler.h&gt;
+#include &lt;linux/prefetch.h&gt;
+#include &lt;linux/types.h&gt;
+#include &lt;linux/irqflags.h&gt;
+#include &lt;asm/barrier.h&gt;
+#include &lt;asm/cmpxchg.h&gt;
+
+#define ATOMIC_INIT(i) \
+    {                  \
+        (i)            \
+    }
+
+#ifdef __KERNEL__    
+
+
+/* 读写操作只需要一条指令即可完成，本身就是原子的 */
+#define atomic_read(v) READ_ONCE((v)-&gt;counter) 
+#define atomic_set(v, i) WRITE_ONCE(((v)-&gt;counter), (i))
+
+/*******************************************************************/
+
+/*
+* 根据不同架构版本做设置不同的#define宏函数
+* ARMV6 以下，单核，无需内联汇编，直接关中断
+* ARMv6 及以上，支持多核，一律内联汇编！
+*/
+#if __LINUX_ARM_ARCH__ &gt;= 6 
+... Section A
+#else
+... Section B
+#endif /* __LINUX_ARM_ARCH__ */
+
+/*******************************************************************/
+
+
+/* 
+* ATOMIC_OPS 表示 ops即operations 表示一系列原子操作，
+* ATOMIC_OP， ATOMIC_OP_RETURN，ATOMIC_FETCH_OP这几个宏 在 省略部分A 和 省略部分B 各有不同的定义
+*/
+#define ATOMIC_OPS(op, c_op, asm_op)   \
+    ATOMIC_OP(op, c_op, asm_op)        \  //这个宏还是没变
+    ATOMIC_OP_RETURN(op, c_op, asm_op) \
+    ATOMIC_FETCH_OP(op, c_op, asm_op)
+
+ATOMIC_OPS(add, +=, add)
+ATOMIC_OPS(sub, -=, sub)
+
+#define atomic_andnot atomic_andnot
+
+/*******************************************************************/
+
+/* 删除原来的ATOMIC_OPS宏 */
+#undef ATOMIC_OPS  
+/* 重新定义新的一系列原子操作 */
+#define ATOMIC_OPS(op, c_op, asm_op) \
+    ATOMIC_OP(op, c_op, asm_op)      \  //这个宏还是没变
+    ATOMIC_FETCH_OP(op, c_op, asm_op)
+
+ATOMIC_OPS(and, &amp;=, and)
+ATOMIC_OPS(andnot, &amp;= ~, bic)
+ATOMIC_OPS(or, |=, orr)
+ATOMIC_OPS(xor, ^=, eor)
+
+
+/*******************************************************************/
+/* 删除原来的各个宏，将已定义的这些宏的作用域限制在了改行以上，在该行之后，如又调用该标识符，则程序会编译出错 */
+#undef ATOMIC_OPS
+#undef ATOMIC_FETCH_OP
+#undef ATOMIC_OP_RETURN
+#undef ATOMIC_OP
+
+#define atomic_xchg(v, new) (xchg(&amp;((v)-&gt;counter), new))
+
+#define atomic_inc(v) atomic_add(1, v)
+#define atomic_dec(v) atomic_sub(1, v)
+
+#define atomic_inc_and_test(v) (atomic_add_return(1, v) == 0)
+#define atomic_dec_and_test(v) (atomic_sub_return(1, v) == 0)
+#define atomic_inc_return_relaxed(v) (atomic_add_return_relaxed(1, v))
+#define atomic_dec_return_relaxed(v) (atomic_sub_return_relaxed(1, v))
+#define atomic_sub_and_test(i, v) (atomic_sub_return(i, v) == 0)
+
+#define atomic_add_negative(i, v) (atomic_add_return(i, v) &lt; 0)
+/*******************************************************************/
+
+/*如果是64位的系统，则重复32位的流程，只是让操作适配64位系统*/
+#ifndef CONFIG_GENERIC_ATOMIC64
+... 省略
+#endif /* !CONFIG_GENERIC_ATOMIC64 */
+/*******************************************************************/
+
+#endif /* end of __KERNEL__ */
+
+#endif /* end of __ASM_ARM_ATOMIC_H */
+
+</code></pre>
+<p>刚刚省略掉的Section A 的代码如下：</p>
+<pre><code class="language-c">/*
+ * ARMv6 UP and SMP safe atomic ops.  We use load exclusive and
+ * store exclusive to ensure that these are atomic.  We may loop
+ * to ensure that the update happens.
+ *
+ * ARMv6 UP和SMP安全原子操作。我们使用加载独占和存储独占来确保它们是原子的。
+ * 我们可以循环以确保更新发生。
+ */
+
+
+/*
+* 这部分主要定义了宏操作，然后二次封装进ATOMIC_OPS宏中，
+* 这样就可以使用类似ATOMIC_OPS(and, &amp;=, and)这样的操作做置换了
+*/
+#define ATOMIC_OP(op, c_op, asm_op)                                         \
+    static inline void atomic_##op(int i, atomic_t *v)                      \
+    {                                                                       \
+        unsigned long tmp;                                                  \
+        int result;                                                         \
+                                                                            \
+        prefetchw(&amp;v-&gt;counter);                                             \
+        __asm__ __volatile__(&quot;@ atomic_&quot; #op &quot;\n&quot;                           \
+                             &quot;1:	ldrex	%0, [%3]\n&quot;                          \
+                             &quot;	&quot; #asm_op &quot;	%0, %0, %4\n&quot;                   \
+                             &quot;	strex	%1, %0, [%3]\n&quot;                        \
+                             &quot;	teq	%1, #0\n&quot;                                \
+                             &quot;	bne	1b&quot;                                      \
+                             : &quot;=&amp;r&quot;(result), &quot;=&amp;r&quot;(tmp), &quot;+Qo&quot;(v-&gt;counter) \
+                             : &quot;r&quot;(&amp;v-&gt;counter), &quot;Ir&quot;(i)                    \
+                             : &quot;cc&quot;);                                       \
+    }
+
+#define ATOMIC_OP_RETURN(op, c_op, asm_op)                                  \
+    static inline int atomic_##op##_return_relaxed(int i, atomic_t *v)      \
+    {                                                                       \
+        unsigned long tmp;                                                  \
+        int result;                                                         \
+                                                                            \
+        prefetchw(&amp;v-&gt;counter);                                             \
+                                                                            \
+        __asm__ __volatile__(&quot;@ atomic_&quot; #op &quot;_return\n&quot;                    \
+                             &quot;1:	ldrex	%0, [%3]\n&quot;                          \
+                             &quot;	&quot; #asm_op &quot;	%0, %0, %4\n&quot;                   \
+                             &quot;	strex	%1, %0, [%3]\n&quot;                        \
+                             &quot;	teq	%1, #0\n&quot;                                \
+                             &quot;	bne	1b&quot;                                      \
+                             : &quot;=&amp;r&quot;(result), &quot;=&amp;r&quot;(tmp), &quot;+Qo&quot;(v-&gt;counter) \
+                             : &quot;r&quot;(&amp;v-&gt;counter), &quot;Ir&quot;(i)                    \
+                             : &quot;cc&quot;);                                       \
+                                                                            \
+        return result;                                                      \
+    }
+
+#define ATOMIC_FETCH_OP(op, c_op, asm_op)                                               \
+    static inline int atomic_fetch_##op##_relaxed(int i, atomic_t *v)                   \
+    {                                                                                   \
+        unsigned long tmp;                                                              \
+        int result, val;                                                                \
+                                                                                        \
+        prefetchw(&amp;v-&gt;counter);                                                         \
+                                                                                        \
+        __asm__ __volatile__(&quot;@ atomic_fetch_&quot; #op &quot;\n&quot;                                 \
+                             &quot;1:	ldrex	%0, [%4]\n&quot;                                      \
+                             &quot;	&quot; #asm_op &quot;	%1, %0, %5\n&quot;                               \
+                             &quot;	strex	%2, %1, [%4]\n&quot;                                    \
+                             &quot;	teq	%2, #0\n&quot;                                            \
+                             &quot;	bne	1b&quot;                                                  \
+                             : &quot;=&amp;r&quot;(result), &quot;=&amp;r&quot;(val), &quot;=&amp;r&quot;(tmp), &quot;+Qo&quot;(v-&gt;counter) \
+                             : &quot;r&quot;(&amp;v-&gt;counter), &quot;Ir&quot;(i)                                \
+                             : &quot;cc&quot;);                                                   \
+                                                                                        \
+        return result;                                                                  \
+    }
+
+
+/* 这里不是很清楚为什么要重复封装，可能是为了方便修改接口吧，还请评论区指点 */
+#define atomic_add_return_relaxed atomic_add_return_relaxed
+#define atomic_sub_return_relaxed atomic_sub_return_relaxed
+#define atomic_fetch_add_relaxed atomic_fetch_add_relaxed
+#define atomic_fetch_sub_relaxed atomic_fetch_sub_relaxed
+
+#define atomic_fetch_and_relaxed atomic_fetch_and_relaxed
+#define atomic_fetch_andnot_relaxed atomic_fetch_andnot_relaxed
+#define atomic_fetch_or_relaxed atomic_fetch_or_relaxed
+#define atomic_fetch_xor_relaxed atomic_fetch_xor_relaxed
+
+static inline int atomic_cmpxchg_relaxed(atomic_t *ptr, int old, int new)
+{
+    int oldval;
+    unsigned long res;
+
+    prefetchw(&amp;ptr-&gt;counter);
+
+    do
+    {
+        __asm__ __volatile__(&quot;@ atomic_cmpxchg\n&quot;
+                             &quot;ldrex	%1, [%3]\n&quot;
+                             &quot;mov	%0, #0\n&quot;
+                             &quot;teq	%1, %4\n&quot;
+                             &quot;strexeq %0, %5, [%3]\n&quot;
+                             : &quot;=&amp;r&quot;(res), &quot;=&amp;r&quot;(oldval), &quot;+Qo&quot;(ptr-&gt;counter)
+                             : &quot;r&quot;(&amp;ptr-&gt;counter), &quot;Ir&quot;(old), &quot;r&quot;(new)
+                             : &quot;cc&quot;);
+    } while (res);
+
+    return oldval;
+}
+/* 这里不是很清楚为什么要重复封装，可能是为了方便修改接口吧，还请评论区指点 */
+#define atomic_cmpxchg_relaxed atomic_cmpxchg_relaxed
+
+static inline int __atomic_add_unless(atomic_t *v, int a, int u)
+{
+    int oldval, newval;
+    unsigned long tmp;
+
+    smp_mb();
+    prefetchw(&amp;v-&gt;counter); //写预取
+
+    __asm__ __volatile__(&quot;@ atomic_add_unless\n&quot;
+                         &quot;1:	ldrex	%0, [%4]\n&quot;
+                         &quot;	teq	%0, %5\n&quot;
+                         &quot;	beq	2f\n&quot;
+                         &quot;	add	%1, %0, %6\n&quot;
+                         &quot;	strex	%2, %1, [%4]\n&quot;
+                         &quot;	teq	%2, #0\n&quot;
+                         &quot;	bne	1b\n&quot;
+                         &quot;2:&quot;
+                         : &quot;=&amp;r&quot;(oldval), &quot;=&amp;r&quot;(newval), &quot;=&amp;r&quot;(tmp), &quot;+Qo&quot;(v-&gt;counter)
+                         : &quot;r&quot;(&amp;v-&gt;counter), &quot;r&quot;(u), &quot;r&quot;(a)
+                         : &quot;cc&quot;);
+
+    if (oldval != u)
+        smp_mb();   //*_mb()是读写访问内存屏障，它保证在屏障（调用*_mb()的位置处）之后的任何读操作在执行之前，屏障之前的所有读操作都已经完成。
+
+    return oldval;
+}
+
+
+
+</code></pre>
+<p>刚刚省略掉的Section B 的代码如下：</p>
+<pre><code class="language-c">/* 
+* #error 是一种预编译器指示字，用于生成一个编译错误消息。
+* 之前说了，对于SMP系统，关中断是无法实现原子操作的，所以这里会报错
+*/
+#ifdef CONFIG_SMP
+#error SMP not supported on pre-ARMv6 CPUs
+#endif
+
+/*
+* raw_local_irq_save(flags); // 中断控制相关,保存并关闭中断
+* raw_local_irq_restore(flags); //中断控制相关,恢复中断
+*/
+#define ATOMIC_OP(op, c_op, asm_op)                    \
+    static inline void atomic_##op(int i, atomic_t *v) \
+    {                                                  \
+        unsigned long flags;                           \
+                                                       \
+        raw_local_irq_save(flags);                     \
+        v-&gt;counter c_op i;                             \
+        raw_local_irq_restore(flags);                  \
+    }
+
+#define ATOMIC_OP_RETURN(op, c_op, asm_op)                     \
+    static inline int atomic_##op##_return(int i, atomic_t *v) \
+    {                                                          \
+        unsigned long flags;                                   \
+        int val;                                               \
+                                                               \
+        raw_local_irq_save(flags);                             \
+        v-&gt;counter c_op i;                                     \
+        val = v-&gt;counter;                                      \
+        raw_local_irq_restore(flags);                          \
+                                                               \
+        return val;                                            \
+    }
+
+#define ATOMIC_FETCH_OP(op, c_op, asm_op)                   \
+    static inline int atomic_fetch_##op(int i, atomic_t *v) \
+    {                                                       \
+        unsigned long flags;                                \
+        int val;                                            \
+                                                            \
+        raw_local_irq_save(flags);                          \
+        val = v-&gt;counter;                                   \
+        v-&gt;counter c_op i;                                  \
+        raw_local_irq_restore(flags);                       \
+                                                            \
+        return val;                                         \
+    }
+
+static inline int atomic_cmpxchg(atomic_t *v, int old, int new)
+{
+    int ret;
+    unsigned long flags;
+
+    raw_local_irq_save(flags);
+    ret = v-&gt;counter;
+    if (likely(ret == old))
+        v-&gt;counter = new;
+    raw_local_irq_restore(flags);
+
+    return ret;
+}
+
+static inline int __atomic_add_unless(atomic_t *v, int a, int u)
+{
+    int c, old;
+
+    c = atomic_read(v);
+    while (c != u &amp;&amp; (old = atomic_cmpxchg((v), c, c + a)) != c)
+        c = old;
+    return c;
+}
+</code></pre>
+<h1 id="4-内联汇编实现原子操作">4. 内联汇编实现原子操作</h1>
+<p>上面的代码只是大体让我们了解了一下原子操作的基本架构，单核系统我们不在深究，主要细究一下多核系统如何实现原子操作的。</p>
+<p>我们以Section A 的 __atomic_add_unless 函数为例，对其中使用到的内联汇编做深度解析
+该函数体如下：</p>
+<pre><code class="language-C">  1 static inline int __atomic_add_unless(atomic_t *v, int a, int u)
+  2 {
+  3     int oldval, newval;
+  4     unsigned long tmp;
+  5
+  6     smp_mb();
+  7     prefetchw(&amp;v-&gt;counter); //写预取
+  8
+  9     __asm__ __volatile__(&quot;@ atomic_add_unless\n&quot;
+ 10                          &quot;1:    ldrex   %0, [%4]\n&quot;     ;读取counter到oldval，并标记[%4]所指的内存为独占访问
+ 11                          &quot;      teq     %0, %5\n&quot;       ;比较oldval和u是否相等
+ 12                          &quot;      beq     2f\n&quot;           ;相等则跳转至标签2，跳出该函数，不相等则继续顺序执行下—条指令
+ 13                          &quot;      add     %1, %0, %6\n&quot;   ;newval = oldval + a，这里oldval 就是原来的counter，这是第①步的影响
+ 14                          &quot;      strex   %2, %1, [%4]\n&quot; ;如果counter的独占访问标记还在，则把newval新值写入[%4所指的内存，并且清除独占访问标记，把tmp设为0表示成功,tmp = 1表示失败
+ 15                          &quot;      teq     %2, #0\n&quot;       ;测试tmp的值是否为0，为0表示一切正常，为1表示counter的独占访问标记不存在了，就不会更新counter的值
+ 16                          &quot;      bne     1b\n&quot;           ;如果不相等则跳转到lable 1处重新执行，总有─次能成功
+ 17                          &quot;2:&quot;
+ 18                          : &quot;=&amp;r&quot;(oldval), &quot;=&amp;r&quot;(newval), &quot;=&amp;r&quot;(tmp), &quot;+Qo&quot;(v-&gt;counter)
+ 19                          : &quot;r&quot;(&amp;v-&gt;counter), &quot;r&quot;(u), &quot;r&quot;(a)
+ 20                          : &quot;cc&quot;);
+ 21
+ 22     if (oldval != u)
+ 23         smp_mb();   //*_mb()是读写访问内存屏障，它保证在屏障（调用*_mb()的位置处）之后的任何读操作在执行之前，屏障之前的所有读操作都已经完成。
+ 24
+ 25     return oldval;
+ 26 }
+
+</code></pre>
+<ol>
+<li>第7行：有一个共识是:程序访问的变量如果都能在系统内存cache中则能提升性能，prefetchw是内核中一个预热内存函数，这样下次遍历时就能高效命中内存cache，从而提升程序性能。</li>
+<li>第9行到第20行，手机端见如下图片解析
+<img src="/img/atomic/04.png" alt="04"></li>
+<li>第6行和23行：
+<em>_mb()是读写访问内存屏障，它保证在屏障（调用</em>_mb()的位置处）之后的任何读操作在执行之前，屏障之前的所有读操作都已经完成。</li>
+</ol>
+<p>仔细一分析，该函数的功能就是：</p>
+<ul>
+<li>只要v-&gt;counter还不等于u,就以原子的方式将a加到v-&gt;counter中，最终返回原始的v-&gt;counter的值，即临时变量oldval的值。</li>
+<li>由于过程中独占访问内存，所以如果写回内存时发现独占访问标记消失，则表明该进程被其他处理器中的进程抢占执行了，则会重头再来，总有一次能成功，这就保证了被抢占者不会影响原执行者的最终结果，甚是巧妙！</li>
+</ul>
+<h1 id="5-原子变量内核操作函数汇总">5. 原子变量内核操作函数汇总</h1>
+<p>其它的函数也大同小异，这里记录如下</p>
+<h2 id="51-操作原子变量">5.1. 操作原子变量</h2>
+<table>
+<thead>
+<tr>
+<th align="left">函数名</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">atomic_read(v)</td>
+<td align="left">读出原子变量的值，即v-&gt;counter</td>
+</tr>
+<tr>
+<td align="left">atomic_set(v,i)</td>
+<td align="left">设置原子变量的值，即v-&gt;counter = i</td>
+</tr>
+<tr>
+<td align="left">atomic_inc(v)</td>
+<td align="left">v-&gt;counter++</td>
+</tr>
+<tr>
+<td align="left">atomic_dec(v)</td>
+<td align="left">v-&gt;counter&ndash;</td>
+</tr>
+<tr>
+<td align="left">atomic_add(i,v)</td>
+<td align="left">v-&gt;counter += i</td>
+</tr>
+<tr>
+<td align="left">atomic_sub(i,v)</td>
+<td align="left">v-&gt;counter -= i</td>
+</tr>
+<tr>
+<td align="left">atomic_inc_and_test(v)</td>
+<td align="left">先加1，再判断新值是否等于0；等于0的话，返回值为1</td>
+</tr>
+<tr>
+<td align="left">atomic_dec_and_test(v)</td>
+<td align="left">先减1，再判断新值是否等于0；等于0的话，返回值为1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="52-操作原子变量中的某一位">5.2. 操作原子变量中的某一位</h2>
+<table>
+<thead>
+<tr>
+<th align="left">函数名</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">set_bit(nr,p)</td>
+<td align="left">设置(*p)的bit nr为1</td>
+</tr>
+<tr>
+<td align="left">clear_bit(nr,p)</td>
+<td align="left">清除(*p)的bit nr为0</td>
+</tr>
+<tr>
+<td align="left">change_bit(nr,p)</td>
+<td align="left">改变(*p)的bit nr，从1变为0，或是从0变为1</td>
+</tr>
+<tr>
+<td align="left">test_and_set_bit(nr,p)</td>
+<td align="left">设置(*p)的bit nr为1，返回该位的老值</td>
+</tr>
+<tr>
+<td align="left">test_and_clear_bit(nr,p)</td>
+<td align="left">清除(*p)的bit nr为0，返回该位的老值</td>
+</tr>
+<tr>
+<td align="left">test_and_change_bit(nr,p)</td>
+<td align="left">改变(*p)的bit nr，从1变为0，或是从0变为1；返回该位的老值</td>
+</tr>
+</tbody>
+</table>
+<h1 id="参考来源">参考来源</h1>
+<p>本文是学习韦东山老师的Linux课程整理的笔记，特此感谢！！！</p>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/linux/">linux</a>
+  
+</div>
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/&amp;text=%e5%8e%9f%e5%ad%90%e6%93%8d%e4%bd%9c%20atomic.h%20%e8%af%a6%e8%a7%a3" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/&amp;t=%e5%8e%9f%e5%ad%90%e6%93%8d%e4%bd%9c%20atomic.h%20%e8%af%a6%e8%a7%a3" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=%e5%8e%9f%e5%ad%90%e6%93%8d%e4%bd%9c%20atomic.h%20%e8%af%a6%e8%a7%a3&amp;body=https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/&amp;title=%e5%8e%9f%e5%ad%90%e6%93%8d%e4%bd%9c%20atomic.h%20%e8%af%a6%e8%a7%a3" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=%e5%8e%9f%e5%ad%90%e6%93%8d%e4%bd%9c%20atomic.h%20%e8%af%a6%e8%a7%a3%20https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/&amp;title=%e5%8e%9f%e5%ad%90%e6%93%8d%e4%bd%9c%20atomic.h%20%e8%af%a6%e8%a7%a3" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/authors/youngfar/"></a></h5>
+      
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+  
+  <span id="/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/" class="leancloud_visitors" data-flag-title="原子操作 atomic.h 详解">
+    <span class="post-meta-item-text">文章阅读量 </span>
+    <span class="leancloud-visitors-count">1000000</span>
+    <p></p>
+  </span>
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'bKJsEdFkCyUHc6Y1ItM5m6eJ-gzGzoHsz',
+        appKey: 'HAQIcprgVn8XbQVJ0ljgsudL',
+        notify: 'false', 
+        verify: 'false', 
+        avatar:'mm', 
+        placeholder: '说点什么吧...',
+        visitor: 'true'
+    });
+  </script>
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>相关</h3>
+    <ul>
+      
+      <li><a href="/project/post/inline/">内联汇编</a></li>
+      
+      <li><a href="/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%A6%E8%A7%A3-imx6ull/">设备树详解</a></li>
+      
+      <li><a href="/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%AD%E6%B3%95/">Linux 设备驱动开发————设备树应用实例（imx6ull）</a></li>
+      
+      <li><a href="/project/post/%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9E%8B/">总线设备驱动模型</a></li>
+      
+      <li><a href="/project/post/getting-started/">动态编译和静态编译——制作动态库和静态库</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+    <div class="project-related-pages content-widget-hr">
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+
+      
+      
+      
+    </div>
+  </div>
+</article>
+
+      
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>const code_highlighting = true;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"没有找到结果","placeholder":"搜索...","results":"搜索结果"};
+      const content_type = {
+        'post': "文章",
+        'project': "项目",
+        'publication' : "出版物",
+        'talk' : "演讲"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.a0d331bcd05dbe8b31e244f796710f08.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">引用</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> 复制
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> 下载
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
