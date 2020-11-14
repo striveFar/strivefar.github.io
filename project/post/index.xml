@@ -740,7 +740,7 @@ asm [Qualifiers] goto (
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;asm&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;也可以写作“&lt;strong&gt;asm&lt;/strong&gt;”，如果关键词 asm 和我们程序的一些标识符冲突了，我们可以使用 &lt;strong&gt;asm&lt;/strong&gt; ,表示这是一段内联汇编。&lt;/p&gt;
+&lt;p&gt;也可以写作 &lt;code&gt;__asm__&lt;/code&gt; ，如果关键词 asm 和我们程序的一些标识符冲突了，我们可以使用 &lt;code&gt;__asm__&lt;/code&gt; ,表示这是一段内联汇编。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Qualifiers：&lt;/strong&gt; 包含 volatile 和 inline 这两个限定符&lt;/p&gt;
