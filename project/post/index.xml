@@ -870,6 +870,7 @@ int test(int a, int b)
 	__asm__ goto (
 
 		&amp;quot;cmp %1, %0\n\t&amp;quot;
+    /* BLE指令：b比a小则跳转 */
 		&amp;quot;blt %l2&amp;quot;
 		: /* No outputs. */
 		: &amp;quot;r&amp;quot;(a), &amp;quot;r&amp;quot;(b)
@@ -901,6 +902,7 @@ int main(int argc, char **argv)
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;23-imx6ull测试结果&#34;&gt;2.3. imx6ull测试结果&lt;/h2&gt;
+&lt;p&gt;BLE指令实现功能：b比a小则跳转&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;./test  1 2
 test return is 0
 
