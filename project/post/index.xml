@@ -462,13 +462,15 @@ static inline int __atomic_add_unless(atomic_t *v, int a, int u)
   7     prefetchw(&amp;amp;v-&amp;gt;counter); //写预取
   8
   9     __asm__ __volatile__(&amp;quot;@ atomic_add_unless\n&amp;quot;
- 10                          &amp;quot;1:    ldrex   %0, [%4]\n&amp;quot;     ;读取counter到oldval，并标记[%4]所指的内存为独占访问
- 11                          &amp;quot;      teq     %0, %5\n&amp;quot;       ;比较oldval和u是否相等
- 12                          &amp;quot;      beq     2f\n&amp;quot;           ;相等则跳转至标签2，跳出该函数，不相等则继续顺序执行下—条指令
- 13                          &amp;quot;      add     %1, %0, %6\n&amp;quot;   ;newval = oldval + a，这里oldval 就是原来的counter，这是第①步的影响
- 14                          &amp;quot;      strex   %2, %1, [%4]\n&amp;quot; ;如果counter的独占访问标记还在，则把newval新值写入[%4所指的内存，并且清除独占访问标记，把tmp设为0表示成功,tmp = 1表示失败
- 15                          &amp;quot;      teq     %2, #0\n&amp;quot;       ;测试tmp的值是否为0，为0表示一切正常，为1表示counter的独占访问标记不存在了，就不会更新counter的值
- 16                          &amp;quot;      bne     1b\n&amp;quot;           ;如果不相等则跳转到lable 1处重新执行，总有─次能成功
+ 10                          &amp;quot;1:    ldrex   %0, [%4]\n&amp;quot;     //读取counter到oldval，并标记[%4]所指的内存为独占访问
+ 11                          &amp;quot;      teq     %0, %5\n&amp;quot;       //比较oldval和u是否相等
+ 12                          &amp;quot;      beq     2f\n&amp;quot;           //相等则跳转至标签2，跳出该函数，不相等则继续顺序执行下—条指令
+ 13                          &amp;quot;      add     %1, %0, %6\n&amp;quot;   //newval = oldval + a，这里oldval 就是原来的counter，这是第①步的影响
+ 14                          &amp;quot;      strex   %2, %1, [%4]\n&amp;quot; //如果执行这条指令的时候发现counter的独占访问标记还在，则把newval新值更新到[%4]所指的内存，并把tmp设为0，指令执行成功后，会清除独占访问标记位,
+                                                            //而如果这条指令执行时发现独占标记没有了，则该条指令不执行，不会更新内存，且将tmp的值设置成1,表明中途被打断，操作失败
+                                            
+ 15                          &amp;quot;      teq     %2, #0\n&amp;quot;       //测试tmp的值是否为0，为0表示一切正常，为1表示对counter的访问不是独占的，就不会更新counter的值
+ 16                          &amp;quot;      bne     1b\n&amp;quot;           //如果不相等则跳转到lable 1处重新执行，总有─次能成功
  17                          &amp;quot;2:&amp;quot;
  18                          : &amp;quot;=&amp;amp;r&amp;quot;(oldval), &amp;quot;=&amp;amp;r&amp;quot;(newval), &amp;quot;=&amp;amp;r&amp;quot;(tmp), &amp;quot;+Qo&amp;quot;(v-&amp;gt;counter)
  19                          : &amp;quot;r&amp;quot;(&amp;amp;v-&amp;gt;counter), &amp;quot;r&amp;quot;(u), &amp;quot;r&amp;quot;(a)
@@ -482,12 +484,26 @@ static inline int __atomic_add_unless(atomic_t *v, int a, int u)
 
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ol&gt;
-&lt;li&gt;第7行：有一个共识是:程序访问的变量如果都能在系统内存cache中则能提升性能，prefetchw是内核中一个预热内存函数，这样下次遍历时就能高效命中内存cache，从而提升程序性能。&lt;/li&gt;
-&lt;li&gt;第9行到第20行，手机端见如下图片解析
-&lt;img src=&#34;https://strivefar.github.io/img/atomic/04.png&#34; alt=&#34;04&#34;&gt;&lt;/li&gt;
-&lt;li&gt;第6行和23行：
-&lt;em&gt;_mb()是读写访问内存屏障，它保证在屏障（调用&lt;/em&gt;_mb()的位置处）之后的任何读操作在执行之前，屏障之前的所有读操作都已经完成。&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第十行和第14行：独占访问指令(参考来源：&lt;a href=&#34;https://blog.csdn.net/Roland_Sun/article/details/47670099&#34;&gt;https://blog.csdn.net/Roland_Sun/article/details/47670099&lt;/a&gt;)
+我们先来看看LDREX和STREX两条指令的语义。其实LDREX和STREX指令，是将单纯的更新内存的原子操作分成了两个独立的步骤。&lt;/p&gt;
+&lt;p&gt;1)LDREX用来读取内存中的值，并标记对该段内存的独占访问：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;LDREX Rx, [Ry]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上面的指令意味着，读取寄存器Ry指向的4字节内存值，将其保存到Rx寄存器中，同时标记对Ry指向内存区域的独占访问。&lt;/p&gt;
+&lt;p&gt;如果执行LDREX指令的时候发现已经被标记为独占访问了，并不会对指令的执行产生影响。&lt;/p&gt;
+&lt;p&gt;2）而STREX在更新内存数值时，会检查该段内存是否已经被标记为独占访问，并以此来决定是否更新内存中的值：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;STREX Rx, Ry, [Rz]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果执行这条指令的时候发现已经被标记为独占访问了，则将寄存器Ry中的值更新到寄存器Rz指向的内存，并将寄存器Rx设置成0。指令执行成功后，会将独占访问标记位清除。&lt;/p&gt;
+&lt;p&gt;而如果执行这条指令的时候发现没有设置独占标记，则不会更新内存，且将寄存器Rx的值设置成1。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;
+&lt;p&gt;一旦某条STREX指令执行成功后，以后再对同一段内存尝试使用STREX指令更新的时候，会发现独占标记已经被清空了，就不能再更新了，从而实现独占访问的机制。
+2. 第7行：有一个共识是:程序访问的变量如果都能在系统内存cache中则能提升性能，prefetchw是内核中一个预热内存函数，这样下次遍历时就能高效命中内存cache，从而提升程序性能。
+3. 第9行到第20行，见代码注释
+4. 第6行和23行：
+&lt;em&gt;_mb()是读写访问内存屏障，它保证在屏障（调用&lt;/em&gt;_mb()的位置处）之后的任何读操作在执行之前，屏障之前的所有读操作都已经完成。&lt;/p&gt;
 &lt;p&gt;仔细一分析，该函数的功能就是：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;只要v-&amp;gt;counter还不等于u,就以原子的方式将a加到v-&amp;gt;counter中，最终返回原始的v-&amp;gt;counter的值，即临时变量oldval的值。&lt;/li&gt;
@@ -574,7 +590,14 @@ static inline int __atomic_add_unless(atomic_t *v, int a, int u)
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h1 id=&#34;参考来源&#34;&gt;参考来源&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/Roland_Sun/article/details/47670099&#34;&gt;https://blog.csdn.net/Roland_Sun/article/details/47670099&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
 &lt;p&gt;本文是学习韦东山老师的Linux课程整理的笔记，特此感谢！！！&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
 </description>
     </item>
     
