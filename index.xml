@@ -92,11 +92,12 @@
 &lt;li&gt;&lt;a href=&#34;#4-%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C&#34;&gt;4. 内联汇编实现原子操作&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#5-%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F%E5%86%85%E6%A0%B8%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB&#34;&gt;5. 原子变量内核操作函数汇总&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#51-%E6%93%8D%E4%BD%9C%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F&#34;&gt;5.1. 操作原子变量&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#52-%E6%93%8D%E4%BD%9C%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E6%9F%90%E4%B8%80%E4%BD%8D&#34;&gt;5.2. 操作原子变量中的某一位&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#51-%E8%AE%BE%E7%BD%AE%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F%E7%9A%84%E5%80%BC&#34;&gt;5.1. 设置原子变量的值&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#52-%E6%93%8D%E4%BD%9C%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F&#34;&gt;5.2. 操作原子变量&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#53-%E6%93%8D%E4%BD%9C%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F%E4%B8%AD%E7%9A%84%E6%9F%90%E4%B8%80%E4%BD%8D&#34;&gt;5.3. 操作原子变量中的某一位&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90&#34;&gt;参考来源&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#6-%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90&#34;&gt;6. 参考来源&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h1 id=&#34;1-什么是原子操作&#34;&gt;1. 什么是原子操作&lt;/h1&gt;
 &lt;p&gt;原子（atom）指&lt;code&gt;化学反应不可再分&lt;/code&gt;的基本微粒，原子在化学反应中不可分割。&lt;/p&gt;
@@ -573,7 +574,10 @@ static inline int __atomic_add_unless(atomic_t *v, int a, int u)
 &lt;/ul&gt;
 &lt;h1 id=&#34;5-原子变量内核操作函数汇总&#34;&gt;5. 原子变量内核操作函数汇总&lt;/h1&gt;
 &lt;p&gt;其它的函数也大同小异，这里记录如下&lt;/p&gt;
-&lt;h2 id=&#34;51-操作原子变量&#34;&gt;5.1. 操作原子变量&lt;/h2&gt;
+&lt;h2 id=&#34;51-设置原子变量的值&#34;&gt;5.1. 设置原子变量的值&lt;/h2&gt;
+&lt;p&gt;void atomic_set(atomic_t *v, int i); /&lt;em&gt;设置原子变量的值为i,即v-&amp;gt;counter = i&lt;/em&gt;/&lt;br&gt;
+atomic_t v = ATOMIC_INIT(i);        /&lt;em&gt;定义原子变量v并初始化为 i&lt;/em&gt;/&lt;/p&gt;
+&lt;h2 id=&#34;52-操作原子变量&#34;&gt;5.2. 操作原子变量&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -583,40 +587,36 @@ static inline int __atomic_add_unless(atomic_t *v, int a, int u)
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;atomic_read(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_read(atomic_t *v)&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;读出原子变量的值，即v-&amp;gt;counter&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;atomic_set(v,i)&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;设置原子变量的值，即v-&amp;gt;counter = i&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;atomic_inc(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_inc(atomic_t *v)&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;v-&amp;gt;counter++&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;atomic_dec(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_dec(atomic_t *v)&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;v-&amp;gt;counter&amp;ndash;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;atomic_add(i,v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_add(int i,atomic_t *v)&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;v-&amp;gt;counter += i&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;atomic_sub(i,v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_sub(int i,atomic_t *v)&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;v-&amp;gt;counter -= i&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;atomic_inc_and_test(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_inc_and_test(atomic_t *v)&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;先加1，再判断新值是否等于0；等于0的话，返回值为1&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;atomic_dec_and_test(v)&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;atomic_dec_and_test(atomic_t *v)&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;先减1，再判断新值是否等于0；等于0的话，返回值为1&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h2 id=&#34;52-操作原子变量中的某一位&#34;&gt;5.2. 操作原子变量中的某一位&lt;/h2&gt;
+&lt;h2 id=&#34;53-操作原子变量中的某一位&#34;&gt;5.3. 操作原子变量中的某一位&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -651,13 +651,37 @@ static inline int __atomic_add_unless(atomic_t *v, int a, int u)
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h1 id=&#34;参考来源&#34;&gt;参考来源&lt;/h1&gt;
+&lt;p&gt;使用实例：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;   static atomic_t xxx_available = ATOMIC_INIT(1);
+   static int XXX_open(struct inode* inode,struct file *flip)
+   {
+       ...
+       if(!atomic_dec_and_test(&amp;amp;xxx_available))
+       {
+           atomic_inc(&amp;amp;xxx_available);
+           return - EBUSY;     /* 已经打开 */
+       }
+        ...
+        return 0;      /* 成功 */
+   }
+
+
+   static int XXX_close(struct inode *inode, struct file *flip)
+   {
+       atomic_inc(&amp;amp;xxx_available); /* 释放设备 */
+       return 0;
+   }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;6-参考来源&#34;&gt;6. 参考来源&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/Roland_Sun/article/details/47670099&#34;&gt;https://blog.csdn.net/Roland_Sun/article/details/47670099&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;本文是学习韦东山老师的Linux课程整理的笔记，特此感谢！！！&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;宋宝华. Linux设备驱动开发详解：基于最新的Linux4.0内核 (电子与嵌入式系统设计丛书) (Kindle 位置 3426-3427). 机械工业出版社. Kindle 版本.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 </description>
