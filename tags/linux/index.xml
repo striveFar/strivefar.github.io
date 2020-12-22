@@ -39,7 +39,20 @@
 &lt;li&gt;&lt;a href=&#34;#42-%E8%87%AA%E5%8A%A8%E5%88%86%E9%85%8D%E8%AE%BE%E5%A4%87%E5%8F%B7%E6%B3%A8%E5%86%8Ccdev&#34;&gt;4.2. 自动分配设备号+注册cdev&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#5-class-%E4%BB%8B%E7%BB%8D&#34;&gt;5. class 介绍&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#5-class-%E4%BB%8B%E7%BB%8D&#34;&gt;5. class 介绍&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAclass&#34;&gt;创建一个class&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#class_create%E5%AE%8F&#34;&gt;class_create宏&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%9C%A8class%E4%B8%8B%E6%B7%BB%E5%8A%A0kobject%E5%AF%B9%E8%B1%A1&#34;&gt;在class下添加kobject对象&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#device_create%E5%87%BD%E6%95%B0&#34;&gt;device_create()函数&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#6-%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E5%85%A5%E5%8F%A3%E5%87%BD%E6%95%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B&#34;&gt;6. 字符设备驱动入口函数初始化流程&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#7-open%E5%87%BD%E6%95%B0%E5%A6%82%E4%BD%95%E6%9F%A5%E6%89%BEfile_operation%E7%9A%84%E6%8E%A5%E5%8F%A3&#34;&gt;7. open函数如何查找file_operation的接口&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90&#34;&gt;参考来源&lt;/a&gt;&lt;/li&gt;
@@ -165,6 +178,48 @@ fail:
 &lt;p&gt;一个类是一个设备的高级视图, 它抽象出低级的实现细节. 驱动可以见到一个SCSI 磁盘或者一个 ATA 磁盘, 在类的级别, 它们都是磁盘. 类允许用户空间基于它们做什么来使用设备, 而不是它们如何被连接或者它们如何工作.&lt;/p&gt;
 &lt;p&gt;几乎所有的类都在 sysfs 中在 /sys/class 下出现. 因此, 例如, 所有的网络接口可在 /sys/class/net 下发现, 不管接口类型. 输入设备可在 /sys/class/input 下, 以及串行设备在 /sys/class/tty. 一个例外是块设备, 由于历史的原因在 /sys/block.&lt;/p&gt;
 &lt;p&gt;cdev_add()执行后将会在/proc/devices文件中看到字符设备，但是在/dev/目录下没有生成相应的设备文件。直到class_device_create()执行后才会在/dev/目录下生成设备文件。而class_create()执行后会在/sys/class/目录下生成目录。&lt;/p&gt;
+&lt;h2 id=&#34;创建一个class&#34;&gt;创建一个class&lt;/h2&gt;
+&lt;p&gt;include/linux/device.h&lt;/p&gt;
+&lt;h3 id=&#34;class_create宏&#34;&gt;class_create宏&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#define class_create(owner, name)		\
+({										\
+	static struct lock_class_key __key;	\
+	__class_create(owner, name, &amp;amp;__key);\
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;owner：一般设置为THIS_MODULE&lt;/li&gt;
+&lt;li&gt;name：kobject对象的名字&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;struct class *__class_create(struct module *owner, const char *name,
+			     struct lock_class_key *key)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;struct class里面&amp;quot;继承&amp;quot;了kobject对象&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;在class下添加kobject对象&#34;&gt;在class下添加kobject对象&lt;/h2&gt;
+&lt;p&gt;include/linux/device.h&lt;/p&gt;
+&lt;h3 id=&#34;device_create函数&#34;&gt;device_create()函数&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;struct device *device_create(struct class *class, struct device *parent,
+			     dev_t devt, void *drvdata, const char *fmt, ...)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;class：新构建的class&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;parent：新kobject对象的上一层节点，一般为NULL&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;dev_t：属性文件记录该设备号&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;drvdata：私有数据，一般为NULL&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;fmt：变参参数，一般用来设置kobject对象的名字&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h1 id=&#34;6-字符设备驱动入口函数初始化流程&#34;&gt;6. 字符设备驱动入口函数初始化流程&lt;/h1&gt;
 &lt;p&gt;有了以上基础，下面用几个例子来说明一下关于字符设备的入口函数中函数的调用流程&lt;/p&gt;
 &lt;p&gt;如果想方便省事，不在乎这点资源的浪费可以这样设计&lt;/p&gt;
