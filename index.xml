@@ -744,14 +744,6 @@ error:
     </item>
     
     <item>
-      <title>Headlist</title>
-      <link>https://strivefar.github.io/project/post/headlist/</link>
-      <pubDate>Tue, 24 Nov 2020 17:01:46 +0800</pubDate>
-      <guid>https://strivefar.github.io/project/post/headlist/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>原子操作 atomic.h 详解</title>
       <link>https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/</link>
       <pubDate>Thu, 29 Oct 2020 20:29:10 +0800</pubDate>
