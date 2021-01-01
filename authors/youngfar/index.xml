@@ -5,12 +5,260 @@
     <link>https://strivefar.github.io/authors/youngfar/</link>
       <atom:link href="https://strivefar.github.io/authors/youngfar/index.xml" rel="self" type="application/rss+xml" />
     <description>youngfar</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Tue, 22 Dec 2020 11:00:45 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Fri, 01 Jan 2021 20:32:13 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>youngfar</title>
       <link>https://strivefar.github.io/authors/youngfar/</link>
     </image>
+    
+    <item>
+      <title>Framebuffer中英文混合输出</title>
+      <link>https://strivefar.github.io/project/post/framebuffer%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E5%90%88%E8%BE%93%E5%87%BA/</link>
+      <pubDate>Fri, 01 Jan 2021 20:32:13 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/framebuffer%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E5%90%88%E8%BE%93%E5%87%BA/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-lcd%E4%B8%AD%E8%8B%B1%E6%96%87%E8%BE%93%E5%87%BA&#34;&gt;1. LCD中英文输出&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-lcd-%E4%B8%AD%E6%96%87%E8%BE%93%E5%87%BA&#34;&gt;2. LCD 中文输出&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-lcd%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E5%90%88%E8%BE%93%E5%87%BAansi%E7%BC%96%E7%A0%81ascii%E7%A0%81&#34;&gt;3. LCD中英文混合输出（ANSI编码+ASCII码)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#4-%E8%B0%83%E7%94%A8&#34;&gt;4. 调用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#5-%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E4%B8%8E%E7%BC%96%E8%AF%91%E6%A0%BC%E5%BC%8F&#34;&gt;5. 编译程序——编码格式与编译格式&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#51-%E6%8C%87%E5%AE%9A%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F&#34;&gt;5.1. 指定编码格式&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#52-%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4&#34;&gt;5.2. 编译命令：&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#53-makefile%E4%B8%AD%E6%8C%87%E5%AE%9A%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9&#34;&gt;5.3. Makefile中指定编译选项&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#6-%E6%98%BE%E7%A4%BA%E6%95%88%E6%9E%9C&#34;&gt;6. 显示效果&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#7-%E6%9C%AC%E8%8A%82%E5%85%A8%E9%83%A8%E4%BB%A3%E7%A0%81gitee%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80&#34;&gt;7. 本节全部代码gitee仓库地址&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#8-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5&#34;&gt;8. 参考链接&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-lcd中英文输出&#34;&gt;1. LCD中英文输出&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;/**********************************************************************
+ * 函数名称： lcd_put_ascii
+ * 功能描述： 在LCD指定位置上显示一个8*16的字符
+ * 输入参数： x坐标，y坐标，c:ascii码, disp_color字符颜色， bak_grd_color背景颜色
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2020/05/12	     V1.0	  zh(angenao)	      创建
+ ***********************************************************************/ 
+    void lcd_put_ascii(int x, int y, char c, unsigned int disp_color, unsigned int bak_grd_color)
+    {
+        unsigned int i, j;
+    
+        const unsigned char *dots = &amp;amp;fontdata_8x16[c*16];
+    
+        unsigned char data, bit;
+        for(j = y; j &amp;lt; y+16; j++ )
+        {
+            data = *dots++;
+            bit = 7;
+            
+            for(i = x; i &amp;lt; x+8; i++)
+            {
+                /* 根据点阵的某位决定是否描颜色 */
+                if(data &amp;amp; (1 &amp;lt;&amp;lt; bit) &amp;amp;&amp;amp; (j &amp;lt; var.yres)) 
+                    lcd_put_pixel(i, j, disp_color);/* 字符颜色 */
+                
+                else if ((j &amp;lt; var.yres))
+                    lcd_put_pixel(i, j, bak_grd_color);/* 背景色 */
+                bit--;
+            }
+        }
+        
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;2-lcd-中文输出&#34;&gt;2. LCD 中文输出&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;/**********************************************************************
+ * 函数名称： lcd_put_chinese
+ * 功能描述： 在LCD指定位置上显示一个16*16的汉字
+ * 输入参数： x坐标，y坐标，str中文字符串，disp_color字符颜色， bak_grd_color背景颜色
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2020/05/12	     V1.0	  zh(angenao)	      创建
+ ***********************************************************************/ 
+void lcd_put_chinese(int x, int y, unsigned char *str, unsigned int disp_color, unsigned int bak_grd_color)
+{
+	unsigned int area  = str[0] - 0xA1;
+	unsigned int where = str[1] - 0xA1;
+	unsigned char *dots = hzkmem + (area * 94 + where)*32;
+	unsigned char byte;
+
+	int i, j, b;
+	for (i = 0; i &amp;lt; 16; i++)
+		for (j = 0; j &amp;lt; 2; j++)
+		{
+			byte = dots[i*2 + j];
+			for (b = 7; b &amp;gt;=0; b--)
+                /* 对x做限制 */
+			{
+				if (byte &amp;amp; (1&amp;lt;&amp;lt;b) &amp;amp;&amp;amp; (y+i) &amp;lt; var.yres)
+				{
+					/* show */
+					lcd_put_pixel(x+j*8+7-b, y+i, disp_color); /* 字符颜色 */
+				}
+				else if (((y+i) &amp;lt; var.yres))
+				{
+					/* hide */
+					lcd_put_pixel(x+j*8+7-b, y+i, bak_grd_color); /* 背景色 */
+				}	
+			}
+		}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;3-lcd中英文混合输出ansi编码ascii码&#34;&gt;3. LCD中英文混合输出（ANSI编码+ASCII码)&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;
+/**********************************************************************
+ * 函数名称： lcd_put_mix_str
+ * 功能描述： 在LCD指定位置输出混合的中英文字符，比如“中国china”，支持自动换行,优化了边框显示，使所有字符显示完整。
+ * 输入参数： x坐标，y坐标，str中英文混合字符串，disp_color字符颜色， bak_grd_color背景颜色
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2021/01/01	     V1.0	  youngfar	      创建
+ ***********************************************************************/
+void lcd_put_mix_str(int x, int y, unsigned char *str, unsigned int disp_color, unsigned int bak_grd_color)
+
+{
+    unsigned char *p = str;
+    unsigned int pixel = 0, j = 0, i = 0;
+    unsigned char *tmp = (unsigned char *)malloc(sizeof(unsigned char) * ANSI + 1);
+    memset(tmp, &#39;\0&#39;, sizeof(unsigned char) * ANSI + 1);
+
+    /* j &amp;lt;= (var.yres - 16)：对边框显示做处理,字符是8X16或16X16的像素面积，当(i,j)落在距离屏幕底部的像素距离&amp;lt;16时，字符会显示不全，即便显示全也会访问越界出现段错误，此时停止显示 */
+    for (i = (x + pixel) % var.xres, j = y + 16 * ((x + pixel) / var.xres); *p != &#39;\0&#39; &amp;amp;&amp;amp; j &amp;lt;= (var.yres - 16); i = (x + pixel) % var.xres, j = y + 16 * ((x + pixel) / var.xres))
+    {
+
+        if (!((*p) &amp;gt;&amp;gt; 7) &amp;amp; 1)
+        {
+
+            /* 调试时用，显示打印在屏幕上的字符 */
+            //printf(&amp;quot;%c&amp;quot;, *p);
+
+            /* 对边框做处理,ASCII字符是8X16的像素面积，当(i,j)落在距离屏幕右下角8X16的像素面积内时，字符会显示不全，即便显示全也会访问越界出现段错误，此时停止显示 */
+            if (i &amp;lt;= var.xres - BORDER_WIDTH_ASCII)
+                lcd_put_ascii(i, j, *p++, disp_color, bak_grd_color); /*在屏幕中间显示8*16的字母A*/
+            pixel += 8;
+        }
+        else
+        {
+            memcpy(tmp, p, sizeof(unsigned char) * ANSI);
+            p = p + ANSI;
+
+            /* 对边框做处理,中文字符是16X16的像素面积，当(i,j)落在距离屏幕右下角16X16的像素面积内时，字符会显示不全，即便显示全也会访问越界出现段错误，此时停止显示 */
+            if (i &amp;lt;= var.xres - BORDER_WIDTH_ANSI)
+                lcd_put_chinese(i, j, tmp, disp_color, bak_grd_color);
+            pixel += 16;
+
+            /* 调试时用，显示打印在屏幕上的字符 */
+            //printf(&amp;quot;chinese code: %02x %02x\n&amp;quot;, tmp[0], tmp[1]);
+        }
+    }
+    free(tmp);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;4-调用&#34;&gt;4. 调用&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;int main(int argc, char **argv)
+{
+
+    unsigned char str[] =&amp;quot;对边框做处理,ASCII字符是8X16的像素面积，当(i,j)落在距离屏幕右下角8X16的像素面积内时，字符会显示不全，即便显示全也会访问越界,出现段错误，此时停止显示&amp;quot;;
+	fd_fb = open(&amp;quot;/dev/fb0&amp;quot;, O_RDWR);
+	if (fd_fb &amp;lt; 0)
+	{
+		printf(&amp;quot;can&#39;t open /dev/fb0\n&amp;quot;);
+		return -1;
+	}
+
+	if (ioctl(fd_fb, FBIOGET_VSCREENINFO, &amp;amp;var))
+	{
+		printf(&amp;quot;can&#39;t get var\n&amp;quot;);
+		return -1;
+	}
+
+	line_width  = var.xres * var.bits_per_pixel / 8;
+	pixel_width = var.bits_per_pixel / 8;
+	screen_size = var.xres * var.yres * var.bits_per_pixel / 8;
+	fbmem = (unsigned char *)mmap(NULL , screen_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd_fb, 0);
+	if (fbmem == (unsigned char *)-1)
+	{
+		printf(&amp;quot;can&#39;t mmap\n&amp;quot;);
+		return -1;
+	}
+
+	fd_hzk16 = open(&amp;quot;HZK16&amp;quot;, O_RDONLY);
+	if (fd_hzk16 &amp;lt; 0)
+	{
+		printf(&amp;quot;can&#39;t open HZK16\n&amp;quot;);
+		return -1;
+	}
+    /* 由文件描述符获取文件信息到hzk_stat结构体。http://c.biancheng.net/cpp/html/314.html */
+	if(fstat(fd_hzk16, &amp;amp;hzk_stat))
+	{
+		printf(&amp;quot;can&#39;t get fstat\n&amp;quot;);
+		return -1;
+	}
+	hzkmem = (unsigned char *)mmap(NULL , hzk_stat.st_size, PROT_READ, MAP_SHARED, fd_hzk16, 0);
+	if (hzkmem == (unsigned char *)-1)
+	{
+		printf(&amp;quot;can&#39;t mmap for hzk16\n&amp;quot;);
+		return -1;
+	}
+
+	/* 清屏: 全部设为黑色 */
+	memset(fbmem, 0, screen_size);
+    
+    /* 在LCD指定位置上显示黑色的中英文混合字符串（背景色为护眼绿） */
+	lcd_put_mix_str(0, var.yres-16, str, black, Green_bean);
+    
+	munmap(fbmem , screen_size);
+	close(fd_fb);
+
+    /* 撤销定义，防止冲突 */
+    #undef ANSI
+    #undef black
+    #undef Green_bean
+    #undef tangerine
+    
+	return 0;	
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;5-编译程序编码格式与编译格式&#34;&gt;5. 编译程序——编码格式与编译格式&lt;/h1&gt;
+&lt;h2 id=&#34;51-指定编码格式&#34;&gt;5.1. 指定编码格式&lt;/h2&gt;
+&lt;p&gt;使用点阵字库时，中文字符的显示原理跟ASCII字符是一样的。要注意的地方在于中文的编码：在C源文件中它的编码方式是GB2312还是UTF-8？编译出的可执行程序，其中的汉字编码方式是GB2312还是UTF-8？
+注意：一般不会使用UTF-16的编码方式，在这种方式下ASCII字符也是用2字节来表示，而其中一个字节是0，但是在C语言中0表示字符串的结束符，会引起误会。
+我们编写C程序时，可以使用ANSI编码，或是UTF-8编码；在编译程序时，可以使用以下的选项告诉编译器：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;-finput-charset=GB2312&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;-finput-charset=UTF-8&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;如果不指定“-finput-charset”，&lt;code&gt;GCC就会默认C程序的编码方式为UTF-8，即使你是以ANSI格式保存，也会被当作UTF-8来对待。&lt;/code&gt;
+对于编译出来的可执行程序，可以指定它里面的字符是以什么方式编码，可以使用以下的选项编译器：
+-fexec-charset=GB2312
+-fexec-charset=UTF-8
+如果不指定“-fexec-charset”，GCC就会默认编译出的可执行程序中字符的编码方式为UTF-8。&lt;/p&gt;
+&lt;p&gt;如果“-finput-charset”与“-fexec-charset”不一样，编译器会进行格式转换。&lt;/p&gt;
+&lt;h2 id=&#34;52-编译命令&#34;&gt;5.2. 编译命令：&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;arm-linux-gnueabihf-gcc  -o  show_chinese  show_chinese.c&lt;/code&gt;
+注意：不同的板子，编译工具的前缀可能不一样。
+注意：使用上述命令时show_chinese.c的编码格式必须是ANSI(GB2312)，否则编译时需要指定&lt;code&gt;-fexec-charset=GB2312&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;53-makefile中指定编译选项&#34;&gt;5.3. Makefile中指定编译选项&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# finput:即使以ANSI格式保存，也会被当作UTF-8来对待; 指定可执行程序中的字符以ANSI方式编码。
+CFLAGS := -Wall -O2 -g -finput-charset=UTF-8 -fexec-charset=GB2312
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;6-显示效果&#34;&gt;6. 显示效果&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E5%90%88%E8%BE%93%E5%87%BA/display.jpg&#34; alt=&#34;display&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;7-本节全部代码gitee仓库地址&#34;&gt;7. 本节全部代码gitee仓库地址&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://gitee.com/youngfar/imx6ull/tree/master/%E9%9F%A6%E4%B8%9C%E5%B1%B1/%E5%BA%94%E7%94%A8%E5%9F%BA%E7%A1%80/09_show_chinese&#34;&gt;点此进入本节gitee仓库&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;8-参考链接&#34;&gt;8. 参考链接&lt;/h1&gt;
+&lt;p&gt;1.韦东山老师的嵌入式视频&lt;/p&gt;
+&lt;p&gt;2.&lt;a href=&#34;http://c.biancheng.net/cpp/html/314.html&#34;&gt;由文件描述符获取文件信息到hzk_stat结构体&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;3.&lt;a href=&#34;https://www.cnblogs.com/malecrab/p/5300486.html&#34;&gt;ANSI是什么编码？&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;特此感谢！&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Linux字符设备驱动——入口函数完全解析</title>

@@ -29,16 +29,51 @@
   
   <url>
     <loc>https://strivefar.github.io/authors/</loc>
-    <lastmod>2020-12-22T11:00:45+08:00</lastmod>
+    <lastmod>2021-01-01T20:32:13+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://strivefar.github.io/categories/</loc>
-    <lastmod>2020-12-22T11:00:45+08:00</lastmod>
+    <loc>https://strivefar.github.io/project/post/framebuffer%E4%B8%AD%E8%8B%B1%E6%96%87%E6%B7%B7%E5%90%88%E8%BE%93%E5%87%BA/</loc>
+    <lastmod>2021-01-01T20:32:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/tags/imx6ull/</loc>
+    <lastmod>2021-01-01T20:32:13+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://strivefar.github.io/tags/linux/</loc>
+    <lastmod>2021-01-01T20:32:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/project/post/</loc>
+    <lastmod>2021-01-01T20:32:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/project/</loc>
+    <lastmod>2021-01-01T20:32:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/tags/</loc>
+    <lastmod>2021-01-01T20:32:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/authors/youngfar/</loc>
+    <lastmod>2021-01-01T20:32:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
+    <lastmod>2021-01-01T20:32:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://strivefar.github.io/categories/</loc>
     <lastmod>2020-12-22T11:00:45+08:00</lastmod>
   </url>
   
@@ -49,31 +84,6 @@
   
   <url>
     <loc>https://strivefar.github.io/project/post/linux%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E5%85%A5%E5%8F%A3%E5%87%BD%E6%95%B0%E5%AE%8C%E5%85%A8%E8%A7%A3%E6%9E%90/</loc>
-    <lastmod>2020-12-22T11:00:45+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://strivefar.github.io/project/post/</loc>
-    <lastmod>2020-12-22T11:00:45+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://strivefar.github.io/project/</loc>
-    <lastmod>2020-12-22T11:00:45+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://strivefar.github.io/tags/</loc>
-    <lastmod>2020-12-22T11:00:45+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://strivefar.github.io/authors/youngfar/</loc>
-    <lastmod>2020-12-22T11:00:45+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://strivefar.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
     <lastmod>2020-12-22T11:00:45+08:00</lastmod>
   </url>
   
@@ -135,11 +145,6 @@
   <url>
     <loc>https://strivefar.github.io/project/post/c&#43;&#43;_primer_plus_chapter2/</loc>
     <lastmod>2020-08-11T09:36:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://strivefar.github.io/tags/imx6ull/</loc>
-    <lastmod>2020-07-16T18:00:59+08:00</lastmod>
   </url>
   
   <url>
