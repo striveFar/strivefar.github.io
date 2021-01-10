@@ -5,12 +5,203 @@
     <link>https://strivefar.github.io/project/post/</link>
       <atom:link href="https://strivefar.github.io/project/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Fri, 01 Jan 2021 20:32:13 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Sun, 10 Jan 2021 16:15:09 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>https://strivefar.github.io/project/post/</link>
     </image>
+    
+    <item>
+      <title>交叉编译安装库文件</title>
+      <link>https://strivefar.github.io/project/post/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%E5%BA%93%E6%96%87%E4%BB%B6/</link>
+      <pubDate>Sun, 10 Jan 2021 16:15:09 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%E5%BA%93%E6%96%87%E4%BB%B6/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-%E6%80%8E%E4%B9%88%E7%A1%AE%E5%AE%9A%E7%B3%BB%E7%BB%9F%E7%9B%AE%E5%BD%95&#34;&gt;1. 怎么确定“系统目录”？&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-linux%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F%E6%97%B6%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95&#34;&gt;2. Linux编译程序时找不到头文件的解决办法&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#21-linux%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F%E6%97%B6%E5%A6%82%E6%9E%9C%E6%89%BE%E4%B8%8D%E5%88%B0%E5%A4%B4%E6%96%87%E4%BB%B6%E4%BC%9A%E6%8F%90%E7%A4%BA%E5%A6%82%E4%B8%8B%E9%94%99%E8%AF%AF&#34;&gt;2.1. Linux编译程序时如果找不到头文件会提示如下错误：&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#22-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95&#34;&gt;2.2. 解决方法：&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B&#34;&gt;3. 安装过程&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#31-%E6%B3%A8%E6%84%8F&#34;&gt;3.1. 注意：&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#32-%E9%A6%96%E5%85%88%E5%AE%89%E8%A3%85zlib%E5%BA%93&#34;&gt;3.2. 首先安装zlib库&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#321-copy%E7%BC%96%E8%AF%91%E5%A5%BD%E7%9A%84%E5%BA%93%E5%88%B0%E7%B3%BB%E7%BB%9F%E7%9B%AE%E5%BD%95&#34;&gt;3.2.1. copy编译好的库到“系统目录”&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#33-%E5%85%B6%E6%AC%A1%E5%AE%89%E8%A3%85libpng%E5%BA%93&#34;&gt;3.3. 其次安装libpng库&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#331-copy%E7%BC%96%E8%AF%91%E5%A5%BD%E7%9A%84%E5%BA%93%E5%88%B0%E7%B3%BB%E7%BB%9F%E7%9B%AE%E5%BD%95&#34;&gt;3.3.1. copy编译好的库到“系统目录”&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#34-%E6%9C%80%E5%90%8E%E5%AE%89%E8%A3%85freetype%E5%BA%93&#34;&gt;3.4. 最后安装freetype库&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#341-copy%E7%BC%96%E8%AF%91%E5%A5%BD%E7%9A%84%E5%BA%93%E5%88%B0%E7%B3%BB%E7%BB%9F%E7%9B%AE%E5%BD%95&#34;&gt;3.4.1. copy编译好的库到“系统目录”&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#4-makefile%E9%85%8D%E7%BD%AE&#34;&gt;4. Makefile配置：&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#5-%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90&#34;&gt;5. 参考来源：&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;1-怎么确定系统目录&#34;&gt;1. 怎么确定“系统目录”？&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;echo &#39;main(){}&#39;| arm-linux-gnueabihf-gcc -E -v -
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;系统头文件目录 以stdio.h为例：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/include
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;系统库目录LIBRARY_PATH：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;/home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/lib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;2-linux编译程序时找不到头文件的解决办法&#34;&gt;2. Linux编译程序时找不到头文件的解决办法&lt;/h2&gt;
+&lt;h3 id=&#34;21-linux编译程序时如果找不到头文件会提示如下错误&#34;&gt;2.1. Linux编译程序时如果找不到头文件会提示如下错误：&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;error: xxx.h: No such file or directory
+ #include &amp;lt;xxx.h&amp;gt;
+                   ^
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;22-解决方法&#34;&gt;2.2. 解决方法：&lt;/h3&gt;
+&lt;p&gt;下面叙述以Ubuntu系统为例。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;先查找 xxx.h 所在路径：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ sudo find / -name xxx.h
+/usr/local/include/xxx/xxx.h
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;库的来源问题：&lt;/p&gt;
+&lt;p&gt;假设这个库文件是我们自己写的，那么只要在编译时用&lt;code&gt;-I&lt;/code&gt;选项指定自定义头文件的dir即可，或者规范一些，可以把这个头文件放入系统目录的中，方便后续使用&lt;code&gt;#include &amp;lt;xxx.h&amp;gt;&lt;/code&gt;，直接系统目录下查找。&lt;/p&gt;
+&lt;p&gt;假设这个库文件不是我们自己写的，即对于系统目录，&lt;code&gt;#include &amp;lt;xxx.h&amp;gt;&lt;/code&gt; 我们执行find命令有可能查出不止一个xxx.h,他们的名字相同，但是目录不同，这样还是不知道是哪个目录。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查寻main()函数所需的系统库文件目录&lt;/p&gt;
+&lt;p&gt;鉴于只执行find命令后出现了多个xxx.h所在路径，我们若想快速定位到我们所需的系统库文件的目录，就需要查一下运行main()函数时所依赖的系统库文件&lt;/p&gt;
+&lt;p&gt;执行&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;echo &#39;main(){}&#39;| arm-linux-gnueabihf-gcc -E -v -
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;系统会列出头文件目录、库目录(LIBRARY_PATH)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;结合第1和3两者的打印信息，即可快速确定系统目录的路径&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;然后用-I选项把目录加上编译：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ gcc test.c -o test -I /home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/include
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;双引号是首先在使用include的源文件所在目录找，如果未找到，则到在编译器工作路径下继续寻找。“&amp;lt;&amp;gt;”在编译器工作路径下查找&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/vegetable_bird_001/article/details/50905244&#34;&gt;https://blog.csdn.net/vegetable_bird_001/article/details/50905244&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://my.oschina.net/2bit/blog/389556&#34;&gt;https://my.oschina.net/2bit/blog/389556&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;3-安装过程&#34;&gt;3. 安装过程&lt;/h2&gt;
+&lt;h3 id=&#34;31-注意&#34;&gt;3.1. 注意：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;这里make和install如果无权限受限问题尽量不要使用管理员权限进行安装，即&lt;strong&gt;不要加sudo&lt;/strong&gt;，否则编译时，输入make指令后，系统有可能出现&lt;code&gt;make:arm-linux-gnueabihf-gcc: Command not found&lt;/code&gt;这样的错误。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可能的原因&lt;/strong&gt;：在root权限下，环境变量中没有添加arm-linux-gnueabihf-gcc所在的路径。&lt;/p&gt;
+&lt;p&gt;如果您就是需要在root路径下运行的话可以参考这篇文章https://blog.csdn.net/whocarea/article/details/103365339&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;编译其他库的时候要看其他库的configure的参数是否支持&amp;ndash;host，不支持的话需要export CC设置为你的arm工具链&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;切记：不要安装共享文件夹中共享的文件&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在虚拟机中编译freetype时不要使用共享文件夹去共享库，否则会报错如下：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ln: failed to create symbolic link ‘libavutil.so’: Operation not supported&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这个问题主要原因是在使用ln创建软连接时候失败了，因为这个文件系统是NTFS，windows上的，通过虚拟机挂载到linux上，所以并不支持ln操作。&lt;/p&gt;
+&lt;p&gt;解决方法：&lt;/p&gt;
+&lt;p&gt;1.安装VMTools，把freetype和其相关的依赖包拷贝到linux中再编译。&lt;/p&gt;
+&lt;p&gt;2.通过FileZilla把freetype和其相关的依赖包通过sftp传输到linux系统中，就可以直接编译了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;32-首先安装zlib库&#34;&gt;3.2. 首先安装zlib库&lt;/h3&gt;
+&lt;p&gt;zlib的官网地址：http://www.zlib.net/&lt;/p&gt;
+&lt;p&gt;编译zlib库时，./configure不允许传入–host参数；不支持的话需要export CC设置为你的arm工具链
+这里通过 $ export CC=arm-linux-gnueabihf-gcc（根据自己的交叉编译工具链修改arm-linux-gnueabihf-gcc） 进行配置交叉编译工具。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt; cd zlib-1.2.11
+ export CC=arm-linux-gnueabihf-gcc
+ ./configure --prefix=$PWD/tmp
+ make
+ make install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;321-copy编译好的库到系统目录&#34;&gt;3.2.1. copy编译好的库到“系统目录”&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;book@100ask:~/mytest/zlib-1.2.11$ cd tmp/include/
+book@100ask:~/mytest/zlib-1.2.11/tmp/include$ cp -rf * /home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/include
+book@100ask:~/mytest/zlib-1.2.11/tmp/include$ cd ../lib/
+book@100ask:~/mytest/zlib-1.2.11/tmp/lib$ cp -drf * /home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/lib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;33-其次安装libpng库&#34;&gt;3.3. 其次安装libpng库&lt;/h3&gt;
+&lt;p&gt;安装好zlib库后，再进行libpng库的安装。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd libpng-1.6.37
+export LDFLAGS=&amp;quot;-L/home/book/mytest/zlib-1.2.11&amp;quot;
+export CPPFLAGS=&amp;quot;-L/home/book/mytest/zlib-1.2.11&amp;quot;
+./configure --host=arm-linux-gnueabihf --prefix=$PWD/tmp
+make
+sudo make install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;注意：这里的LDFLAGS和CPPFLAGS要使用刚刚的zlib-1.2.11的绝对路径,&lt;strong&gt;否则libpng报错：zlib not installed&lt;/strong&gt;。&lt;/p&gt;
+&lt;h4 id=&#34;331-copy编译好的库到系统目录&#34;&gt;3.3.1. copy编译好的库到“系统目录”&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;book@100ask:~/mytest/libpng-1.6.37$ cd tmp/
+book@100ask:~/mytest/libpng-1.6.37/tmp$ ls
+bin  include  lib  share
+book@100ask:~/mytest/libpng-1.6.37/tmp$ cd include/
+book@100ask:~/mytest/libpng-1.6.37/tmp/include$ ls
+libpng16  pngconf.h  png.h  pnglibconf.h
+book@100ask:~/mytest/libpng-1.6.37/tmp/include$ cp -rf * /home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/include 
+book@100ask:~/mytest/libpng-1.6.37/tmp/include$ cd ../lib/
+book@100ask:~/mytest/libpng-1.6.37/tmp/lib$ ls
+libpng16.a  libpng16.la  libpng16.so  libpng16.so.16  libpng16.so.16.37.0  libpng.a  libpng.la  libpng.so  pkgconfig
+book@100ask:~/mytest/libpng-1.6.37/tmp/lib$ cp -drf * /home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/lib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;34-最后安装freetype库&#34;&gt;3.4. 最后安装freetype库&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd freetype-2.10.2
+./configure --host=arm-linux-gnueabihf --prefix=$PWD/tmp
+make
+make install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;341-copy编译好的库到系统目录&#34;&gt;3.4.1. copy编译好的库到“系统目录”&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;book@100ask:~/mytest/freetype-2.10.2$ cd tmp
+book@100ask:~/mytest/freetype-2.10.2/tmp$ ls
+include  lib  share
+
+book@100ask:~/mytest/freetype-2.10.2/tmp$ cd include/
+book@100ask:~/mytest/freetype-2.10.2/tmp/include$ cp -rf * /home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/include 
+
+book@100ask:~/mytest/freetype-2.10.2/tmp/include$ cd ../lib/
+book@100ask:~/mytest/freetype-2.10.2/tmp/lib$ cp -drf * /home/book/100ask_imx6ull-sdk/ToolChain/gcc-linaro-6.2.1-2016.11-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/libc/usr/lib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;4-makefile配置&#34;&gt;4. Makefile配置：&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-makefile&#34;&gt;CFLAGS := -Wall -O2 -g
+CFLAGS += -I $(shell pwd)/include
+LDFLAGS := -lfreetype
+
+export CFLAGS LDFLAGS 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;此处Makefile中要指定链接库-lfreetype&lt;/p&gt;
+&lt;p&gt;详见：https://www.cnblogs.com/taskiller/archive/2012/12/14/2817650.html&lt;/p&gt;
+&lt;p&gt;CFLAGS 表示用于 C 编译器的选项，
+CXXFLAGS 表示用于 C++ 编译器的选项。
+这两个变量实际上涵盖了编译和汇编两个步骤。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CFLAGS&lt;/strong&gt;： 指定头文件（.h文件）的路径，如：CFLAGS=-I/usr/include -I/path/include。同样地，安装一个包时会在安装路径下建立一个include目录，当安装过程中出现问题时，试着把以前安装的包的include目录加入到该变量中来。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;LDFLAGS&lt;/strong&gt;：gcc 等编译器会用到的一些优化参数，也可以在里面指定库文件的位置。用法：LDFLAGS=-L/usr/lib -L/path/to/your/lib。每安装一个包都几乎一定的会在安装目录里建立一个lib目录。如果明明安装了某个包，而安装另一个包时，它愣是说找不到，可以抒那个包的lib路径加入的LDFALGS中试一下。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;LIBS&lt;/strong&gt;：告诉链接器要链接哪些库文件，如LIBS = -lpthread -liconv&lt;/p&gt;
+&lt;p&gt;简单地说，LDFLAGS是告诉链接器从哪里寻找库文件，而LIBS是告诉链接器要链接哪些库文件。不过使用时链接阶段这两个参数都会加上，所以你即使将这两个的值互换，也没有问题。&lt;/p&gt;
+&lt;p&gt;最后，简单测试一下：执行make&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/configure/make.png&#34; alt=&#34;image&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;5-参考来源&#34;&gt;5. 参考来源：&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;特此感谢！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.bilibili.com/video/BV1kk4y117Tu?p=12&#34;&gt;韦东山老师的视频教程&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/weixin_48067074/article/details/108940637&#34;&gt;交叉编译libpng报错：configure: error: zlib not installed&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.cnblogs.com/taskiller/archive/2012/12/14/2817650.html&#34;&gt;Makefile选项CFLAGS,LDFLAGS,LIBS&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.csdn.net/vegetable_bird_001/article/details/50905244&#34;&gt;#include&amp;lt;&amp;gt; 和 #include&amp;quot;&amp;ldquo;的区别&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://my.oschina.net/2bit/blog/389556&#34;&gt;关于C语言include尖括号和双引号的对话&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Framebuffer中英文混合输出</title>
