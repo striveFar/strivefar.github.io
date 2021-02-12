@@ -5,12 +5,98 @@
     <link>https://strivefar.github.io/project/post/</link>
       <atom:link href="https://strivefar.github.io/project/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Sun, 10 Jan 2021 16:15:09 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Fri, 12 Feb 2021 17:28:15 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>https://strivefar.github.io/project/post/</link>
     </image>
+    
+    <item>
+      <title>Class设备大管家</title>
+      <link>https://strivefar.github.io/project/post/class%E8%AE%BE%E5%A4%87%E5%A4%A7%E7%AE%A1%E5%AE%B6/</link>
+      <pubDate>Fri, 12 Feb 2021 17:28:15 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/class%E8%AE%BE%E5%A4%87%E5%A4%A7%E7%AE%A1%E5%AE%B6/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#1-class%E8%AE%BE%E5%A4%87%E7%9A%84%E5%A4%A7%E7%AE%A1%E5%AE%B6&#34;&gt;1. class：设备的大管家&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#11-%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E6%B5%81%E7%A8%8B&#34;&gt;1.1. 设备管理流程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#2-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAclass&#34;&gt;2. 创建一个class&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#21-class_create%E5%AE%8F&#34;&gt;2.1. class_create宏&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#3-%E5%9C%A8class%E4%B8%8B%E6%B7%BB%E5%8A%A0kobject%E5%AF%B9%E8%B1%A1&#34;&gt;3. 在class下添加kobject对象&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#31-device_create%E5%87%BD%E6%95%B0&#34;&gt;3.1. device_create()函数&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;1-class设备的大管家&#34;&gt;1. class：设备的大管家&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;硬件设备分类管理&lt;/li&gt;
+&lt;li&gt;与udev协作，自动创建设备文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E5%A4%A7%E7%AE%A1%E5%AE%B6/class%EF%BC%9A%E8%AE%BE%E5%A4%87%E7%9A%84%E5%A4%A7%E7%AE%A1%E5%AE%B6.svg&#34; alt=&#34;image&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/%E8%AE%BE%E5%A4%87%E5%A4%A7%E7%AE%A1%E5%AE%B6/%E7%AE%A1%E7%90%86%E6%B5%81%E7%A8%8B.png&#34; alt=&#34;class：设备的大管家&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;11-设备管理流程&#34;&gt;1.1. 设备管理流程&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;先调用register_chrdev()注册设备（提交fileo_preation结构体）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;再调用class_create() 创建类用于相同类型的设备管理&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;最后调用device_create()，将注册的设备归于某一类下，记得传入设备号，这样才能找到第一步注册的设备&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-创建一个class&#34;&gt;2. 创建一个class&lt;/h2&gt;
+&lt;p&gt;include/linux/device.h&lt;/p&gt;
+&lt;h3 id=&#34;21-class_create宏&#34;&gt;2.1. class_create宏&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;#define class_create(owner, name)		\
+({										\
+	static struct lock_class_key __key;	\
+	__class_create(owner, name, &amp;amp;__key);\
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;owner：一般设置为THIS_MODULE&lt;/li&gt;
+&lt;li&gt;name：kobject对象的名字&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;struct class *__class_create(struct module *owner, const char *name,
+			     struct lock_class_key *key)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;struct class里面&amp;quot;继承&amp;quot;了kobject对象&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3-在class下添加kobject对象&#34;&gt;3. 在class下添加kobject对象&lt;/h2&gt;
+&lt;p&gt;include/linux/device.h&lt;/p&gt;
+&lt;h3 id=&#34;31-device_create函数&#34;&gt;3.1. device_create()函数&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;struct device *device_create(struct class *class, struct device *parent,
+			     dev_t devt, void *drvdata, const char *fmt, ...)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;class：新构建的class&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;parent：新kobject对象的上一层节点，一般为NULL&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;dev_t：属性文件记录该设备号&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;drvdata：私有数据，一般为NULL&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;fmt：变参参数，一般用来设置kobject对象的名字&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>交叉编译安装库文件</title>
