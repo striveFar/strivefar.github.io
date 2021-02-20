@@ -5,12 +5,154 @@
     <link>https://strivefar.github.io/project/post/</link>
       <atom:link href="https://strivefar.github.io/project/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Fri, 12 Feb 2021 17:28:15 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Fri, 12 Feb 2021 19:26:03 +0800</lastBuildDate>
     <image>
       <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>https://strivefar.github.io/project/post/</link>
     </image>
+    
+    <item>
+      <title>Fbmem分析</title>
+      <link>https://strivefar.github.io/project/post/fbmem%E5%88%86%E6%9E%90/</link>
+      <pubDate>Fri, 12 Feb 2021 19:26:03 +0800</pubDate>
+      <guid>https://strivefar.github.io/project/post/fbmem%E5%88%86%E6%9E%90/</guid>
+      <description>&lt;h1 id=&#34;fbmemc分析&#34;&gt;fbmem.c分析&lt;/h1&gt;
+&lt;h2 id=&#34;file_operations结构体&#34;&gt;file_operations结构体&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;static const struct file_operations fb_fops = {
+	.owner =	THIS_MODULE,
+	.read =		fb_read,
+	.write =	fb_write,
+	.unlocked_ioctl = fb_ioctl,
+#ifdef CONFIG_COMPAT
+	.compat_ioctl = fb_compat_ioctl,
+#endif
+	.mmap =		fb_mmap,
+	.open =		fb_open,
+	.release =	fb_release,
+#ifdef HAVE_ARCH_FB_UNMAPPED_AREA
+	.get_unmapped_area = get_fb_unmapped_area,
+#endif
+#ifdef CONFIG_FB_DEFERRED_IO
+	.fsync =	fb_deferred_io_fsync,
+#endif
+	.llseek =	default_llseek,
+};
+EXPORT_SYMBOL(fb_class);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;入口函数&#34;&gt;入口函数&lt;/h2&gt;
+&lt;p&gt;由module_init(fbmem_init);可知，fbmem_init是驱动入口函数，在入口函数中，将分配并设置好的file_operations结构体fb_fops向上层驱动注册。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;static int __init
+fbmem_init(void)
+{
+	int ret;
+
+	if (!proc_create(&amp;quot;fb&amp;quot;, 0, NULL, &amp;amp;fb_proc_fops))
+		return -ENOMEM;
+	/* 注册file_operations */
+	ret = register_chrdev(FB_MAJOR, &amp;quot;fb&amp;quot;, &amp;amp;fb_fops);
+	if (ret) {
+		printk(&amp;quot;unable to get major %d for fb devs\n&amp;quot;, FB_MAJOR);
+		goto err_chrdev;
+	}
+	/* 创建graphics类 */
+	fb_class = class_create(THIS_MODULE, &amp;quot;graphics&amp;quot;);
+	if (IS_ERR(fb_class)) {
+		ret = PTR_ERR(fb_class);
+		pr_warn(&amp;quot;Unable to create fb class; errno = %d\n&amp;quot;, ret);
+		fb_class = NULL;
+		goto err_class;
+	}
+	return 0;
+
+err_class:
+	unregister_chrdev(FB_MAJOR, &amp;quot;fb&amp;quot;);
+err_chrdev:
+	remove_proc_entry(&amp;quot;fb&amp;quot;, NULL);
+	return ret;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;注册函数&#34;&gt;注册函数&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;C:%5CUsers%5C16834%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210212202113696.png&#34; alt=&#34;image-20210212202113696&#34;&gt;
+注册一个frame buffer 设备，依据relation给出的信息判断，该函数由上层驱动调用，一般放在某一个具体的fb设备驱动的probe函数中。&lt;/p&gt;
+&lt;h3 id=&#34;register_framebuffer&#34;&gt;register_framebuffer&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;/**
+ *	register_framebuffer - registers a frame buffer device
+ *	@fb_info: frame buffer info structure
+ *
+ *	Registers a frame buffer device @fb_info.
+ *
+ *	Returns negative errno on error, or zero for success.
+ *
+ */
+int
+register_framebuffer(struct fb_info *fb_info)
+{
+	int ret;
+
+	mutex_lock(&amp;amp;registration_lock);
+	ret = do_register_framebuffer(fb_info);
+	mutex_unlock(&amp;amp;registration_lock);
+
+	return ret;
+}
+EXPORT_SYMBOL(register_framebuffer);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：framebuffer设备的创建是在设备信息注册时才创建的，差异性的体现，具体如下&lt;/p&gt;
+&lt;h3 id=&#34;do_register_framebuffer&#34;&gt;do_register_framebuffer&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;/* 初始化传入的framebuffer设备信息，并放入registered_fb[i]中完成注册 */
+static int do_register_framebuffer(struct fb_info *fb_info)
+{
+	int i, ret;
+	struct fb_event event;
+	struct fb_videomode mode;
+...
+    
+	num_registered_fb++;
+    /* 寻找空的registered_fb中的元素 */
+	for (i = 0 ; i &amp;lt; FB_MAX; i++)
+		if (!registered_fb[i])
+			break;
+	fb_info-&amp;gt;node = i;
+	atomic_set(&amp;amp;fb_info-&amp;gt;count, 1);
+	mutex_init(&amp;amp;fb_info-&amp;gt;lock);
+	mutex_init(&amp;amp;fb_info-&amp;gt;mm_lock);
+	/* 创建fb%d设备 */
+	fb_info-&amp;gt;dev = device_create(fb_class, fb_info-&amp;gt;device, MKDEV(FB_MAJOR, i), NULL, &amp;quot;fb%d&amp;quot;, i);
+...
+        /* 创建fb%d设备 */
+		fb_init_device(fb_info);
+	/* 设置fb%d设备 */
+...
+		if (fb_info-&amp;gt;pixmap.addr) {
+			fb_info-&amp;gt;pixmap.size = FBPIXMAPSIZE;
+			fb_info-&amp;gt;pixmap.buf_align = 1;
+			fb_info-&amp;gt;pixmap.scan_align = 1;
+			fb_info-&amp;gt;pixmap.access_align = 32;
+			fb_info-&amp;gt;pixmap.flags = FB_PIXMAP_DEFAULT;
+...
+    /* 使用散列表管理模式链表 */
+	if (!fb_info-&amp;gt;modelist.prev || !fb_info-&amp;gt;modelist.next)
+		INIT_LIST_HEAD(&amp;amp;fb_info-&amp;gt;modelist);
+...
+    
+    /* 将填充的好的fb_info放入注册表中 */
+	registered_fb[i] = fb_info;
+
+....
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;驱动调用关系&#34;&gt;驱动调用关系&lt;/h2&gt;
+&lt;h3 id=&#34;fbmemc的作用&#34;&gt;fbmem.c的作用&lt;/h3&gt;
+&lt;p&gt;fbmem.c起到一个管理中转的作用，具体的设备操作函数在struct fb_ops结构体中，fb_info继承了fb_ops，并由register_framebuffer函数完成fb_info的注册：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/fb4.jpg&#34; alt=&#34;fb4&#34;&gt;
+&lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/fb5.jpg&#34; alt=&#34;fb5&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;调用示例&#34;&gt;调用示例&lt;/h3&gt;
+&lt;p&gt;在内核中找了一个例子，分析了调用关系，以帮助我们更好的理解调用和封装的关系
+&lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/routine.jpg&#34; alt=&#34;fb5&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Class设备大管家</title>
