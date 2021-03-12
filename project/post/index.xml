@@ -73,7 +73,7 @@ err_chrdev:
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;注册函数&#34;&gt;注册函数&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;C:%5CUsers%5C16834%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210212202113696.png&#34; alt=&#34;image-20210212202113696&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/call.jpg&#34; alt=&#34;call&#34;&gt;
 注册一个frame buffer 设备，依据relation给出的信息判断，该函数由上层驱动调用，一般放在某一个具体的fb设备驱动的probe函数中。&lt;/p&gt;
 &lt;h3 id=&#34;register_framebuffer&#34;&gt;register_framebuffer&lt;/h3&gt;
 &lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;/**
@@ -150,7 +150,7 @@ static int do_register_framebuffer(struct fb_info *fb_info)
 &lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/fb5.jpg&#34; alt=&#34;fb5&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;调用示例&#34;&gt;调用示例&lt;/h3&gt;
 &lt;p&gt;在内核中找了一个例子，分析了调用关系，以帮助我们更好的理解调用和封装的关系
-&lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/routine.jpg&#34; alt=&#34;fb5&#34;&gt;&lt;/p&gt;
+&lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/routine.png&#34; alt=&#34;fb5&#34;&gt;&lt;/p&gt;
 </description>
     </item>
     
