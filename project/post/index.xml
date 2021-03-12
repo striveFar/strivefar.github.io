@@ -73,7 +73,7 @@ err_chrdev:
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;注册函数&#34;&gt;注册函数&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/call.jpg&#34; alt=&#34;call&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/call.png&#34; alt=&#34;call&#34;&gt;
 注册一个frame buffer 设备，依据relation给出的信息判断，该函数由上层驱动调用，一般放在某一个具体的fb设备驱动的probe函数中。&lt;/p&gt;
 &lt;h3 id=&#34;register_framebuffer&#34;&gt;register_framebuffer&lt;/h3&gt;
 &lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;/**
