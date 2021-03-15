@@ -477,7 +477,7 @@
     <h2><a href="/project/post/fbmem%E5%88%86%E6%9E%90/">Fbmem分析</a></h2>
     <div class="article-style">
       
-      fbmem.c分析 file_operations结构体 static const struct file_operations fb_fops = { .owner = THIS_MODULE, .read = fb_read, .write = fb_write, .unlocked_ioctl = fb_ioctl, #ifdef CONFIG_COMPAT .compat_ioctl = fb_compat_ioctl, #endif .mmap = fb_mmap, .open = fb_open, .release = fb_release, #ifdef HAVE_ARCH_FB_UNMAPPED_AREA .get_unmapped_area = get_fb_unmapped_area, #endif #ifdef CONFIG_FB_DEFERRED_IO .fsync
+      1. file_operations结构体 2. 入口函数 3. 注册函数 3.1. register_framebuffer 3.2. do_register_framebuffer 4. 驱动调用关系 4.1. fbmem.c的作用 4.2. 调用示例 5. 结合app分析LCD驱动程
       
     </div>
   </div>

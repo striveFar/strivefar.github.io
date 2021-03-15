@@ -28,7 +28,7 @@
   
     
   
-  <meta name="description" content="fbmem.c分析 file_operations结构体 static const struct file_operations fb_fops = { .owner = THIS_MODULE, .read = fb_read, .write = fb_write, .unlocked_ioctl = fb_ioctl, #ifdef CONFIG_COMPAT .compat_ioctl = fb_compat_ioctl, #endif .mmap = fb_mmap, .open = fb_open, .release = fb_release, #ifdef HAVE_ARCH_FB_UNMAPPED_AREA .get_unmapped_area = get_fb_unmapped_area, #endif #ifdef CONFIG_FB_DEFERRED_IO .fsync">
+  <meta name="description" content="1. file_operations结构体 2. 入口函数 3. 注册函数 3.1. register_framebuffer 3.2. do_register_framebuffer 4. 驱动调用关系 4.1. fbmem.c的作用 4.2. 调用示例 5. 结合app分析LCD驱动程">
 
   
   <link rel="alternate" hreflang="en-us" href="https://strivefar.github.io/project/post/fbmem%E5%88%86%E6%9E%90/">
@@ -230,7 +230,7 @@
   <meta property="og:site_name" content="YoungFar的个人博客——Love&amp;Share">
   <meta property="og:url" content="https://strivefar.github.io/project/post/fbmem%E5%88%86%E6%9E%90/">
   <meta property="og:title" content="Fbmem分析 | YoungFar的个人博客——Love&amp;Share">
-  <meta property="og:description" content="fbmem.c分析 file_operations结构体 static const struct file_operations fb_fops = { .owner = THIS_MODULE, .read = fb_read, .write = fb_write, .unlocked_ioctl = fb_ioctl, #ifdef CONFIG_COMPAT .compat_ioctl = fb_compat_ioctl, #endif .mmap = fb_mmap, .open = fb_open, .release = fb_release, #ifdef HAVE_ARCH_FB_UNMAPPED_AREA .get_unmapped_area = get_fb_unmapped_area, #endif #ifdef CONFIG_FB_DEFERRED_IO .fsync"><meta property="og:image" content="https://strivefar.github.io/project/post/fbmem%E5%88%86%E6%9E%90/featured.jpg">
+  <meta property="og:description" content="1. file_operations结构体 2. 入口函数 3. 注册函数 3.1. register_framebuffer 3.2. do_register_framebuffer 4. 驱动调用关系 4.1. fbmem.c的作用 4.2. 调用示例 5. 结合app分析LCD驱动程"><meta property="og:image" content="https://strivefar.github.io/project/post/fbmem%E5%88%86%E6%9E%90/featured.jpg">
   <meta property="twitter:image" content="https://strivefar.github.io/project/post/fbmem%E5%88%86%E6%9E%90/featured.jpg"><meta property="og:locale" content="en-us">
   
     
@@ -284,7 +284,7 @@
       "url": "img/https://strivefar.github.io/"
     }
   },
-  "description": "fbmem.c分析 file_operations结构体 static const struct file_operations fb_fops = { .owner = THIS_MODULE, .read = fb_read, .write = fb_write, .unlocked_ioctl = fb_ioctl, #ifdef CONFIG_COMPAT .compat_ioctl = fb_compat_ioctl, #endif .mmap = fb_mmap, .open = fb_open, .release = fb_release, #ifdef HAVE_ARCH_FB_UNMAPPED_AREA .get_unmapped_area = get_fb_unmapped_area, #endif #ifdef CONFIG_FB_DEFERRED_IO .fsync"
+  "description": "1. file_operations结构体 2. 入口函数 3. 注册函数 3.1. register_framebuffer 3.2. do_register_framebuffer 4. 驱动调用关系 4.1. fbmem.c的作用 4.2. 调用示例 5. 结合app分析LCD驱动程"
 }
 </script>
 
@@ -582,8 +582,35 @@
   <div class="article-container">
 
     <div class="article-style">
-      <h1 id="fbmemc分析">fbmem.c分析</h1>
-<h2 id="file_operations结构体">file_operations结构体</h2>
+      <ul>
+<li><a href="#1-file_operations%E7%BB%93%E6%9E%84%E4%BD%93">1. file_operations结构体</a></li>
+<li><a href="#2-%E5%85%A5%E5%8F%A3%E5%87%BD%E6%95%B0">2. 入口函数</a></li>
+<li><a href="#3-%E6%B3%A8%E5%86%8C%E5%87%BD%E6%95%B0">3. 注册函数</a>
+<ul>
+<li><a href="#31-register_framebuffer">3.1. register_framebuffer</a></li>
+<li><a href="#32-do_register_framebuffer">3.2. do_register_framebuffer</a></li>
+</ul>
+</li>
+<li><a href="#4-%E9%A9%B1%E5%8A%A8%E8%B0%83%E7%94%A8%E5%85%B3%E7%B3%BB">4. 驱动调用关系</a>
+<ul>
+<li><a href="#41-fbmemc%E7%9A%84%E4%BD%9C%E7%94%A8">4.1. fbmem.c的作用</a></li>
+<li><a href="#42-%E8%B0%83%E7%94%A8%E7%A4%BA%E4%BE%8B">4.2. 调用示例</a></li>
+</ul>
+</li>
+<li><a href="#5-%E7%BB%93%E5%90%88app%E5%88%86%E6%9E%90lcd%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F">5. 结合app分析LCD驱动程序</a>
+<ul>
+<li><a href="#51-%E5%BA%94%E7%94%A8%E5%B1%82%E8%B0%83%E7%94%A8%E5%88%86%E6%9E%90">5.1. 应用层调用分析</a></li>
+<li><a href="#52-%E9%A9%B1%E5%8A%A8%E5%B1%82%E8%B0%83%E7%94%A8%E5%88%86%E6%9E%90">5.2. 驱动层调用分析</a>
+<ul>
+<li><a href="#521-fb_open">5.2.1. fb_open</a></li>
+<li><a href="#522-fb_ioctl">5.2.2. fb_ioctl</a></li>
+<li><a href="#523-fb_mmap">5.2.3. fb_mmap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-file_operations结构体">1. file_operations结构体</h2>
 <pre><code class="language-c">static const struct file_operations fb_fops = {
 	.owner =	THIS_MODULE,
 	.read =		fb_read,
@@ -605,7 +632,7 @@
 };
 EXPORT_SYMBOL(fb_class);
 </code></pre>
-<h2 id="入口函数">入口函数</h2>
+<h2 id="2-入口函数">2. 入口函数</h2>
 <p>由module_init(fbmem_init);可知，fbmem_init是驱动入口函数，在入口函数中，将分配并设置好的file_operations结构体fb_fops向上层驱动注册。</p>
 <pre><code class="language-c">static int __init
 fbmem_init(void)
@@ -637,10 +664,10 @@ err_chrdev:
 	return ret;
 }
 </code></pre>
-<h2 id="注册函数">注册函数</h2>
+<h2 id="3-注册函数">3. 注册函数</h2>
 <p><img src="/img/fbmem_c/call.png" alt="call">
 注册一个frame buffer 设备，依据relation给出的信息判断，该函数由上层驱动调用，一般放在某一个具体的fb设备驱动的probe函数中。</p>
-<h3 id="register_framebuffer">register_framebuffer</h3>
+<h3 id="31-register_framebuffer">3.1. register_framebuffer</h3>
 <pre><code class="language-c">/**
  *	register_framebuffer - registers a frame buffer device
  *	@fb_info: frame buffer info structure
@@ -664,14 +691,14 @@ register_framebuffer(struct fb_info *fb_info)
 EXPORT_SYMBOL(register_framebuffer);
 </code></pre>
 <p><strong>注意</strong>：framebuffer设备的创建是在设备信息注册时才创建的，差异性的体现，具体如下</p>
-<h3 id="do_register_framebuffer">do_register_framebuffer</h3>
+<h3 id="32-do_register_framebuffer">3.2. do_register_framebuffer</h3>
 <pre><code class="language-c">/* 初始化传入的framebuffer设备信息，并放入registered_fb[i]中完成注册 */
 static int do_register_framebuffer(struct fb_info *fb_info)
 {
 	int i, ret;
 	struct fb_event event;
 	struct fb_videomode mode;
-...
+	...
     
 	num_registered_fb++;
     /* 寻找空的registered_fb中的元素 */
@@ -684,38 +711,206 @@ static int do_register_framebuffer(struct fb_info *fb_info)
 	mutex_init(&amp;fb_info-&gt;mm_lock);
 	/* 创建fb%d设备 */
 	fb_info-&gt;dev = device_create(fb_class, fb_info-&gt;device, MKDEV(FB_MAJOR, i), NULL, &quot;fb%d&quot;, i);
-...
-        /* 创建fb%d设备 */
-		fb_init_device(fb_info);
-	/* 设置fb%d设备 */
-...
-		if (fb_info-&gt;pixmap.addr) {
-			fb_info-&gt;pixmap.size = FBPIXMAPSIZE;
-			fb_info-&gt;pixmap.buf_align = 1;
-			fb_info-&gt;pixmap.scan_align = 1;
-			fb_info-&gt;pixmap.access_align = 32;
-			fb_info-&gt;pixmap.flags = FB_PIXMAP_DEFAULT;
-...
+
+	...
     /* 使用散列表管理模式链表 */
 	if (!fb_info-&gt;modelist.prev || !fb_info-&gt;modelist.next)
 		INIT_LIST_HEAD(&amp;fb_info-&gt;modelist);
-...
+	...
     
     /* 将填充的好的fb_info放入注册表中 */
 	registered_fb[i] = fb_info;
 
-....
+	...
 	return 0;
 }
 </code></pre>
-<h2 id="驱动调用关系">驱动调用关系</h2>
-<h3 id="fbmemc的作用">fbmem.c的作用</h3>
+<h2 id="4-驱动调用关系">4. 驱动调用关系</h2>
+<h3 id="41-fbmemc的作用">4.1. fbmem.c的作用</h3>
 <p>fbmem.c起到一个管理中转的作用，具体的设备操作函数在struct fb_ops结构体中，fb_info继承了fb_ops，并由register_framebuffer函数完成fb_info的注册：</p>
 <p><img src="/img/fbmem_c/fb4.jpg" alt="fb4">
 <img src="/img/fbmem_c/fb5.jpg" alt="fb5"></p>
-<h3 id="调用示例">调用示例</h3>
+<h3 id="42-调用示例">4.2. 调用示例</h3>
 <p>在内核中找了一个例子，分析了调用关系，以帮助我们更好的理解调用和封装的关系
 <img src="/img/fbmem_c/routine.png" alt="fb5"></p>
+<h2 id="5-结合app分析lcd驱动程序">5. 结合app分析LCD驱动程序</h2>
+<h3 id="51-应用层调用分析">5.1. 应用层调用分析</h3>
+<pre><code class="language-c">/* 设备描述符 */
+static int fd_fb;
+/* 用于接收fb_var_screeninfo（可变的屏幕信息），fb_var_screeninfo包含于内核fb.h的fb_info中 */
+static struct fb_var_screeninfo var; /* Current var */
+
+/* 待计算的屏幕信息 */
+static int screen_size;
+static unsigned char *fb_base;
+static unsigned int line_width;
+static unsigned int pixel_width;
+
+/* 应用层framebuffer设备初始化 */
+static int FbDeviceInit(void)
+{
+    /* 应用层调用open ，导致驱动层调用fb_open() */
+	fd_fb = open(&quot;/dev/fb0&quot;, O_RDWR);
+	if (fd_fb &lt; 0)
+	{
+		printf(&quot;can't open /dev/fb0\n&quot;);
+		return -1;
+	}
+    /* 应用层调用ioctl ，导致驱动层调用fb_ioctl() */
+	if (ioctl(fd_fb, FBIOGET_VSCREENINFO, &amp;var))
+	{
+		printf(&quot;can't get var\n&quot;);
+		return -1;
+	}
+
+    /* 利用获取到屏幕参数计算屏幕信息 */
+	line_width = var.xres * var.bits_per_pixel / 8;
+	pixel_width = var.bits_per_pixel / 8;
+	screen_size = var.xres * var.yres * var.bits_per_pixel / 8;
+	
+	/* 获取framebuffer */
+	fb_base = (unsigned char *)mmap(NULL, screen_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd_fb, 0);
+	if (fb_base == (unsigned char *)-1)
+	{
+		printf(&quot;can't mmap\n&quot;);
+		return -1;
+	}
+
+	return 0;
+}
+</code></pre>
+<h3 id="52-驱动层调用分析">5.2. 驱动层调用分析</h3>
+<p>应用层首先打开对应的设备驱动，使用ioctl()查询已注册的LCD设备的信息，主要包含了屏幕的每一行的像素宽度，每一列的像素宽度，以及rgb的格式，至此便可以调用mmap()，应用层系统调用最终将调用到驱动中fbmem.c中的file_operation结构体指定的对应的函数，如下：</p>
+<pre><code class="language-c">static const struct file_operations fb_fops = {
+	.owner =	THIS_MODULE,
+		...
+	.unlocked_ioctl = fb_ioctl,
+	.mmap =		fb_mmap,
+	.open =		fb_open,
+		...
+
+};
+
+</code></pre>
+<p>驱动fbmem.c注册</p>
+<pre><code class="language-c">module_init(fbmem_init)
+        -&gt; fbmem_init()
+		-&gt; register_chrdev(FB_MAJOR, &quot;fb&quot;, &amp;fb_fops);
+</code></pre>
+<p>下面来看一下驱动中的fb_open、fb_ioctl、fb_mmap分别做了什么</p>
+<h4 id="521-fb_open">5.2.1. fb_open</h4>
+<pre><code class="language-c">static int
+fb_open(struct inode *inode, struct file *file)
+__acquires(&amp;info-&gt;lock)
+__releases(&amp;info-&gt;lock)
+{
+    /* 根据子设备号获得具体的设备 */
+	int fbidx = iminor(inode);
+	struct fb_info *info;
+	int res = 0;
+    /* 从已注册的registered_fb[]  中取出具体的设备        */
+	info = get_fb_info(fbidx);
+		...
+    /* 将得到的info放入私有数据中 */
+	file-&gt;private_data = info;
+    /* 如果在info中发现有驱动提供的fb_open操作函数就运行这个 */
+	if (info-&gt;fbops-&gt;fb_open) {
+		res = info-&gt;fbops-&gt;fb_open(info,1);
+		if (res)
+			module_put(info-&gt;fbops-&gt;owner);
+	}
+	...
+}
+</code></pre>
+<h4 id="522-fb_ioctl">5.2.2. fb_ioctl</h4>
+<pre><code class="language-c">static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
+			unsigned long arg)
+{
+	struct fb_ops *fb;
+	struct fb_var_screeninfo var;
+	struct fb_fix_screeninfo fix;
+		...
+	void __user *argp = (void __user *)arg;
+	long ret = 0;
+
+	switch (cmd) {
+    /* 得到屏幕虚拟信息 */
+	case FBIOGET_VSCREENINFO:
+        /* 加互斥锁保护，如果没有fbops表明设备不存在               */
+		if (!lock_fb_info(info))
+			return -ENODEV;
+        /* 得到fb_info 中的可变信息variable */
+		var = info-&gt;var;
+		unlock_fb_info(info);
+        /* 向用户空间copy屏幕的可变信息 */
+		ret = copy_to_user(argp, &amp;var, sizeof(var)) ? -EFAULT : 0;
+		break;
+		
+        ...
+        
+    /* 得到屏幕的固定信息，同上 */
+	case FBIOGET_FSCREENINFO:
+		if (!lock_fb_info(info))
+			return -ENODEV;
+        /* 得到fb_info 中的固定信息fix */
+		fix = info-&gt;fix;
+		unlock_fb_info(info);
+        /* 向用户空间copy屏幕的固定信息 */
+		ret = copy_to_user(argp, &amp;fix, sizeof(fix)) ? -EFAULT : 0;
+		break;
+		
+		...
+</code></pre>
+<h4 id="523-fb_mmap">5.2.3. fb_mmap</h4>
+<pre><code class="language-c">static int
+fb_mmap(struct file *file, struct vm_area_struct * vma)
+{
+	struct fb_info *info = file_fb_info(file);
+	struct fb_ops *fb;
+	unsigned long mmio_pgoff;
+	unsigned long start;
+	u32 len;
+
+	if (!info)
+		return -ENODEV;
+	fb = info-&gt;fbops;
+	if (!fb)
+		return -ENODEV;
+	mutex_lock(&amp;info-&gt;mm_lock);
+    /* 如果有自己的fb_mmap函数，就执行自己的 */
+	if (fb-&gt;fb_mmap) {
+		int res;
+		res = fb-&gt;fb_mmap(info, vma);
+		mutex_unlock(&amp;info-&gt;mm_lock);
+		return res;
+	}
+
+	/*
+	 * 备选方案
+	 * Ugh. This can be either the frame buffer mapping, or
+	 * if pgoff points past it, the mmio mapping.
+	 */
+	start = info-&gt;fix.smem_start;
+	len = info-&gt;fix.smem_len;
+	mmio_pgoff = PAGE_ALIGN((start &amp; ~PAGE_MASK) + len) &gt;&gt; PAGE_SHIFT;
+	if (vma-&gt;vm_pgoff &gt;= mmio_pgoff) {
+		if (info-&gt;var.accel_flags) {
+			mutex_unlock(&amp;info-&gt;mm_lock);
+			return -EINVAL;
+		}
+
+		vma-&gt;vm_pgoff -= mmio_pgoff;
+		start = info-&gt;fix.mmio_start;
+		len = info-&gt;fix.mmio_len;
+	}
+	mutex_unlock(&amp;info-&gt;mm_lock);
+
+	vma-&gt;vm_page_prot = vm_get_page_prot(vma-&gt;vm_flags);
+	fb_pgprotect(file, vma, start);
+    /*返回映射好的framebuffer的地址。*/
+	return vm_iomap_memory(vma, start, len);
+} 
+</code></pre>
 
     </div>
 
