@@ -609,8 +609,18 @@
 </li>
 </ul>
 </li>
+<li><a href="#6-framebuffer%E8%AE%BE%E5%A4%87%E6%A1%86%E6%9E%B6%E6%80%BB%E7%BB%93">6. framebuffer设备框架总结</a>
+<ul>
+<li><a href="#61-fbmenc">6.1. fbmen.c</a></li>
+<li><a href="#62-%E5%9C%A8%E5%90%84%E4%B8%AAframebuffer%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E4%B8%AD">6.2. 在各个framebuffer设备驱动中</a></li>
+<li><a href="#63-%E5%9B%9E%E8%B0%83%E4%B8%8E%E7%AE%A1%E7%90%86">6.3. 回调与管理：</a></li>
+<li><a href="#64-%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E">6.4. 举例说明：</a></li>
+<li><a href="#65-%E6%A1%86%E6%9E%B6%E5%9B%BE%E8%A7%A3">6.5. 框架图解</a></li>
+</ul>
+</li>
 </ul>
 <h2 id="1-file_operations结构体">1. file_operations结构体</h2>
+<p>fbmem.c中：</p>
 <pre><code class="language-c">static const struct file_operations fb_fops = {
 	.owner =	THIS_MODULE,
 	.read =		fb_read,
@@ -911,6 +921,22 @@ fb_mmap(struct file *file, struct vm_area_struct * vma)
 	return vm_iomap_memory(vma, start, len);
 } 
 </code></pre>
+<h2 id="6-framebuffer设备框架总结">6. framebuffer设备框架总结</h2>
+<h3 id="61-fbmenc">6.1. fbmen.c</h3>
+<p>fb设备的大管家：负责分配设置注册file_operations结构体，创建&quot;graphics&quot;类，
+在file_operations中提供fb_write，fb_ioct，fb_mmap，fb_open等各种操作函数向上作为系统调用的接口</p>
+<h3 id="62-在各个framebuffer设备驱动中">6.2. 在各个framebuffer设备驱动中</h3>
+<p>如：nuc970fb.c，在总线匹配设备后，执行probe函数时：</p>
+<ul>
+<li>分配设置fb_info结构体，fb_info结构体中也包含了屏幕的参数信息和具体fb设备的操作函数（struct fb_ops） ，如fb_open、fb_read、fb_write、fb_pan_display、fb_pan_display等</li>
+<li>调用register_framebuffer函数注册fb_info结构体到统一的fb设备管理数组registered_fb[i]中，&ldquo;graphics&quot;类下的具体的设备也在该函数中创建，数组下标i既是fb设备的子设备号，又是设备名称的排序（&ldquo;fb%d&rdquo;）</li>
+</ul>
+<h3 id="63-回调与管理">6.3. 回调与管理：</h3>
+<p>应用层通过系统调用fbmen.c中的各个操作函数，从统一的fb设备管理数组registered_fb[ ]中获取已注册的fb设备信息。</p>
+<h3 id="64-举例说明">6.4. 举例说明：</h3>
+<p>应用层调用open打开fb%d文件 ，导致驱动层fbmen.c中的fb_open(）被调用，fbmen.c中的fb_open(）从统一的fb设备管理数组registered_fb[i]获取该fb%d设备的fb_info并放入file的私有数据中，同时检查该fb_info中是否已提供特定的fb_open，有则执行。</p>
+<h3 id="65-框架图解">6.5. 框架图解</h3>
+<p><img src="/img/fbmem_c/fbarcth.png" alt="fbarcth"></p>
 
     </div>
 

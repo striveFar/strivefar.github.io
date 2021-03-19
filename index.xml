@@ -106,8 +106,18 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#6-framebuffer%E8%AE%BE%E5%A4%87%E6%A1%86%E6%9E%B6%E6%80%BB%E7%BB%93&#34;&gt;6. framebuffer设备框架总结&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#61-fbmenc&#34;&gt;6.1. fbmen.c&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#62-%E5%9C%A8%E5%90%84%E4%B8%AAframebuffer%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E4%B8%AD&#34;&gt;6.2. 在各个framebuffer设备驱动中&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#63-%E5%9B%9E%E8%B0%83%E4%B8%8E%E7%AE%A1%E7%90%86&#34;&gt;6.3. 回调与管理：&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#64-%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E&#34;&gt;6.4. 举例说明：&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#65-%E6%A1%86%E6%9E%B6%E5%9B%BE%E8%A7%A3&#34;&gt;6.5. 框架图解&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;1-file_operations结构体&#34;&gt;1. file_operations结构体&lt;/h2&gt;
+&lt;p&gt;fbmem.c中：&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;static const struct file_operations fb_fops = {
 	.owner =	THIS_MODULE,
 	.read =		fb_read,
@@ -408,6 +418,22 @@ fb_mmap(struct file *file, struct vm_area_struct * vma)
 	return vm_iomap_memory(vma, start, len);
 } 
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;6-framebuffer设备框架总结&#34;&gt;6. framebuffer设备框架总结&lt;/h2&gt;
+&lt;h3 id=&#34;61-fbmenc&#34;&gt;6.1. fbmen.c&lt;/h3&gt;
+&lt;p&gt;fb设备的大管家：负责分配设置注册file_operations结构体，创建&amp;quot;graphics&amp;quot;类，
+在file_operations中提供fb_write，fb_ioct，fb_mmap，fb_open等各种操作函数向上作为系统调用的接口&lt;/p&gt;
+&lt;h3 id=&#34;62-在各个framebuffer设备驱动中&#34;&gt;6.2. 在各个framebuffer设备驱动中&lt;/h3&gt;
+&lt;p&gt;如：nuc970fb.c，在总线匹配设备后，执行probe函数时：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;分配设置fb_info结构体，fb_info结构体中也包含了屏幕的参数信息和具体fb设备的操作函数（struct fb_ops） ，如fb_open、fb_read、fb_write、fb_pan_display、fb_pan_display等&lt;/li&gt;
+&lt;li&gt;调用register_framebuffer函数注册fb_info结构体到统一的fb设备管理数组registered_fb[i]中，&amp;ldquo;graphics&amp;quot;类下的具体的设备也在该函数中创建，数组下标i既是fb设备的子设备号，又是设备名称的排序（&amp;ldquo;fb%d&amp;rdquo;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;63-回调与管理&#34;&gt;6.3. 回调与管理：&lt;/h3&gt;
+&lt;p&gt;应用层通过系统调用fbmen.c中的各个操作函数，从统一的fb设备管理数组registered_fb[ ]中获取已注册的fb设备信息。&lt;/p&gt;
+&lt;h3 id=&#34;64-举例说明&#34;&gt;6.4. 举例说明：&lt;/h3&gt;
+&lt;p&gt;应用层调用open打开fb%d文件 ，导致驱动层fbmen.c中的fb_open(）被调用，fbmen.c中的fb_open(）从统一的fb设备管理数组registered_fb[i]获取该fb%d设备的fb_info并放入file的私有数据中，同时检查该fb_info中是否已提供特定的fb_open，有则执行。&lt;/p&gt;
+&lt;h3 id=&#34;65-框架图解&#34;&gt;6.5. 框架图解&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;https://strivefar.github.io/img/fbmem_c/fbarcth.png&#34; alt=&#34;fbarcth&#34;&gt;&lt;/p&gt;
 </description>
     </item>
     
