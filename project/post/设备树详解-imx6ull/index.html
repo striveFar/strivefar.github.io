@@ -212,8 +212,8 @@
   
 
   <link rel="manifest" href="/index.webmanifest">
-  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
-  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_3.png">
 
   <link rel="canonical" href="https://strivefar.github.io/project/post/%E8%AE%BE%E5%A4%87%E6%A0%91%E8%AF%A6%E8%A7%A3-imx6ull/">
 
@@ -716,7 +716,7 @@ Options: -[dshV]
 </li>
 </ul>
 <p>Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。header为头信息，fill_area为填充区域，填充数字0，dt_struct存储节点数值及名称相关信息，dt_string存储属性名。例如：a-string-property就存储在dt_string区，”A string”及node1就存储在dt_struct区域。</p>
-<p><code>我们可以给一个设备节点添加lable，之后可以通过&amp;lable的形式访问这个lable</code>，这种引用是通过phandle（pointer handle）进行的。例如，图3中的<strong>node1</strong>就是一个lable，node@0的子节点child-node@0通过<strong>&lt;&amp;node1&gt;</strong>引用node@1节点。像是这种phandle的节点，在经过DTC工具编译之后，&amp;node1会变成一个特殊的整型数字n，假设n值为1，那么在node@1节点下自动生成两个属性，属性如下：
+<p><code>我们可以给一个设备节点添加lable，之后可以通过&amp;lable的形式访问这个lable</code>，这种引用是通过phandle（pointer handle）进行的。例如，图3中的<strong>node1</strong>就是一个lable，node@0的子节点child-node@0通过**&lt;&amp;node1&gt;**引用node@1节点。像是这种phandle的节点，在经过DTC工具编译之后，&amp;node1会变成一个特殊的整型数字n，假设n值为1，那么在node@1节点下自动生成两个属性，属性如下：
 linux,phandle = &lt;0x00000001&gt;;
 phandle = &lt;0x00000001&gt;;
 node@0的子节点child-node@0中的a-reference-to-something = &lt;&amp;node1&gt;会变成a-reference-to-something = &lt; 0x00000001&gt;。此处0x00000001就是一个phandle得值，每一个phandle都有一个独一无二的整型值，在后续kernel中通过这个特殊的数字间接找到引用的节点。通过查看fdtdump输出信息以及dtb二进制文件信息，得到struct fdt_header和文件结构之间的关系信息如所示。</p>
@@ -1387,7 +1387,7 @@ static int of_platform_bus_create(struct device_node *bus,
     
     
     
-    <script src="/js/academic.min.a0d331bcd05dbe8b31e244f796710f08.js"></script>
+    <script src="/js/academic.min.409b0d00283f74c9777416d6d91420f4.js"></script>
 
     
 

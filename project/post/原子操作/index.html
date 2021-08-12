@@ -212,8 +212,8 @@
   
 
   <link rel="manifest" href="/index.webmanifest">
-  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
-  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_3.png">
 
   <link rel="canonical" href="https://strivefar.github.io/project/post/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/">
 
@@ -520,7 +520,7 @@
   <h1>原子操作 atomic.h 详解</h1>
 
   
-  <p class="page-subtitle">如有问题，欢迎评论区批评指正。 🚀&rsquo;</p>
+  <p class="page-subtitle">如有问题，欢迎评论区批评指正。 🚀'</p>
   
 
   
@@ -620,7 +620,7 @@
 <h1 id="1-什么是原子操作">1. 什么是原子操作</h1>
 <p>原子（atom）指<code>化学反应不可再分</code>的基本微粒，原子在化学反应中不可分割。</p>
 <p>在操作系统中，用原子的这一特性形象生动的描述了一种操作————原子操作，顾名思义，原子操作是不可分割的， <strong>在执行完毕之前不被任何其它任务或事件中断或即便被中断但不影响最终结果的操作都可以称之为原子操作</strong>。</p>
-<p>在<strong>单处理器系统</strong>（UniProcessor）中，能够在单条指令中完成的操作都可以认为是&rdquo; 原子操作&rdquo;，因为中断只能发生于指令之间；那么多条指令可不可以构成原子操作呢，当然可以，只要<code>确保这几条指令执行时不被抢占</code>就好了，关闭总中断就可以做到。</p>
+<p>在<strong>单处理器系统</strong>（UniProcessor）中，能够在单条指令中完成的操作都可以认为是&quot; 原子操作&quot;，因为中断只能发生于指令之间；那么多条指令可不可以构成原子操作呢，当然可以，只要<code>确保这几条指令执行时不被抢占</code>就好了，关闭总中断就可以做到。</p>
 <p>在<strong>多处理器SMP系统</strong>（Symmetric Multi-Processor）中，关中断可就不好使了，因为A处理器无法关闭它处理器的中断，A处理器只能关闭自己的中断。那么此时多条指令的执行还可以是“ 原子 ”的吗，其实也能，虽然被抢占是再所难免的，但只要<code>保证被抢占者不会影响原执行者的最终结果</code>不就好了。</p>
 <h1 id="2-为什么要引入原子操作">2. 为什么要引入原子操作</h1>
 <p>先明确两个概念：同步和互斥</p>
@@ -1099,38 +1099,38 @@ atomic_t v = ATOMIC_INIT(i);        /<em>定义原子变量v并初始化为 i</e
 <table>
 <thead>
 <tr>
-<th align="left">函数名</th>
-<th align="left">作用</th>
+<th style="text-align:left">函数名</th>
+<th style="text-align:left">作用</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">atomic_read(atomic_t *v)</td>
-<td align="left">读出原子变量的值，即v-&gt;counter</td>
+<td style="text-align:left">atomic_read(atomic_t *v)</td>
+<td style="text-align:left">读出原子变量的值，即v-&gt;counter</td>
 </tr>
 <tr>
-<td align="left">atomic_inc(atomic_t *v)</td>
-<td align="left">v-&gt;counter++</td>
+<td style="text-align:left">atomic_inc(atomic_t *v)</td>
+<td style="text-align:left">v-&gt;counter++</td>
 </tr>
 <tr>
-<td align="left">atomic_dec(atomic_t *v)</td>
-<td align="left">v-&gt;counter&ndash;</td>
+<td style="text-align:left">atomic_dec(atomic_t *v)</td>
+<td style="text-align:left">v-&gt;counter&ndash;</td>
 </tr>
 <tr>
-<td align="left">atomic_add(int i,atomic_t *v)</td>
-<td align="left">v-&gt;counter += i</td>
+<td style="text-align:left">atomic_add(int i,atomic_t *v)</td>
+<td style="text-align:left">v-&gt;counter += i</td>
 </tr>
 <tr>
-<td align="left">atomic_sub(int i,atomic_t *v)</td>
-<td align="left">v-&gt;counter -= i</td>
+<td style="text-align:left">atomic_sub(int i,atomic_t *v)</td>
+<td style="text-align:left">v-&gt;counter -= i</td>
 </tr>
 <tr>
-<td align="left">atomic_inc_and_test(atomic_t *v)</td>
-<td align="left">先加1，再判断新值是否等于0；等于0的话，返回值为1</td>
+<td style="text-align:left">atomic_inc_and_test(atomic_t *v)</td>
+<td style="text-align:left">先加1，再判断新值是否等于0；等于0的话，返回值为1</td>
 </tr>
 <tr>
-<td align="left">atomic_dec_and_test(atomic_t *v)</td>
-<td align="left">先减1，再判断新值是否等于0；等于0的话，返回值为1</td>
+<td style="text-align:left">atomic_dec_and_test(atomic_t *v)</td>
+<td style="text-align:left">先减1，再判断新值是否等于0；等于0的话，返回值为1</td>
 </tr>
 </tbody>
 </table>
@@ -1138,34 +1138,34 @@ atomic_t v = ATOMIC_INIT(i);        /<em>定义原子变量v并初始化为 i</e
 <table>
 <thead>
 <tr>
-<th align="left">函数名</th>
-<th align="left">作用</th>
+<th style="text-align:left">函数名</th>
+<th style="text-align:left">作用</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">set_bit(nr,p)</td>
-<td align="left">设置(*p)的bit nr为1</td>
+<td style="text-align:left">set_bit(nr,p)</td>
+<td style="text-align:left">设置(*p)的bit nr为1</td>
 </tr>
 <tr>
-<td align="left">clear_bit(nr,p)</td>
-<td align="left">清除(*p)的bit nr为0</td>
+<td style="text-align:left">clear_bit(nr,p)</td>
+<td style="text-align:left">清除(*p)的bit nr为0</td>
 </tr>
 <tr>
-<td align="left">change_bit(nr,p)</td>
-<td align="left">改变(*p)的bit nr，从1变为0，或是从0变为1</td>
+<td style="text-align:left">change_bit(nr,p)</td>
+<td style="text-align:left">改变(*p)的bit nr，从1变为0，或是从0变为1</td>
 </tr>
 <tr>
-<td align="left">test_and_set_bit(nr,p)</td>
-<td align="left">设置(*p)的bit nr为1，返回该位的老值</td>
+<td style="text-align:left">test_and_set_bit(nr,p)</td>
+<td style="text-align:left">设置(*p)的bit nr为1，返回该位的老值</td>
 </tr>
 <tr>
-<td align="left">test_and_clear_bit(nr,p)</td>
-<td align="left">清除(*p)的bit nr为0，返回该位的老值</td>
+<td style="text-align:left">test_and_clear_bit(nr,p)</td>
+<td style="text-align:left">清除(*p)的bit nr为0，返回该位的老值</td>
 </tr>
 <tr>
-<td align="left">test_and_change_bit(nr,p)</td>
-<td align="left">改变(*p)的bit nr，从1变为0，或是从0变为1；返回该位的老值</td>
+<td style="text-align:left">test_and_change_bit(nr,p)</td>
+<td style="text-align:left">改变(*p)的bit nr，从1变为0，或是从0变为1；返回该位的老值</td>
 </tr>
 </tbody>
 </table>
@@ -1510,7 +1510,7 @@ atomic_t v = ATOMIC_INIT(i);        /<em>定义原子变量v并初始化为 i</e
     
     
     
-    <script src="/js/academic.min.a0d331bcd05dbe8b31e244f796710f08.js"></script>
+    <script src="/js/academic.min.409b0d00283f74c9777416d6d91420f4.js"></script>
 
     
 

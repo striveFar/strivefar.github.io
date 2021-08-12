@@ -7,7 +7,7 @@
     <description>IMX6ULL</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Sun, 10 Jan 2021 16:15:09 +0800</lastBuildDate>
     <image>
-      <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>IMX6ULL</title>
       <link>https://strivefar.github.io/tags/imx6ull/</link>
     </image>
@@ -329,7 +329,7 @@ Options: -[dshV]
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。header为头信息，fill_area为填充区域，填充数字0，dt_struct存储节点数值及名称相关信息，dt_string存储属性名。例如：a-string-property就存储在dt_string区，”A string”及node1就存储在dt_struct区域。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;我们可以给一个设备节点添加lable，之后可以通过&amp;amp;lable的形式访问这个lable&lt;/code&gt;，这种引用是通过phandle（pointer handle）进行的。例如，图3中的&lt;strong&gt;node1&lt;/strong&gt;就是一个lable，node@0的子节点child-node@0通过&lt;strong&gt;&amp;lt;&amp;amp;node1&amp;gt;&lt;/strong&gt;引用node@1节点。像是这种phandle的节点，在经过DTC工具编译之后，&amp;amp;node1会变成一个特殊的整型数字n，假设n值为1，那么在node@1节点下自动生成两个属性，属性如下：
+&lt;p&gt;&lt;code&gt;我们可以给一个设备节点添加lable，之后可以通过&amp;amp;lable的形式访问这个lable&lt;/code&gt;，这种引用是通过phandle（pointer handle）进行的。例如，图3中的&lt;strong&gt;node1&lt;/strong&gt;就是一个lable，node@0的子节点child-node@0通过**&amp;lt;&amp;amp;node1&amp;gt;**引用node@1节点。像是这种phandle的节点，在经过DTC工具编译之后，&amp;amp;node1会变成一个特殊的整型数字n，假设n值为1，那么在node@1节点下自动生成两个属性，属性如下：
 linux,phandle = &amp;lt;0x00000001&amp;gt;;
 phandle = &amp;lt;0x00000001&amp;gt;;
 node@0的子节点child-node@0中的a-reference-to-something = &amp;lt;&amp;amp;node1&amp;gt;会变成a-reference-to-something = &amp;lt; 0x00000001&amp;gt;。此处0x00000001就是一个phandle得值，每一个phandle都有一个独一无二的整型值，在后续kernel中通过这个特殊的数字间接找到引用的节点。通过查看fdtdump输出信息以及dtb二进制文件信息，得到struct fdt_header和文件结构之间的关系信息如所示。&lt;/p&gt;

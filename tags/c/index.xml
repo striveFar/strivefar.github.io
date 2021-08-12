@@ -7,7 +7,7 @@
     <description>C</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><lastBuildDate>Wed, 09 Sep 2020 16:26:11 +0800</lastBuildDate>
     <image>
-      <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://strivefar.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>C</title>
       <link>https://strivefar.github.io/tags/c/</link>
     </image>
@@ -120,24 +120,24 @@
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align=&#34;center&#34;&gt;类型&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;符号位&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;指数&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;尾数&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;类型&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;符号位&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;指数&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;尾数&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;1位（第31位）&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;8位（第23~30位）&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;23位（第0~22位）&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;float&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;1位（第31位）&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;8位（第23~30位）&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;23位（第0~22位）&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;double&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;1位（第63位）&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;11位（第52~62位）&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;52位（第0~51位）&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;double&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;1位（第63位）&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;11位（第52~62位）&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;52位（第0~51位）&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -619,7 +619,7 @@ global          local static
 &lt;p&gt;这有些类似于static 全局变量与普通全局变量的区别，同样的，static函数仅对定义该函数的当前文件可见，无法像普通函数一样加上extern声明就能在其他文件中使用。&lt;/p&gt;
 &lt;p&gt;也就是说static修饰后成为了内部函数，应该在当前源文件中说明和定义。对于可在当前源文件以外使用的函数，应该在一个头文件中说明，要使用这些函数的源文件要包含这个头文件.&lt;/p&gt;
 &lt;h1 id=&#34;6-巧用static默认初始化为0&#34;&gt;6. 巧用static,默认初始化为0&lt;/h1&gt;
-&lt;p&gt;static的第三个作用是默认初始化为0。其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。比如初始化一个稀疏矩阵，我们可以一个一个地把所有元素都置0，然后把不是0的几个元素赋值。如果定义成静态的，就省去了一开始置0的操作。再比如要把一个字符数组当字符串来用，但又觉得每次在字符数组末尾加&amp;rsquo;\ 0&#39;太麻烦。如果把字符串定义成静态的，就省去了这个麻烦，因为那里本来就是&amp;rsquo;\0&amp;rsquo;。不妨做个小实验验证一下。&lt;/p&gt;
+&lt;p&gt;static的第三个作用是默认初始化为0。其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。比如初始化一个稀疏矩阵，我们可以一个一个地把所有元素都置0，然后把不是0的几个元素赋值。如果定义成静态的，就省去了一开始置0的操作。再比如要把一个字符数组当字符串来用，但又觉得每次在字符数组末尾加&#39;\ 0&amp;rsquo;太麻烦。如果把字符串定义成静态的，就省去了这个麻烦，因为那里本来就是&#39;\0&#39;。不妨做个小实验验证一下。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
 int a;
 

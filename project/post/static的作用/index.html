@@ -212,8 +212,8 @@
   
 
   <link rel="manifest" href="/index.webmanifest">
-  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
-  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
+  <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png">
+  <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_3.png">
 
   <link rel="canonical" href="https://strivefar.github.io/project/post/static%E7%9A%84%E4%BD%9C%E7%94%A8/">
 
@@ -707,7 +707,7 @@ global          local static
 <p>这有些类似于static 全局变量与普通全局变量的区别，同样的，static函数仅对定义该函数的当前文件可见，无法像普通函数一样加上extern声明就能在其他文件中使用。</p>
 <p>也就是说static修饰后成为了内部函数，应该在当前源文件中说明和定义。对于可在当前源文件以外使用的函数，应该在一个头文件中说明，要使用这些函数的源文件要包含这个头文件.</p>
 <h1 id="6-巧用static默认初始化为0">6. 巧用static,默认初始化为0</h1>
-<p>static的第三个作用是默认初始化为0。其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。比如初始化一个稀疏矩阵，我们可以一个一个地把所有元素都置0，然后把不是0的几个元素赋值。如果定义成静态的，就省去了一开始置0的操作。再比如要把一个字符数组当字符串来用，但又觉得每次在字符数组末尾加&rsquo;\ 0'太麻烦。如果把字符串定义成静态的，就省去了这个麻烦，因为那里本来就是&rsquo;\0&rsquo;。不妨做个小实验验证一下。</p>
+<p>static的第三个作用是默认初始化为0。其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。比如初始化一个稀疏矩阵，我们可以一个一个地把所有元素都置0，然后把不是0的几个元素赋值。如果定义成静态的，就省去了一开始置0的操作。再比如要把一个字符数组当字符串来用，但又觉得每次在字符数组末尾加'\ 0&rsquo;太麻烦。如果把字符串定义成静态的，就省去了这个麻烦，因为那里本来就是'\0'。不妨做个小实验验证一下。</p>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
 int a;
 
@@ -1026,7 +1026,7 @@ int main(void)
     
     
     
-    <script src="/js/academic.min.a0d331bcd05dbe8b31e244f796710f08.js"></script>
+    <script src="/js/academic.min.409b0d00283f74c9777416d6d91420f4.js"></script>
 
     
 
